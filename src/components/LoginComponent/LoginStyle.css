@@ -1,0 +1,61 @@
+.container {
+    height: 100vh;
+    position: relative;
+}
+
+.login-background-light {
+    background-color: #cce4ff;
+}
+
+.login-background-bold {
+    background-color: #1e1f6f;
+}
+
+.login-wrapper {
+    position: absolute;
+    z-index: 1;
+    background-color: #ffffff;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    width: 85%;
+    height: 85%;
+    padding: 10px;
+    border-radius: 30px;
+}
+
+
+
+.login-containter__title {
+    font-size: 40px;
+    font-weight: 600;
+    font-family: 'Nunito', sans-serif;
+}
+
+.login-container__seperate {
+    color: #bcbcbc;
+    font-size: 12px;
+}
+
+.seperate-title {
+    letter-spacing: 1px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.seperate-title:before,
+.seperate-title:after {
+    content: "";
+    flex: 1 1;
+    border-bottom: 1px solid;
+    margin: auto;
+}
+
+.seperate-title:before {
+    margin-right: 10px
+}
+
+.seperate-title:after {
+    margin-left: 10px
+}
