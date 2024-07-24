@@ -11,6 +11,15 @@
     font-size: 14px;
 }
 
+:root{
+    --primary-color: #1e1f6f;
+    --light-background-color: #cce4ff;
+    --dark-background-color: #1e1f6f;
+    --border-color: #cccccc;
+    --white-color: #ffffff;
+    --text-color: #000000;
+}
+
 #root{
    
 }
