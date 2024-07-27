@@ -2,45 +2,90 @@ import React, { useState } from 'react'
 import './LoginStyle.css'
 
 const LoginPage = () => {
+  const imgUrlBase = 'src/assets/imgs/';
+
   return (
     <div className='container flex max-w-full'>
       <div className='login-background-light flex-1'></div>
       <div className='login-background-bold flex-1'></div>
 
       <div className='login-wrapper flex'>
-        <div className='login-content flex-1 p-[10px]'>
-          <div className='login-containter__icon'>
-            <img src='src/assets/imgs/logo.svg' className='container__icon' />
-          </div>
-          <div className='login-containter__title text-center'>Welcome Back</div>
-          <ProviderButton
-            imageUrl='src/assets/imgs/googleLogo.svg'
-            providerName='Log in with Google' />
-          <div className='login-container__seperate seperate-title mt-[20px]'>
-            OR LOGIN WITH ACCOUNT
-          </div>
-          <div className='login-container__info'>
-            <LoginButton />
-            <input type='text' className='infor-username' placeholder='Your Email' />
-            <input type='password' className='infor-password' placeholder='Your Password' />
+        <div className='flex-1 p-3'>
+          <div className='lg:w-2/3 mx-auto h-full flex flex-col justify-between'>
+            <div className='login-containter__icon'>
+              <img src={imgUrlBase + "logo.svg"} className='container__icon h-[50px] w-[200px]' />
+            </div>
+            <div className='login-containter__title text-center my-[15px]'>Welcome Back</div>
+            <div className='flex-1'>
+              <ProviderInfor imgUrlBase={imgUrlBase} />
 
-            <div className="infor-extension">
-              <input type="checkbox" className='infor-checkbox' id='cb-keep-login'></input>
-              <label htmlFor="cb-keep-login">Keep me logged in</label>
-              <span className='infor-forgot-password underline'>Forgot password</span>
+              <div className='login-container__seperate seperate-title mt-[20px]'>
+                OR LOGIN WITH ACCOUNT
+              </div>
+
+              <LoginInfor imgUrlBase={imgUrlBase} />
+
+              <hr className='mt-5' />
+
+              <LoginExtention />
             </div>
           </div>
         </div>
 
-
-        <div className="login-img flex-1" >
-          <div className='test'>
-            <h1>hello</h1>
-          </div>
+        <div className='flex-1 login-image--wrapper hidden sm:hidden lg:block'>
+          <img src={imgUrlBase + "loginImage4.png"} alt="login-beside" className="login-img-beside" />
         </div>
       </div>
     </div>
   )
+}
+
+function LoginExtention() {
+  return <>
+    <div className='login-question flex justify-center mt-[10px]'>
+      Don't have an account yet? &nbsp;
+      <a className='login-signup__link' href="#">Sign up</a>
+    </div>
+  </>
+}
+
+function LoginInfor({ imgUrlBase }) {
+  return <>
+    <LoginButton type="text" placeholder="User Name" required={true} />
+    <LoginButton type="passsword" placeholder="Password" required={true} />
+
+    <div className="infor-extension flex items-center justify-between mt-1">
+      <div className='flex justify-center'>
+        <input type="checkbox" className='infor-checkbox mr-2' id='cb-keep-login'></input>
+        <label htmlFor="cb-keep-login">Keep me logged in</label>
+      </div>
+      <a className='underline' href='#'>Forgot password</a>
+    </div>
+
+    <button className='w-full login-submit-button mt-[20px]'>
+      <div className='flex items-center px-4'>
+        <span className='flex-1'>Log in</span>
+        <img src={imgUrlBase + "rightArrow.svg"} className='w-[20px] login-submit__icon' alt='arrow' />
+      </div>
+    </button>
+  </>
+}
+
+function ProviderInfor({ imgUrlBase }) {
+  const providerInfos = [
+    {
+      img: "googleLogo.svg",
+      des: "Log in with Google"
+    },
+    {
+      img: "facebookLogo.svg",
+      des: "Log in with Facebook"
+    }
+  ]
+
+  return providerInfos.map((info, index) => {
+    return <ProviderButton key={index} imageUrl={imgUrlBase + info.img} providerName={info.des} />
+  })
 }
 
 function ProviderButton({ imageUrl, providerName, ...props }) {
@@ -52,33 +97,30 @@ function ProviderButton({ imageUrl, providerName, ...props }) {
   )
 }
 
-function LoginButton() {
-  const [isBlurred , setIsBlurred] = useState(true);
-
-
-  const handleFocusInput = (e) =>{
-    if(!e.target.value){
-      setIsBlurred(false);
+function LoginButton({ placeholder, ...props }) {
+  const [isFocus, setFocus] = useState(false);
+  const handleBlurEvent = (e) => {
+    if (e.target.value) {
+      setFocus(true)
     }
-    else{
-      setIsBlurred(true);
+    else {
+      setFocus(false);
     }
   }
 
-  const handleBlurInput = (e) =>{
-    if(!e.target.value){
-      setIsBlurred(false);
-    }
-    else{
-      setIsBlurred(false);
-    }
+  const handleFocusEvent = () => {
+    setFocus(true);
   }
 
   return (
-    <div className='login-button'>
+    <div className='pt-[20px]'>
       <div className='login-button__wrapper'>
-        <input type='text' className='login-button__text' onBlur={handleBlurInput} onFocus={handleFocusInput} />
-        <div className={`login-button__label ${isBlurred ? '' : 'hidden'}`} >Your Email</div>
+        <input
+          {...props}
+          className='login-button__text'
+          onBlur={handleBlurEvent}
+          onFocus={handleFocusEvent} />
+        <div className={`login-button__label ${isFocus && 'lable-transform'}`}>{placeholder}</div>
       </div>
     </div>
   )

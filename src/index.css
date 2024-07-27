@@ -16,8 +16,11 @@
     --light-background-color: #cce4ff;
     --dark-background-color: #1e1f6f;
     --border-color: #cccccc;
+    --text-gray-color: #b7b7b7;
+    --border-focus-color:  #57a8ff;
     --white-color: #ffffff;
     --text-color: #000000;
+    --light-blue-color: #e6f2ff;
 }
 
 #root{
