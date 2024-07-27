@@ -26,9 +26,9 @@
 
 
 .login-containter__title {
-    font-size: 30px;
     font-weight: 600;
     font-family: 'Nunito', sans-serif;
+    line-height: normal !important;
 }
 
 .login-container__seperate {
@@ -166,14 +166,29 @@
     cursor: pointer;
 }
 
-.login-img-beside{  
-    object-fit: contain;
-    position: absolute;
+.img-beside{  
+    object-fit: cover;
     z-index: 1;
-    transform: tran;
+}
+
+.login-img-beside{
+    position: absolute;
+    top: 15%;
+    left: 0px;
+    right: 0px;
+    z-index: 1;
+    margin: 0 auto;
 }
 
 .login-image--wrapper{
-    background-color: var(--light-blue-color);
     position: relative;
+    overflow: hidden;
+}
+
+.img-beside__background{
+    width: 2500px;
+    height: 1000px;
+    border-radius: 50%;
+    background-color: rgb(89, 107, 184);
+    transform:  rotate(-10deg);
 }

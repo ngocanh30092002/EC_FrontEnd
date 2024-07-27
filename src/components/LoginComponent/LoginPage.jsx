@@ -11,11 +11,11 @@ const LoginPage = () => {
 
       <div className='login-wrapper flex'>
         <div className='flex-1 p-3'>
-          <div className='lg:w-2/3 mx-auto h-full flex flex-col justify-between'>
+          <div className='w-4/5 lg:w-2/3 2xl:w-3/5 mx-auto h-full flex flex-col justify-between'>
             <div className='login-containter__icon'>
-              <img src={imgUrlBase + "logo.svg"} className='container__icon h-[50px] w-[200px]' />
+              <img src={imgUrlBase + "logo.svg"} className='container__icon h-[50px] w-[200px] lg:w-[300px] lg:h-[80px]' />
             </div>
-            <div className='login-containter__title text-center my-[15px]'>Welcome Back</div>
+            <div className='login-containter__title text-center text-5xl lg:text-4xl my-[15px] lg:my-1'>Welcome Back</div>
             <div className='flex-1'>
               <ProviderInfor imgUrlBase={imgUrlBase} />
 
@@ -25,7 +25,7 @@ const LoginPage = () => {
 
               <LoginInfor imgUrlBase={imgUrlBase} />
 
-              <hr className='mt-5' />
+              <hr className='mt-5 hidden lg:block' />
 
               <LoginExtention />
             </div>
@@ -33,7 +33,10 @@ const LoginPage = () => {
         </div>
 
         <div className='flex-1 login-image--wrapper hidden sm:hidden lg:block'>
-          <img src={imgUrlBase + "loginImage4.png"} alt="login-beside" className="login-img-beside" />
+          <div className='w-[450px] login-img-beside'>
+            <img src={imgUrlBase + "loginImage6.png"} alt="login-beside" className="img-beside" />
+          </div>
+          <div className='img-beside__background'/>
         </div>
       </div>
     </div>
@@ -42,7 +45,7 @@ const LoginPage = () => {
 
 function LoginExtention() {
   return <>
-    <div className='login-question flex justify-center mt-[10px]'>
+    <div className='login-question flex justify-center mt-[20px] lg:mt-[10px]'>
       Don't have an account yet? &nbsp;
       <a className='login-signup__link' href="#">Sign up</a>
     </div>
@@ -57,7 +60,7 @@ function LoginInfor({ imgUrlBase }) {
     <div className="infor-extension flex items-center justify-between mt-1">
       <div className='flex justify-center'>
         <input type="checkbox" className='infor-checkbox mr-2' id='cb-keep-login'></input>
-        <label htmlFor="cb-keep-login">Keep me logged in</label>
+        <label htmlFor="cb-keep-login" className='mt-1'>Keep me logged in</label>
       </div>
       <a className='underline' href='#'>Forgot password</a>
     </div>
