@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { appApi } from '../../../appConfig'
 import  axios from "axios"
 import './LoginStyle.css'
@@ -58,10 +59,11 @@ function LoginInfor({ imgUrlBase }) {
   const [password, setPassword] = useState();
   const [checked, setChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
+  const navigate = useNavigate();
+
 
   const submitData = () =>{
     if(!userName|| !password){
-      console.log("hi");
       return;
     }
 
@@ -70,6 +72,11 @@ function LoginInfor({ imgUrlBase }) {
       password: password
     }
     
+    const handleLoginSuccess = (response) =>{
+      setErrorMessage();
+      navigate(response.redirectLink);
+    }
+
     $.ajax({
       method: 'POST',
       url: appApi + "account/login",
@@ -77,7 +84,7 @@ function LoginInfor({ imgUrlBase }) {
       data: JSON.stringify(data),
       dataType: "json",
       success: function(response) {
-        setErrorMessage();
+        handleLoginSuccess(response);
       },
       error: function(xhr, status, error) {
         if(xhr.responseText){
