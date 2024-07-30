@@ -1,4 +1,4 @@
-﻿# Modules
+# Modules
 ## Import / Export
 	Export default logger
 	Import logger from './loger.js'
@@ -115,4 +115,52 @@
 
 		)
 	}
+
+### 
+	Boolean, Null, Undefined -> không được render
+
+	isCheck && <h1>...</h1> -> trả về h1 nếu ischeck đúng
+
+### 
+	Function Input({label, ...inputProps}){
+		return 
+			<input {...inputProps} />
+	
+	}
+	
+
+## Hooks
+
+### useState
+	- Chuyển trạng thái của dữ liệu
+	- Cú pháp const [state, useState] = useState(initValue);
+
+#### Cách hoạt động
+	- Component sẽ được re-render lại khi setState
+	- initValue chỉ dùng cho lần đầu
+	- Sử dụng callBack với state
+		khi gọi useState(state+1);
+				useState(state+1);
+				useState(state+1);
+				=> chỉ tăng state lên 1 lần
+		Khi gọi useState(prev => prev+1);
+				useState(prev => prev+1);
+				useState(prev => prev+1);
+				=> tăng lên 3 lần
+	- initValue với callback (dữ liệu trả về từ callback => làm initValue)
+	- khi set state sẽ thay đổi thành state mới
+
+	- Mount: là thời điểm component được thêm vào ReactElement để sử dụng
+	- Unmount ngược lại
+		
+### useEffect
+### useLayoutEffect
+### useRef
+### useCallBack
+### useMemo
+### useReducer
+### useContext
+### useImperativeHandle
+### useDebugValue
+
 
