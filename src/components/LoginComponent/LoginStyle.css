@@ -3,14 +3,6 @@
     position: relative;
 }
 
-.login-background-light {
-    background-color: var(--light-background-color)
-}
-
-.login-background-bold {
-    background-color: var(--dark-background-color);
-}
-
 .login-wrapper {
     position: absolute;
     z-index: 1;
@@ -20,7 +12,7 @@
     left: 50%;
     width: 90%;
     height: 90%;
-    border-radius: 30px;
+    border-radius: 20px;
     overflow: hidden;
 }
 
@@ -107,7 +99,7 @@
     background-color: transparent;
     border: solid 1px var(--border-color);
     border-radius: 4px;
-    transition: 0.2 ease;
+    transition: all 0.2s ease;
 }
 
 .login-button__wrapper{
@@ -123,7 +115,7 @@
     margin: 0 10px;
     padding: 0 10px;
     line-height: 45px;
-    transition: 0.2 ease;
+    transition: all 0.2s ease;
     background-color: var(--white-color);
 }
 
@@ -136,7 +128,7 @@
     line-height: 20px;
     padding: 0 15px;
     transform: translate(-15px, -10px) scale(0.8);
-    transition: 0.2s ease;
+    transition: all 0.2s ease;
     z-index:2;
 }
 

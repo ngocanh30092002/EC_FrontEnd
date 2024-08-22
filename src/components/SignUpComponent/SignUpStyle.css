@@ -1,0 +1,29 @@
+.sign-up-wrapper{
+    position: absolute;
+    z-index: 1;
+    background-color: var(--white-color);
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    width: 90%;
+    height: 90%;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.gender-wrapper{
+    border: solid 1px var(--border-color);
+    border-radius: 4px;
+    height: 60px;
+    position: relative;
+    overflow: visible;
+}
+
+.gender-title{
+    position: absolute;
+    transform: translate(3px, -10px) scale(0.9);
+    z-index: 1;
+    outline: none;
+    padding: 0 10px;
+    background-color: var(--white-color);
+}
