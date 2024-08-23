@@ -12,7 +12,7 @@
     left: 50%;
     width: 90%;
     height: 90%;
-    border-radius: 20px;
+    border-radius: 10px;
     overflow: hidden;
 }
 
@@ -170,7 +170,9 @@
 }
 
 .login-image--wrapper{
-    background-color: #e6f2ff;
+    margin: 14px;
+    border-radius: 15px;
+    background-color: #4353f0;
 }
 
 .error-message{

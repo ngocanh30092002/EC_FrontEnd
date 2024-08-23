@@ -1,7 +1,8 @@
 import React, { useState , useRef} from 'react'
 import { useNavigate } from 'react-router-dom'
-import { APP_API, CLIENT_URL } from '../../../GlobalConstant'
+import { CLIENT_URL } from '../../../GlobalConstant'
 import LoginGoogleButton from './LoginGoogle'
+import toast from '../../helper/Toast'
 import './LoginStyle.css'
 
 const LoginPage = () => {
@@ -11,9 +12,6 @@ const LoginPage = () => {
         <div className='login-wrapper flex'>
             <div className='flex-1 p-3'>
                 <div className='w-4/5 lg:w-2/3 2xl:w-3/5 mx-auto h-full flex flex-col justify-between'>
-                    {/* <div className='login-containter__icon 2xl:mt-[20px]'>
-                        <img src={imgUrlBase + "logo.svg"} className='container__icon h-[50px] w-[200px] lg:w-[300px] lg:h-[80px]' />
-                    </div> */}
                     <div className='login-containter__title text-center text-5xl lg:text-5xl my-[15px] lg:my-1 2xl:text-6xl 2xl:my-[40px] py-[20px]'>Welcome Back</div>
                     <div className='flex-1'>
                         <LoginGoogleButton imageUrl={imgUrlBase + "googleLogo.svg"} description={"Log in with Google"} redirectUri={"https://localhost:5173/manage"} />

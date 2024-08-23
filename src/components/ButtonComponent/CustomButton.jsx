@@ -69,7 +69,7 @@ function CustomButton(props) {
     },[])
 
     return (
-        <div className='pt-[15px]'>
+        <div className={`pt-[15px] ${props?.className ?? ''}`}>
             <div className='custom-button__wrapper'>
                 <input
                     type= {props.type}
@@ -77,7 +77,7 @@ function CustomButton(props) {
                     required = {props.required}
                     ref = {inputRef}
                     value={value}
-                    className={`custom-button__text${isValid ? " " : " error"}${props?.className ?? ''}`}
+                    className={`custom-button__text${isValid ? " " : " error"}`}
                     onBlur={handleBlurEvent}
                     onFocus={(e) => handleFocusEvent(e)}
                     onChange={(e) => handleChangeEvent(e)}
