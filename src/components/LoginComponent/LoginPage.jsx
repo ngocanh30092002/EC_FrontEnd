@@ -1,6 +1,6 @@
 import React, { useState , useRef} from 'react'
 import { useNavigate } from 'react-router-dom'
-import { CLIENT_URL } from '../../../GlobalConstant'
+import { CLIENT_URL , APP_API} from '../../../GlobalConstant'
 import LoginGoogleButton from './LoginGoogle'
 import toast from '../../helper/Toast'
 import './LoginStyle.css'
@@ -71,7 +71,17 @@ function LoginInfor({ imgUrlBase }) {
         }
 
         const handleLoginError = (error) =>{
-            setErrorMessage(error.message);
+            if(error){
+                setErrorMessage(error.message);
+            }
+            else{
+                toast({
+                    type: "error",
+                    duration: 5000,
+                    title: "Error",
+                    message: "Something is wrong"
+                })
+            }
         }
         $.ajax({
             method: 'POST',

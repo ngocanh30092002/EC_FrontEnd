@@ -97,3 +97,7 @@
     letter-spacing: 0.3px;
     font-family:  'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
+
+.sign-up-error{
+    font-size: 12px;
+}

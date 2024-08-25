@@ -1,12 +1,12 @@
 import {useState, useRef, useEffect, useContext} from 'react'
 import "./CustomeStyle.css";
 
-function CustomButton(props) {
+function CustomButton({errors, ...props}) {
     const [value , setValue] = useState('');
     const [isFocus, setFocus] = useState(false);
     const [isValid, setIsValid] = useState(true);
     const inputRef = useRef();
-    
+
     const handleBlurEvent = (e) => {
         if (e.target.value) {
             setFocus(true);
@@ -18,6 +18,9 @@ function CustomButton(props) {
     }
 
     const handleFocusEvent = (e) => {
+        if(props?.onClearError){
+            props.onClearError(props.name);
+        }
         setFocus(true);
         setValue(e.target.value);
     }
@@ -69,7 +72,7 @@ function CustomButton(props) {
     },[])
 
     return (
-        <div className={`pt-[15px] ${props?.className ?? ''}`}>
+        <div className={`pt-[5px] ${props?.className ?? ''}`}>
             <div className='custom-button__wrapper'>
                 <input
                     type= {props.type}
@@ -86,6 +89,8 @@ function CustomButton(props) {
                     />
                 <div className={`custom-button__label ${isFocus ? 'lable-transform' : ""}`}>{props?.placeholder ?? ""}</div>
             </div>
+
+            {errors?.[props.name] &&  <span className='custom-button-error'>{errors[props.name]}</span>}
         </div>
     )
 }

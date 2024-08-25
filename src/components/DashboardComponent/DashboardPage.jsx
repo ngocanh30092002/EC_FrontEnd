@@ -4,30 +4,35 @@ import { GetCookie } from '../../helper/CookiesHelper';
 import { ACCESS_TOKEN, APP_API } from '../../../GlobalConstant';
 import TokenHelpers from '../../helper/TokenHelper';
 import CustomButton from '../ButtonComponent/CustomButton';
+import SideBar from './SideBar/SideBar';
 
 const DashboardPage = () => {
     const navigation = useNavigate();
 
-    useEffect( () => {
-        async function CheckValidToken(){
-            const accessToken = GetCookie(ACCESS_TOKEN);
-            if(!accessToken){
-                navigation("account/login");
-            }
+    useEffect(() => {
+        // async function CheckValidToken(){
+        //     const accessToken = GetCookie(ACCESS_TOKEN);
+        //     if(!accessToken){
+        //         navigation("account/login");
+        //     }
 
-            var result = await TokenHelpers.Verify(accessToken);
-            if(!result){
-                navigation("account/login");
-            }
-        }
+        //     var result = await TokenHelpers.Verify(accessToken);
+        //     if(!result){
+        //         navigation("account/login");
+        //     }
+        // }
 
-        CheckValidToken();
-    },[])
+        // CheckValidToken();
+    },[]);
 
     return (
-        <div>
-           <CustomButton type="text" name="username" placeholder="User Name" required={true} minLength = {10} isEmail = {true}/>
-        </div>
+        <>
+            <div >
+                <SideBar/>
+                <div>
+                </div>
+            </div>
+        </>
     )
 }
 
