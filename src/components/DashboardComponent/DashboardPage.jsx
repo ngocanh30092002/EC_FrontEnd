@@ -5,6 +5,7 @@ import { ACCESS_TOKEN, APP_API } from '../../../GlobalConstant';
 import TokenHelpers from '../../helper/TokenHelper';
 import CustomButton from '../ButtonComponent/CustomButton';
 import SideBar from './SideBar/SideBar';
+import Notification from './Notification/Notification';
 
 const DashboardPage = () => {
     const navigation = useNavigate();
@@ -27,9 +28,10 @@ const DashboardPage = () => {
 
     return (
         <>
-            <div >
+            <div className='flex w-screen h-screen relative'>
                 <SideBar/>
-                <div>
+                <div className="flex-1">
+                    <Notification/>
                 </div>
             </div>
         </>
