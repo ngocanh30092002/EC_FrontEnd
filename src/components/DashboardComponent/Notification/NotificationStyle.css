@@ -23,7 +23,7 @@
     font-size: 12px;
     width: 200px;
     color: var(--text-light-color);
-    animation:  slideIn 0.5s ease-in-out;;
+    animation:  slideIn 0.2s ease;
 }
 
 @keyframes slideIn {
@@ -51,11 +51,23 @@
     position: absolute;
     top: 50%;
     right: -20%;
-  transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
 
 .noti__item.last{
     margin-right: 10px;
+}
+
+.noti__item.hasNoti::after{
+    position: absolute;
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: red;
+    top: 35%;
+    right: 35%;
+    transform: translate(50%, -50%);
 }
 
 .noti__user-infor-wrapper{
@@ -73,12 +85,13 @@
     border-radius: 50%;
     object-fit: cover;
     margin: 0 5px;
+    cursor: pointer;
 }
 
 .user-infor__body{
     width: 100px;
     padding-left: 10px;
-  
+    cursor: pointer;
 }
 
 .user-infor__name{
@@ -89,5 +102,14 @@
 }
 
 .user-infor__role{
-    font-size: 14px;
+    color: var(--text-light-color);
+    font-size: 12px;
+}
+
+
+.noti__welcome{
+    font-size: 25px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    font-family: "Inter Tight", sans-serif;
 }

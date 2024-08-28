@@ -1,6 +1,6 @@
 import React from 'react'
 import { GoogleLogin, GoogleOAuthProvider, useGoogleLogin } from '@react-oauth/google';
-import { CLIENT_GOOGLE_ID, SCOPE_GOOGLE } from '../../../GlobalConstant'
+import { CLIENT_GOOGLE_ID, SCOPE_GOOGLE } from '~/GlobalConstant'
 
 const LoginGoogleButton = ({ imageUrl, description, redirectUri }) => {
 

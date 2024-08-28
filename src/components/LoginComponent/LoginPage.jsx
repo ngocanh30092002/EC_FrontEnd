@@ -1,8 +1,8 @@
 import React, { useState , useRef} from 'react'
 import { useNavigate } from 'react-router-dom'
-import { CLIENT_URL , APP_API} from '../../../GlobalConstant'
+import { CLIENT_URL , APP_API} from '~/GlobalConstant'
 import LoginGoogleButton from './LoginGoogle'
-import toast from '../../helper/Toast'
+import toast from '@/helper/Toast'
 import './LoginStyle.css'
 
 const LoginPage = () => {

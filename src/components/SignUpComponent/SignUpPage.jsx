@@ -1,8 +1,8 @@
 import "./SignUpStyle.css"
 import CustomButton from "../ButtonComponent/CustomButton"
-import { APP_API, CLIENT_URL } from "../../../GlobalConstant"
+import { APP_API, CLIENT_URL } from "~/GlobalConstant"
 import { useState } from "react";
-import toast from "../../helper/Toast";
+import toast from "@/helper/Toast";
 
 function SignUpPage() {
     const [isSuccess , setSuccess] = useState(false); 

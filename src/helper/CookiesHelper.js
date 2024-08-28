@@ -10,4 +10,3 @@ export function SetCookie(name, value, minute = 60){
     let expires = "expires="+ d.toUTCString();
     document.cookie = name + "=" + value + ";" + expires + ";path=/";
 }
-

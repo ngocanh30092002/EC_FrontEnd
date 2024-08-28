@@ -1,0 +1,229 @@
+.hi__course-header--title{
+    font-size: 15px;
+    font-weight: 600;
+    font-family: "Inter Tight", sans-serif;
+    letter-spacing: 0.6px;
+}
+
+.hi__course-header--btn{
+    color: var(--text-light-color);
+    font-weight: 400;
+    border-radius: 8px;
+    outline: none;
+    padding: 5px 10px;
+    font-size: 13px;
+    border: solid 1px var(--border-color);
+}
+
+.hi__course-header--btn:hover{
+    background-color: var(--background-hover-color);
+    color:var(--primary-color);
+}
+
+.hi__course-header--search{
+    color: var(--text-light-color);
+    font-size: 13px;
+    outline: none;
+    padding: 5px 10px;
+    border-radius: 8px;
+    border: solid 1px var(--border-color);
+    font-weight: 400;
+    width: 300px;
+    padding-left: 30px;
+}
+
+.hi__course-header-icon{
+    position: absolute;
+    width: 22px;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.hi__course-table{
+    width: 100%;
+    margin-top: 10px;
+}
+
+.ct_row > th {
+    text-align: left;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: "Inter Tight", sans-serif;
+    color: var(--text-light-color);
+    padding: 8px 10px;
+    letter-spacing: 0.4px;
+}
+
+.ct_row.header{
+    
+}
+
+.ct_header > tr{
+    background-color: #ECEDEF;
+    border-radius: 8px;
+}
+
+.ct_header > tr:first-child th:first-child{
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.ct_header > tr:first-child th:last-child{
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+
+.li__study-bar{
+    width: 100%;
+    height: 6px;
+    background-color: #E2E1E7;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.li__study-bar-current{
+
+}
+
+.li__study-wrapper{
+    padding: 8px 10px;
+    height: 100%;
+}
+
+.li__study-bar-text{
+    font-size: 13px;
+    margin-left: 10px;
+    width: 40px;
+}
+
+.li__study-bar-current{
+    position: relative;
+    width: 0;
+    height: 6px;
+    background-color: var(--primary-color);
+    border-radius: 20px;
+}
+
+.li__status-wrapper{
+    cursor: pointer;
+    padding: 8px 10px;
+    height: 100%;
+}
+
+.li__status-icon{
+    font-size: 15px;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+}
+
+.li__status-text{
+    font-size: 11px;
+    color: var(--text-light-color);
+    font-weight: 500;
+    font-family: "Inter Tight", sans-serif;
+    letter-spacing: 0.4px;
+    margin-left: 5px;
+}
+
+.li__status-next-icon{
+    font-size: 15px;
+    color: var(--text-light-color);
+    margin-right: 30px;
+}
+
+.li_status-body{
+    border-radius: 8px;
+    border: solid 1px var(--border-color);
+    padding: 2px 10px 2px 6px;
+}
+
+
+tbody > tr{
+    border-bottom: dashed 1px var(--border-color)
+}
+
+tbody > tr:last-child{
+    border:none;
+}
+
+
+tbody > tr:last-child > td{
+    height: 55px !important;
+}
+tbody > tr:last-child td:first-child .li__info-wrapper{
+    padding-bottom: 0;
+}
+
+.li__info-wrapper{
+    display: flex;
+    align-items: center;
+    padding: 15px 10px;
+}
+
+.li__info-img{
+    width: 40px;
+    height: 40px;
+    background-color: black;
+    border-radius: 8px;
+    object-fit: cover;
+    overflow: hidden;
+    margin-right: 10px;
+}
+
+.li__info-body{
+
+}
+
+.li__info-name{
+    font-size: 13px;
+    font-weight: 600;
+    font-family: "Inter Tight", sans-serif;
+}
+
+.li__info-sub{
+    display: flex; 
+    align-items: center;
+}
+
+.li__info-sub--name{
+    font-size: 12px;
+    color: var(--text-light-color);
+    font-family: "Inter Tight", sans-serif;
+    margin-right: 15px;
+    position: relative;
+    overflow: visible;
+}
+
+.li__info-sub--name::after{
+    position: absolute;
+    content: '';
+    width: 6px;
+    height: 6px;
+    background-color: var(--text-light-color);
+    top: 50%;
+    right: -15%;
+    transform: translate(50%, -30%);
+    border-radius: 50%;
+}
+
+.li__info-sub--time{
+    font-size: 12px;
+    color: var(--text-light-color);
+    font-family: "Inter Tight", sans-serif;
+}
+
+
+thead, tbody, tr, td, th { display: block; }
+
+
+tbody {
+    overflow-y: auto;
+}
+
+tbody td, thead th {
+    float: left;
+}

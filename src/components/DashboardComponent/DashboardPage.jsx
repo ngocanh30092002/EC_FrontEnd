@@ -1,15 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
-import { GetCookie } from '../../helper/CookiesHelper';
-import { ACCESS_TOKEN, APP_API } from '../../../GlobalConstant';
-import TokenHelpers from '../../helper/TokenHelper';
-import CustomButton from '../ButtonComponent/CustomButton';
-import SideBar from './SideBar/SideBar';
+import React, { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Notification from './Notification/Notification';
-
+import SideBar from './SideBar/SideBar';
+import MainDashboard from './MainDashBoard/MainDashboard';
 const DashboardPage = () => {
     const navigation = useNavigate();
-
     useEffect(() => {
         // async function CheckValidToken(){
         //     const accessToken = GetCookie(ACCESS_TOKEN);
@@ -24,14 +19,16 @@ const DashboardPage = () => {
         // }
 
         // CheckValidToken();
-    },[]);
+    }, []);
 
     return (
         <>
             <div className='flex w-screen h-screen relative'>
-                <SideBar/>
+                <SideBar />
                 <div className="flex-1">
-                    <Notification/>
+                    <Notification />
+
+                    <MainDashboard/>
                 </div>
             </div>
         </>
