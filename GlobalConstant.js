@@ -5,3 +5,5 @@ export const ACCESS_TOKEN = "access-token";
 export const REFRESH_TOKEN = "refresh-token";
 export const PROVIDER = "provider"
 export const CLIENT_URL = "https://localhost:5173/"
+export const APP_URL = "https://localhost:44314/"
+export const REDIRECT_HEADER = "Redirect"

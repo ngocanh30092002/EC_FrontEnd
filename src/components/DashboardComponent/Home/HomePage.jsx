@@ -1,6 +1,8 @@
 import React from 'react'
 import "./HomeStyle.css"
 import ContinueLearning from './ContinueLearning';
+import RecommendCourses from './RecommendCourses';
+import { appClient } from '~/AppConfigs';
 
 function HomePage() {
     const imgUrlBase = 'src/assets/imgs/';
@@ -25,9 +27,22 @@ function HomePage() {
         }
     ]
 
+    const handleSendNoti = () => {
+        const sendNoti = async () => {
+            const notification = {
+                Title: "New Notification",
+                Description: "This is a test notification.",
+                Image: "/notifications/images/user_image.jpg",
+            };
+           var response = await appClient.post("api/Notification/send-noti?groupName=123", notification)
+        }
+
+        sendNoti();
+    }
+
     return (
-        <div className="grid grid-cols-12 gap-[20px] mx-[20px]">
-            <div className="col-span-9 grid grid-cols-12 gap-[10px]">
+        <div className="grid grid-cols-12 gap-[15px] mx-[20px]">
+            <div className="col-span-9 grid grid-cols-12 gap-[15px]">
                 {infoItems.map((item,index) =>{
                     return (
                     <div className="col-span-4" key={index}>
@@ -39,17 +54,16 @@ function HomePage() {
                     </div>
                     )
                 })}
-                <div className="col-span-6 bg-blue-300">4</div>
-                <div className="col-span-6 bg-blue-300">5</div>
-
                 <div className="col-span-12">
                     <ContinueLearning/>
                 </div>
             </div>
-            <div className="col-span-3 grid gap-[10px]">
-                <div className='bg-blue-500'>7</div>
-                <div className='bg-blue-500'>8</div>
-                <div className='bg-blue-500'>9</div>
+            <div className="col-span-3 bg-slate-400">
+                <button onClick={handleSendNoti}>Send Notification</button>
+            </div>
+
+            <div className='col-span-12'>
+                <RecommendCourses/>
             </div>
         </div>
     )

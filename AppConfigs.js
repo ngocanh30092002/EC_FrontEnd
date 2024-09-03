@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ACCESS_TOKEN, PROVIDER, APP_API, REFRESH_TOKEN, CLIENT_URL } from './GlobalConstant';
+import { ACCESS_TOKEN, PROVIDER, APP_API, REFRESH_TOKEN, CLIENT_URL, REDIRECT_HEADER } from './GlobalConstant';
 import {GetCookie} from './src/helper/CookiesHelper';
 import TokenHelpers from './src/helper/TokenHelper';
 
@@ -12,9 +12,9 @@ appClient.interceptors.request.use(
     async function (request){
         var accessToken = GetCookie(ACCESS_TOKEN);
         var refreshToken = GetCookie(REFRESH_TOKEN);
-        var provider = GetCookie(PROVIDER);
+        var isRedirect = request.headers[REDIRECT_HEADER] ?? true;
         if(TokenHelpers.IsExpired(accessToken,refreshToken)){
-            await TokenHelpers.Renew(accessToken, refreshToken, provider);
+            await TokenHelpers.Renew(accessToken, refreshToken, JSON.parse(isRedirect));
         }
 
         return request;

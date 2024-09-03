@@ -13,7 +13,7 @@ function IsTokenExpired(accessToken){
     }
 }
 
-async function GenerateNewAccessToken(accessToken, refreshToken){
+async function GenerateNewAccessToken(accessToken, refreshToken, isRedirect){
     try{
         var response = await fetch(APP_API + "Token/renew-token",{
             method: "POST",
@@ -27,7 +27,7 @@ async function GenerateNewAccessToken(accessToken, refreshToken){
             })
         })
         
-        if(!response.ok){
+        if(!response.ok && isRedirect){
             window.location.href = CLIENT_URL + "account/login";
         }
     }
@@ -61,7 +61,7 @@ async function VerifyAccessToken(accessToken){
 
 const TokenHelpers = {
     Verify: async (accessToken) => await VerifyAccessToken(accessToken),
-    Renew: async (accessToken, refreshToken) => await GenerateNewAccessToken(accessToken, refreshToken),
+    Renew: async (accessToken, refreshToken, isRedirect = true) => await GenerateNewAccessToken(accessToken, refreshToken, isRedirect),
     IsExpired: (accessToken) => IsTokenExpired(accessToken)
 }
 

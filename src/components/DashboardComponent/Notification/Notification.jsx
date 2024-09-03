@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import "./NotificationStyle.css";
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { homeComponents, settingComponents, studyComponents } from '../SideBarInfo';
+import "./NotificationStyle.css";
+import NotificationBoard from './NotificationBoard';
 
 function Notification() {
     const [isShowSearchInput, setShowInput] = useState(false);
@@ -31,17 +32,18 @@ function Notification() {
             document.title = currentPageInfo.name;
         }
     },[location])
+
+
     return (
-        <div className='flex justify-end items-center pr-[10px] md:justify-between md:px-[20px]'>
+        <div className='flex justify-end items-center pr-[10px] md:justify-between md:px-[20px] overflow-visible'>
             <div className='noti__welcome hidden md:block'>{pageTitle}</div>
-            <div className='h-[70px] flex justify-end items-center'>
+            <div className='h-[70px] flex justify-end items-center overflow-visible'>
                 {isShowSearchInput && <input type='text' className='noti__search-input'/>}
                 <div className='noti__item' onClick={() => setShowInput(!isShowSearchInput)}>
-                    <img src={imgUrlBase + "search_icon.svg"} alt="" className="w-[24px]" />
+                    <img src={imgUrlBase + "search_icon.svg"} alt="" className="w-[24px] noti__item--img"/>
                 </div>
-                <div className='noti__item last hasNoti'>
-                    <img src={imgUrlBase + "alert_bell1.svg"} alt="" className="w-[24px]" />
-                </div>
+                
+                <NotificationBoard imgUrlBase={imgUrlBase} />
                 <a className='noti__user-infor-wrapper' href='#'>
                     <img src={imgUrlBase + "user_image.jpg"} alt="user image" className="user-infor__img" />
                     <div className="user-infor__body">
@@ -57,5 +59,6 @@ function Notification() {
         </div>
     )
 }
+
 
 export default Notification

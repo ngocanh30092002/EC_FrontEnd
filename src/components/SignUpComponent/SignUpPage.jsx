@@ -76,6 +76,8 @@ function SignUpForm({ imgBase , onSetSuccess}) {
         e.preventDefault();
         const formData = new FormData(e.target);
 
+        console.log(APP_API);
+
         fetch(APP_API + "Account/Register", {
             method: "POST",
             headers: {
@@ -195,7 +197,7 @@ function SignUpForm({ imgBase , onSetSuccess}) {
                 <span className="text-md gender-title">Gender </span>
                 <div className="flex flex-1 justify-around items-center">
                     <div className="flex items-center">
-                        <input type="radio" id="male" name="Gender" value="0" checked="checked" />
+                        <input type="radio" id="male" name="Gender" value="0" defaultChecked />
                         <label className="ml-2" htmlFor="male">Male</label>
                     </div>
                     <div className="flex items-center">

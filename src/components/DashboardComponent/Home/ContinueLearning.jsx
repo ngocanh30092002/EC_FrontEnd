@@ -35,7 +35,6 @@ function ContinueLearning(){
                         <LearningItem/>
                         <LearningItem/>
                         <LearningItem/>
-                        <LearningItem/>
                     </tbody>
                 </table>
             </div>

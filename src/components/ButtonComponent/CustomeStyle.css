@@ -50,12 +50,8 @@
 .custom-button-error{
     font-size: 10px;
     color:red;
-    display: -webkit-box;       
-    -webkit-line-clamp: 1;    
-    -webkit-box-orient: vertical; 
-    overflow: hidden;          
-    text-overflow: ellipsis;   
     min-height: 20px;
+    text-overflow: ellipsis;   
 }
 
 .sign-up__successBox{

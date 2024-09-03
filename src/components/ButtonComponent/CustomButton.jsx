@@ -90,7 +90,7 @@ function CustomButton({errors, ...props}) {
                 <div className={`custom-button__label ${isFocus ? 'lable-transform' : ""}`}>{props?.placeholder ?? ""}</div>
             </div>
 
-            {errors?.[props.name] &&  <span className='custom-button-error'>{errors[props.name]}</span>}
+            {errors?.[props.name] &&  <span className='custom-button-error line-clamp-1'>{errors[props.name]}</span>}
         </div>
     )
 }
