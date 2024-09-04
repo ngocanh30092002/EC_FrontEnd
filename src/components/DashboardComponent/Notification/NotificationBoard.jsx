@@ -20,7 +20,6 @@ function NotificationBoard({imgUrlBase}){
                 var response = await appClient.get("api/Notification/get-all-notifications");
                 var data = response.data;
                 setNotiData(data);
-                console.log(data);
             }
             catch(error){
                 toast({
@@ -41,26 +40,26 @@ function NotificationBoard({imgUrlBase}){
                     GetCookie(ACCESS_TOKEN);
                 }
             })
-            // .configureLogging(signalR.LogLevel.Error)
+            .configureLogging(signalR.LogLevel.Error)
             .withAutomaticReconnect()
             .build();
 
         setNotiConnection();
 
         if (notiConnection) {
-            const startConnection = (isFirstTime) =>{
+            const startConnection = (connectNum = 0) =>{
                 notiConnection.start()
                 .catch(e => {
                     const handleError = async () =>{
                         var errorMessage = e.message;
-                        if(errorMessage.includes("401") && isFirstTime){
+                        if(errorMessage.includes("401") && connectNum < 3){
                             var accessToken = GetCookie(ACCESS_TOKEN);
                             var refreshToken = GetCookie(REFRESH_TOKEN);
                             if(TokenHelpers.IsExpired(accessToken,refreshToken)){
                                 await TokenHelpers.Renew(accessToken, refreshToken, false);
                             }
 
-                            startConnection(false);
+                            startConnection(connectNum++);
                         }
                         else{
                             toast({
@@ -76,7 +75,7 @@ function NotificationBoard({imgUrlBase}){
                 });
             }
 
-            startConnection(true);
+            startConnection();
         }
 
         notiConnection.on("ReceiveError", (errorMessage) =>{
@@ -154,7 +153,7 @@ function NotificationBoard({imgUrlBase}){
 
                 <img src={imgUrlBase + "alert_bell1.svg"} alt="" className="w-[24px] noti__item--img"/>
 
-                <div className='noti__list-info flex flex-col' onClick={(e) => e.stopPropagation()}>
+                <div className='noti__list-info flex flex-col w-[455px] md:w-[500px]' onClick={(e) => e.stopPropagation()}>
                     <div className='nli__header flex justify-between items-center overflow-hidden'>
                         <span className='nli__header--title'>Notifications</span>
                         <button className='nli__header--mark' onClick={handleMarkReadAll}>Mark all</button>

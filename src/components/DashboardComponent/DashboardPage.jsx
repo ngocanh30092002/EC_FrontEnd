@@ -24,11 +24,11 @@ const DashboardPage = () => {
     return (
         <>
             <div className='flex w-screen h-screen relative'>
-                <SideBar />
-                <div className="flex-1">
-                    <Notification />
+                <SideBar className={''}/>
+                <div className="flex-1 relative">
+                    <Notification className={"fixed w-full right-0 top-0 md:static"}/>
 
-                    <MainDashboard/>
+                    <MainDashboard className={"mt-[70px] md:mt-0"}/>
                 </div>
             </div>
         </>

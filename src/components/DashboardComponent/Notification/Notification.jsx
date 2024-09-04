@@ -4,7 +4,7 @@ import { homeComponents, settingComponents, studyComponents } from '../SideBarIn
 import "./NotificationStyle.css";
 import NotificationBoard from './NotificationBoard';
 
-function Notification() {
+function Notification({className}) {
     const [isShowSearchInput, setShowInput] = useState(false);
     const [pageTitle, setPageTitle] = useState();
     const imgUrlBase = "../../src/assets/imgs/"
@@ -35,10 +35,10 @@ function Notification() {
 
 
     return (
-        <div className='flex justify-end items-center pr-[10px] md:justify-between md:px-[20px] overflow-visible'>
+        <div className={`flex justify-end items-center pr-[10px] md:justify-between md:px-[20px] overflow-visible ${className}`}>
             <div className='noti__welcome hidden md:block'>{pageTitle}</div>
-            <div className='h-[70px] flex justify-end items-center overflow-visible'>
-                {isShowSearchInput && <input type='text' className='noti__search-input'/>}
+            <div className='h-[70px] flex justify-end items-center overflow-visible flex-1 bg-white'>
+                {isShowSearchInput && <input type='text' className='noti__search-input w-[150px] md:w-[200px]'/>}
                 <div className='noti__item' onClick={() => setShowInput(!isShowSearchInput)}>
                     <img src={imgUrlBase + "search_icon.svg"} alt="" className="w-[24px] noti__item--img"/>
                 </div>

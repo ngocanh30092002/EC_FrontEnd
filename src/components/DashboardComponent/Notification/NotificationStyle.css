@@ -116,8 +116,7 @@
 
 .noti__list-info{
     position: absolute;
-    width: 500px;
-    z-index: 10;
+    z-index: 20;
     height: 450px;
     top: 100%;
     right: 50%;

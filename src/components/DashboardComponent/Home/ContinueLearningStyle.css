@@ -100,7 +100,6 @@
 }
 
 .li__study-bar-current{
-    position: relative;
     width: 0;
     height: 6px;
     background-color: var(--primary-color);
@@ -196,6 +195,7 @@ tbody > tr:last-child td:first-child .li__info-wrapper{
     margin-right: 15px;
     position: relative;
     overflow: visible;
+    z-index: -1;
 }
 
 .li__info-sub--name::after{

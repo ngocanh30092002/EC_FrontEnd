@@ -8,7 +8,7 @@ function RecommendCourses() {
 
                 <button className='rc__header-button'>See All</button>
             </div>
-            <div className='grid grid-cols-3 gap-[15px]'>
+            <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-[15px]'>
                <CourseItem/>
                <CourseItem/>
                <CourseItem/>
@@ -29,7 +29,7 @@ function CourseItem(){
                 <span className='rc__item--des line-clamp-2'>Master your skills in design facilitaion and learn how to promote collaboration and find some think like thattttttttttttt</span>
             </div>
 
-            <div className='rc__item-extra flex items-center justify-between'>
+            <div className='rc__item-extra flex items-center justify-between relative z-[-1]'>
                 <div className='flex items-center '>
                     <div className='rc__extra-sub-item'>
                         <i className="fa-regular fa-hourglass-half text-orange-500"></i>

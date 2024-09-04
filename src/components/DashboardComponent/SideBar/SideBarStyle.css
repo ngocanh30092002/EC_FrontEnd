@@ -153,6 +153,7 @@
     left: 70px;
     transform: translate(-5px, -50%);
     opacity: 0;
+    visibility: hidden;
     white-space: nowrap;
     text-align: left;
     padding: 10px 15px;
@@ -179,10 +180,12 @@
     from{
         transform: translate(-5px, -50%);
         opacity: 0;
+        visibility: hidden;
     }
 
     to{
         transform: translate(0, -50%);
         opacity: 1;
+        visibility: visible;
     }
 }

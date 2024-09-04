@@ -5,12 +5,12 @@ function ContinueLearning(){
     return (
         <div className='home-info__courses p-[15px]'>
             <div className="hi__course-header flex justify-between items-center">
-                <div className="hi__course-header--title">
+                <div className="hi__course-header--title text-[15px]">
                     Continue Learning
                 </div>
                 <div className='flex'>
-                    <div className='flex relative mr-[10px]'>
-                        <input className='hi__course-header--search' type='text' placeholder='Search for courses...'/>
+                    <div className='hidden md:flex relative mr-[10px] '>
+                        <input className='hi__course-header--search md:w-[260px] lg:w-[300px]' type='text' placeholder='Search for courses...'/>
                         <img src='src/assets/imgs/light-color-search.svg' className='hi__course-header-icon'/>
                     </div>
 
@@ -24,9 +24,9 @@ function ContinueLearning(){
                 <table className='hi__course-table'>
                     <thead className='ct_header'>
                         <tr className='ct_row header'>
-                            <th className='w-1/3'>Course Name</th>
-                            <th className='w-1/3'>Progress</th>
-                            <th className='w-1/3'>Status</th>
+                            <th className='w-1/2 md:w-1/3'>Course Name</th>
+                            <th className='w-1/2 md:w-1/3'>Progress</th>
+                            <th className='hidden md:block md:w-1/3'>Status</th>
                         </tr>
                     </thead>
 
@@ -44,9 +44,9 @@ function ContinueLearning(){
 
 function LearningItem({progress = 20}){
     return (
-        <tr>
-            <td className="w-1/3 h-[70px]"><LearningInfo  name="Design Accessibility" subName="Advanced" time="4 hours" imgUrl ="src/assets/imgs/user_image.jpg"/></td>
-            <td className="w-1/3 h-[70px]">
+        <tr className="cursor-pointer">
+            <td className="w-1/2 md:w-1/3 h-[70px]"><LearningInfo  name="Design Accessibility" subName="Advanced" time="4 hours" imgUrl ="src/assets/imgs/user_image.jpg"/></td>
+            <td className="w-1/2 md:w-1/3 h-[70px]">
                 <div className='li__study-wrapper flex items-center overflow-hidden'>
                     <div className='li__study-bar'>
                         <div className='li__study-bar-current' style={{width: progress + "%"}}/>
@@ -57,7 +57,7 @@ function LearningItem({progress = 20}){
                     </div>
                 </div>
             </td>
-            <td className="w-1/3 h-[70px]">
+            <td className="hidden md:block md:w-1/3 h-[70px]">
                 <LearningStatus statusCode={1}/>
             </td>
         </tr>
@@ -72,15 +72,15 @@ function LearningInfo(props){
             </div>
 
             <div className='li__info-body'>
-                <div className="li__info-name">
+                <div className="li__info-name line-clamp-1">
                     {props.name}
                 </div>
 
-                <div className="li__info-sub">
-                    <div className='li__info-sub--name'>
+                <div className="li__info-sub ">
+                    <div className='li__info-sub--name '>
                         {props.subName}
                     </div>
-                    <div className='li__info-sub--time'>
+                    <div className='li__info-sub--time '>
                         {props.time}
                     </div>
                 </div>
@@ -106,7 +106,7 @@ function LearningStatus({statusCode}){
 
     return (
         <div className='li__status-wrapper flex justify-between items-center'>
-            <div className='flex items-center li_status-body'>
+            <div className='hidden md:flex items-center li_status-body '>
                 <div className='li__status-icon'>
                     {currentStatus.icon}
                 </div>
@@ -114,7 +114,7 @@ function LearningStatus({statusCode}){
                 <span className='li__status-text'>{currentStatus.name}</span>
             </div>
 
-            <div className='li__status-next-icon'>
+            <div className='li__status-next-icon '>
                 <i className="fa-solid fa-chevron-right"></i>
             </div>
         </div>

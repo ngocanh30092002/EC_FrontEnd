@@ -42,10 +42,10 @@ function HomePage() {
 
     return (
         <div className="grid grid-cols-12 gap-[15px] mx-[20px]">
-            <div className="col-span-9 grid grid-cols-12 gap-[15px]">
+            <div className="col-span-12 lg:col-span-9 grid grid-cols-12 gap-[15px]">
                 {infoItems.map((item,index) =>{
                     return (
-                    <div className="col-span-4" key={index}>
+                    <div className="col-span-12 md:col-span-4" key={index}>
                         <HomeInfoItem 
                             number={item.number} 
                             title={item.title} 
@@ -58,7 +58,7 @@ function HomePage() {
                     <ContinueLearning/>
                 </div>
             </div>
-            <div className="col-span-3 bg-slate-400">
+            <div className="col-span-12 lg:col-span-3 bg-slate-400">
                 <button onClick={handleSendNoti}>Send Notification</button>
             </div>
 
@@ -74,12 +74,12 @@ function HomeInfoItem({number, title, imgUrl, bgColor}){
     return (
         <div className='home-info__item'>
             <div className='flex items-center pb-[15px]'>
-                <div className={`hi__item-img ${bgColor ?? "" }`}>
-                    <img src={imgUrl} alt='' className=''/>
+                <div className={`hi__item-img ${bgColor ?? ""}`}>
+                    <img src={imgUrl} alt='' className='w-[30px] h-[30px] md:w-[22px] md:h-[22px]'/>
                 </div>
                 <div className='hi__item-body flex-1'>
                     <span className='hi__item-number'>{number}</span>
-                    <span className='hi__item-title'>{title}</span>
+                    <span className='hi__item-title line-clamp-1' title={title}>{title}</span>
                 </div>
             </div>
 

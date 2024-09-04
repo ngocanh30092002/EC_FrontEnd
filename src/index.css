@@ -27,8 +27,6 @@
     --light-blue-color: #e6f2ff;
 }
 
-#root {}
-
 input:-webkit-autofill {
     -webkit-background-clip: text;
     -webkit-text-fill-color: #000000;

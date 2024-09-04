@@ -103,8 +103,8 @@ function LoginInfor({ imgUrlBase }) {
 
     return <>
         <form>
-            <LoginButton type="text" name="username" placeholder="User Name" required={true} handleSetData={setUserName} />
-            <LoginButton type="password" name="password" placeholder="Password" required={true} handleSetData={setPassword} isShowEye={true} />
+            <LoginButton type="text" name="username" placeholder="User Name" required={true} handleSetData={setUserName} onEnterKeyDown = {submitData} />
+            <LoginButton type="password" name="password" placeholder="Password" required={true} handleSetData={setPassword} isShowEye={true}  onEnterKeyDown = {submitData} />
         </form>
 
         <div className="infor-extension flex items-center justify-between mt-1">
@@ -114,6 +114,7 @@ function LoginInfor({ imgUrlBase }) {
                     className='infor-checkbox mr-2'
                     id='cb-keep-login'
                     checked={checked}
+                    style={{visibility: 'visible'}}
                     onChange={() => setChecked(!checked)}></input>
                 <label htmlFor="cb-keep-login" className='mt-1'>Keep me logged in</label>
             </div>
@@ -169,6 +170,12 @@ function LoginButton(props) {
             }
         </> 
     }
+
+    const handleKeyDown = (e) =>{
+        if(e.key == "Enter"){
+            props?.onEnterKeyDown();
+        }
+    }
     return (
         <div className='pt-[20px]'>
             <div className='login-button__wrapper'>
@@ -181,6 +188,7 @@ function LoginButton(props) {
                     onBlur={handleBlurEvent}
                     onFocus={handleFocusEvent}
                     autoComplete = "off"
+                    onKeyDown={(e) => handleKeyDown(e)}
                     />
                 <div className={`login-button__label ${isFocus ? 'lable-transform' : ""}`}>{props.placeholder}</div>
 

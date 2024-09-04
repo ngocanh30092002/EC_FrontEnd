@@ -4,13 +4,13 @@ import { Link, useLocation } from 'react-router-dom';
 import {homeComponents, studyComponents, settingComponents} from "../SideBarInfo"
 const SideBarContext = createContext();
 
-function SideBar() {
+function SideBar({className}) {
     const [isExpand, setExpand] = useState(true); 
     return (
         <div className={`side-bar__wrapper 
-            fixed overflow-hidden z-10 ${isExpand ? "h-screen flex flex-col border-1":"h-[70px] border-0"}
+            absolute overflow-hidden z-10 ${isExpand ? "h-full flex flex-col border-1":"h-[70px] border-0"}
             md:static md:h-screen md:border-r md:overflow-visible md:flex-col md:inline-flex md:max-w-[200px] 
-            lg:max-w-[230px]`}>
+            lg:max-w-[230px] ${className}`}>
             <SideBarContext.Provider value={{isExpand, onSetExpand: setExpand}}>
                 <SideBarTitle isExpand={isExpand} onSetExpand={setExpand}/>
 

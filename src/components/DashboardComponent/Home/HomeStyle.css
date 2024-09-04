@@ -15,11 +15,6 @@
     margin-right: 10px;
 }
 
-.hi__item-img img{
-    width: 22px;
-    height: 22px;
-}
-
 .hi__item-body{
     display: flex;
     flex-direction: column;

@@ -3,9 +3,9 @@ import { homeComponents, settingComponents, studyComponents } from '../SideBarIn
 import { Route, Routes} from 'react-router-dom';
 
 
-function MainDashboard() {
+function MainDashboard({className}) {
   return (
-    <div>
+    <div className={className}>
         <Routes>
             {homeComponents.map((item, index) => {
                 return <Route key={index} path={item.link} element={item.component} />
