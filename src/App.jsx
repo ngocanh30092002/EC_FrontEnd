@@ -4,10 +4,11 @@ import AccountPage from './components/AccountComponent/AccountPage'
 import DashboardPage from './components/DashboardComponent/DashboardPage'
 import MainPage from './components/MainComponent/MainPage'
 import ManagerPage from './components/ManagerComponent/ManagePage'
+import { StoreProvider } from "./store"
 
 function App() {
     return (
-        <>
+        <StoreProvider>
             <Routes>
                 <Route path='account/*' element={<AccountPage />} />
                 <Route path='/main' element={<MainPage />} />
@@ -17,7 +18,7 @@ function App() {
             </Routes>
 
             <div id='toast'/>
-        </>
+        </StoreProvider>
     )
 }
 

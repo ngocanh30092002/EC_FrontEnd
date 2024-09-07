@@ -26,7 +26,7 @@ const DashboardPage = () => {
             <div className='flex w-screen h-screen relative'>
                 <SideBar className={''}/>
                 <div className="flex-1 relative">
-                    <Notification className={"fixed w-full right-0 top-0 md:static"}/>
+                    <Notification className={"fixed z-[998] w-full right-0 top-0 md:static"}/>
 
                     <MainDashboard className={"mt-[70px] md:mt-0"}/>
                 </div>

@@ -22,12 +22,7 @@ function NotificationBoard({imgUrlBase}){
                 setNotiData(data);
             }
             catch(error){
-                toast({
-                    type: "error",
-                    duration: 5000,
-                    title: "Error",
-                    message: error.message
-                })
+                
             }
         }
         getNotifications();
@@ -87,10 +82,18 @@ function NotificationBoard({imgUrlBase}){
             })
         });
 
-        notiConnection.on("ReceiveNotification", (notiModel) =>{
-            setNotiData(prev => {
-                return [JSON.parse(notiModel), ...prev];
-            });
+        notiConnection.on("ReceiveNotification", () =>{
+            const getNotifications = async () =>{
+                try{
+                    var response = await appClient.get("api/Notification/get-all-notifications");
+                    var data = response.data;
+                    setNotiData(data);
+                }
+                catch(error){
+                   
+                }
+            }
+            getNotifications();
         });
 
         return()=>{
@@ -124,14 +127,25 @@ function NotificationBoard({imgUrlBase}){
         }));
 
         setReadAll(true);
-        appClient.patch("api/Notification/mark-read-all")
+        
+
+        const sendRequestMarkReadAll = async () =>{
+            try{
+                var response = appClient.patch("api/Notification/mark-read-all")
+            }
+            catch(error){
+
+            }
+        }
+
+        sendRequestMarkReadAll();
     }
 
     const handleMarkRead = (notiId) =>{
         setNotiData(preNotiData =>{
             var newNotiData = preNotiData.map((item,index) =>{
-                if(item.notiId == notiId){
-                    item.isRead = true
+                if(item.NotiStuId == notiId){
+                    item.IsRead = true
                 }
 
                 return item;

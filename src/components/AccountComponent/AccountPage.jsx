@@ -1,8 +1,8 @@
 import React from 'react'
-import './AccountStyle.css'
+import { Outlet, Route, Routes } from 'react-router-dom'
 import LoginPage from '../LoginComponent/LoginPage'
-import { Route, Routes, Outlet} from 'react-router-dom'
 import SignUpPage from '../SignUpComponent/SignUpPage'
+import './AccountStyle.css'
 
 function AccountPage(){
     return <>

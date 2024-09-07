@@ -1,6 +1,7 @@
 import React from 'react'
 import { appClient } from '~/AppConfigs';
 import { APP_URL } from '~/GlobalConstant';
+import toast from '@/helper/Toast';
 
 function NotificationItem({itemInfo, onMarkNoti}){
     const getTimeBefore = (time) =>{
@@ -27,8 +28,15 @@ function NotificationItem({itemInfo, onMarkNoti}){
     }
 
     const handleNotiClick = (e) =>{
-        appClient.patch(`api/Notification/mark-read/${itemInfo.NotiId}`)
-        onMarkNoti(itemInfo.NotiId);
+        try{
+            appClient.patch(`api/Notification/mark-read/${itemInfo.NotiStuId}`)
+        }
+        catch(error){
+           
+        }
+
+
+        onMarkNoti(itemInfo.NotiStuId);
 
         e.preventDefault();
     }

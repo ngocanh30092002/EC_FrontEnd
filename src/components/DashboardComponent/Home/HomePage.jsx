@@ -5,7 +5,7 @@ import RecommendCourses from './RecommendCourses';
 import { appClient } from '~/AppConfigs';
 
 function HomePage() {
-    const imgUrlBase = 'src/assets/imgs/';
+    const imgUrlBase = '/src/assets/imgs/';
     const infoItems = [
         {
             number: 24,

@@ -21,7 +21,7 @@ function CourseItem(){
     return (
         <div className='rc__item-wrapper'>
             <div className='rc__item-img'>
-                <img src='src/assets/imgs/user_image.jpg' alt='image-course' />
+                <img src='/src/assets/imgs/user_image.jpg' alt='image-course' />
             </div>
 
             <div className='rc__item-body'>

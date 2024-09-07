@@ -76,8 +76,6 @@ function SignUpForm({ imgBase , onSetSuccess}) {
         e.preventDefault();
         const formData = new FormData(e.target);
 
-        console.log(APP_API);
-
         fetch(APP_API + "Account/Register", {
             method: "POST",
             headers: {

@@ -7,35 +7,40 @@ import './LoginStyle.css'
 
 const LoginPage = () => {
     const imgUrlBase = '../src/assets/imgs/';
+    const [isShow, setShow] = useState(false);
 
     return (
-        <div className='login-wrapper flex'>
-            <div className='flex-1 p-3'>
-                <div className='w-4/5 lg:w-2/3 2xl:w-3/5 mx-auto h-full flex flex-col justify-between'>
-                    <div className='login-containter__title text-center text-5xl lg:text-5xl my-[15px] lg:my-1 2xl:text-6xl 2xl:my-[40px] py-[20px]'>Welcome Back</div>
-                    <div className='flex-1'>
-                        <LoginGoogleButton imageUrl={imgUrlBase + "googleLogo.svg"} description={"Log in with Google"} redirectUri={"https://localhost:5173/manage"} />
+        <>
+            <div className='login-wrapper flex'>
+                <div className='flex-1 p-3'>
+                    <div className='w-4/5 lg:w-2/3 2xl:w-3/5 mx-auto h-full flex flex-col justify-between'>
+                        <div className='login-containter__title text-center text-5xl lg:text-5xl my-[15px] lg:my-1 2xl:text-6xl 2xl:my-[40px] py-[20px]'>Welcome Back</div>
+                        <div className='flex-1'>
+                            <LoginGoogleButton imageUrl={imgUrlBase + "googleLogo.svg"} description={"Log in with Google"} redirectUri={"https://localhost:5173/manage"} />
 
-                        <div className='login-container__seperate seperate-title mt-[20px] 2xl:mt-[40px] 2xl:mb-[20px]'>
-                            OR LOGIN WITH ACCOUNT
+                            <div className='login-container__seperate seperate-title mt-[20px] 2xl:mt-[40px] 2xl:mb-[20px]'>
+                                OR LOGIN WITH ACCOUNT
+                            </div>
+
+                            <LoginInfor imgUrlBase={imgUrlBase} onShowForgot = {setShow}/>
+
+                            <hr className='mt-5 hidden lg:block' />
+
+                            <LoginExtention />
                         </div>
-
-                        <LoginInfor imgUrlBase={imgUrlBase} />
-
-                        <hr className='mt-5 hidden lg:block' />
-
-                        <LoginExtention />
                     </div>
                 </div>
+                
+                <div className='flex-1 login-image--wrapper hidden sm:hidden lg:block'>
+                    <div className='lg:w-[550px] lg:-right-4 xl:w-[700px] xl:-right-6 xl:-top-10 2xl:w-[900px] 2xl:-right-10 login-img-beside'>
+                        <img src={imgUrlBase + "loginImage7.png"} alt="login-beside" className="img-beside" />
+                    </div>
+                    <div className='img-beside__background' />
+                </div>
             </div>
 
-            <div className='flex-1 login-image--wrapper hidden sm:hidden lg:block'>
-                <div className='lg:w-[550px] lg:-right-4 xl:w-[700px] xl:-right-6 xl:-top-10 2xl:w-[900px] 2xl:-right-10 login-img-beside'>
-                    <img src={imgUrlBase + "loginImage7.png"} alt="login-beside" className="img-beside" />
-                </div>
-                <div className='img-beside__background' />
-            </div>
-        </div>
+            {isShow && <ForgotPasswordPage imgUrlBase = {imgUrlBase} onBackToLogin= {setShow} />}
+        </>
     )
 }
 
@@ -48,7 +53,7 @@ function LoginExtention() {
     </>
 }
 
-function LoginInfor({ imgUrlBase }) {
+function LoginInfor({ imgUrlBase, onShowForgot }) {
     const [userName, setUserName] = useState();
     const [password, setPassword] = useState();
     const [checked, setChecked] = useState(false);
@@ -118,9 +123,11 @@ function LoginInfor({ imgUrlBase }) {
                     onChange={() => setChecked(!checked)}></input>
                 <label htmlFor="cb-keep-login" className='mt-1'>Keep me logged in</label>
             </div>
-            <a className='underline' href='#'>Forgot password</a>
-        </div>
+            <a className='underline cursor-pointer' onClick={(e) => onShowForgot(true)}>Forgot password</a>
 
+            
+        </div>
+        
         {errorMessage && <div className='error-message'>{errorMessage}</div>}
 
         <button className='w-full login-submit-button mt-[20px]' onClick={submitData}>
@@ -198,4 +205,71 @@ function LoginButton(props) {
     )
 }
 
+function ForgotPasswordPage({imgUrlBase, onBackToLogin}){
+    const [error, setError] = useState(null);
+    const inputRef = useRef(null);
+
+    const handleSubmit = () =>{
+        if(inputRef.current.value === ''){
+            setError("Email is required")
+        }
+        setError(null);
+
+        fetch(APP_API + "Account/Forgot-Password",{
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(inputRef.current.value)
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.success){
+                toast({
+                    type: "success",
+                    duration: 5000,
+                    title: "Success",
+                    message:"Password change successful"
+                })
+
+                setError(null);
+                
+                setTimeout(() => {
+                    onBackToLogin(false);
+                }, 1000);
+            }
+            else{
+                setError(data.message)
+            }
+        })
+        .catch(error =>{
+            toast({
+                type: "error",
+                duration: 5000,
+                title: "Error",
+                message: error.message
+            })
+        });
+    }
+
+    return <>
+        <div className='forgot-password-wrapper'>
+            <div className='fp__wrapper flex flex-col items-center'>
+                <img src={imgUrlBase + "unlock.svg"} alt="" className="w-[100px] mt-[40px]" />
+                <span className='fp__title'>Forgot Password</span>
+                <span className='fp__message'>Enter your email and we'll send you a secret password to login.</span>
+
+                <div className='fp__input--wrapper'>
+                    <input type='text' className='fp__input' placeholder="Enter your email" ref={inputRef}/>
+                    <img src={imgUrlBase + "letter-icon.svg"} alt="" className='w-[30px] fp__image'/>
+                </div>
+
+                <span className='fp__error h-[18px]'>{error}</span>
+
+                <button type='submit' className='fp__btn mt-[10px]' onClick={handleSubmit}>Submit</button>
+                <button type='button' className='fp__btn back-to-login mt-[10px]' onClick={(e) => onBackToLogin(false)}>Back to login</button>
+            </div>
+        </div>
+    </>
+}
 export default LoginPage

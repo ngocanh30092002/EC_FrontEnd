@@ -11,7 +11,7 @@ function ContinueLearning(){
                 <div className='flex'>
                     <div className='hidden md:flex relative mr-[10px] '>
                         <input className='hi__course-header--search md:w-[260px] lg:w-[300px]' type='text' placeholder='Search for courses...'/>
-                        <img src='src/assets/imgs/light-color-search.svg' className='hi__course-header-icon'/>
+                        <img src='/src/assets/imgs/light-color-search.svg' className='hi__course-header-icon'/>
                     </div>
 
                     <button className='hi__course-header--btn'>
@@ -45,7 +45,7 @@ function ContinueLearning(){
 function LearningItem({progress = 20}){
     return (
         <tr className="cursor-pointer">
-            <td className="w-1/2 md:w-1/3 h-[70px]"><LearningInfo  name="Design Accessibility" subName="Advanced" time="4 hours" imgUrl ="src/assets/imgs/user_image.jpg"/></td>
+            <td className="w-1/2 md:w-1/3 h-[70px]"><LearningInfo  name="Design Accessibility" subName="Advanced" time="4 hours" imgUrl ="/src/assets/imgs/user_image.jpg"/></td>
             <td className="w-1/2 md:w-1/3 h-[70px]">
                 <div className='li__study-wrapper flex items-center overflow-hidden'>
                     <div className='li__study-bar'>

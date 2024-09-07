@@ -5,6 +5,16 @@ import path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  esbuild: {
+    loader: 'jsx',
+  },
+  optimizeDeps: {
+    esbuildOptions: {
+      loader: {
+        '.js': 'jsx',
+      },
+    },
+  },
   plugins: [react(), basicSsl()],
   resolve: {
     alias: {

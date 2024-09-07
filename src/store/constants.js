@@ -1,0 +1,1 @@
+export const CHANGE_USER_BACKGROUND = 'change_user_background';
