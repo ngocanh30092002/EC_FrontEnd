@@ -15,7 +15,7 @@ function IsTokenExpired(accessToken){
 
 async function GenerateNewAccessToken(accessToken, refreshToken, isRedirect){
     try{
-        var response = await fetch(APP_API + "Token/renew-token",{
+        var response = await fetch(APP_API + "tokens/renew",{
             method: "POST",
             credentials: "include",
             headers: {
@@ -38,7 +38,7 @@ async function GenerateNewAccessToken(accessToken, refreshToken, isRedirect){
 
 async function VerifyAccessToken(accessToken){
     try{
-        var response = await fetch(APP_API + "Token/verify-token",{
+        var response = await fetch(APP_API + "tokens/verify",{
             method: "POST",
             credentials: "include",
             headers: {

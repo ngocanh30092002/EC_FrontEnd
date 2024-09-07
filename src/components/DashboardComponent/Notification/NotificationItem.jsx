@@ -29,7 +29,7 @@ function NotificationItem({itemInfo, onMarkNoti}){
 
     const handleNotiClick = (e) =>{
         try{
-            appClient.patch(`api/Notification/mark-read/${itemInfo.NotiStuId}`)
+            appClient.patch(`api/Notifications/${itemInfo.NotiStuId}/read`)
         }
         catch(error){
            

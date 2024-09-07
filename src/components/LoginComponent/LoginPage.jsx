@@ -90,7 +90,7 @@ function LoginInfor({ imgUrlBase, onShowForgot }) {
         }
         $.ajax({
             method: 'POST',
-            url: APP_API + "account/login",
+            url: APP_API + "accounts/login",
             contentType: "application/json",
             data: JSON.stringify(data),
             dataType: "json",
@@ -215,7 +215,7 @@ function ForgotPasswordPage({imgUrlBase, onBackToLogin}){
         }
         setError(null);
 
-        fetch(APP_API + "Account/Forgot-Password",{
+        fetch(APP_API + "accounts/renew-password",{
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'

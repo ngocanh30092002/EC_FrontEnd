@@ -34,7 +34,7 @@ function HomePage() {
                 Description: "This is a test notification.",
                 Image: "/notifications/images/user_image.jpg",
             };
-           var response = await appClient.post("api/Notification/send-noti?groupName=123", notification)
+           var response = await appClient.post("api/notifications?groupName=123", notification)
         }
 
         sendNoti();

@@ -18,7 +18,7 @@ function Notification({ className }) {
 
     const getUserInfo = useCallback(async () =>{
         try{
-            const response = await appClient.get("api/user/get-user-background-info")
+            const response = await appClient.get("api/users/user-background-info")
             const data = response.data;
 
             if(data.success){

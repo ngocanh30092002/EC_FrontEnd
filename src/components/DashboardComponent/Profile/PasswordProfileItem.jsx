@@ -10,7 +10,7 @@ function PasswordProfileItem() {
         
         const submitForm = async() =>{
             try{
-                const response = await appClient.post("api/user/change-password", formData);
+                const response = await appClient.post("api/user/password", formData);
                 const data = response.data;
 
                 if(data.success){

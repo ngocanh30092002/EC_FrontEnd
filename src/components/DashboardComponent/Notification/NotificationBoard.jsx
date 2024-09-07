@@ -17,7 +17,7 @@ function NotificationBoard({imgUrlBase}){
     useLayoutEffect(() => {
         const getNotifications = async () =>{
             try{
-                var response = await appClient.get("api/Notification/get-all-notifications");
+                var response = await appClient.get("api/notifications");
                 var data = response.data;
                 setNotiData(data);
             }
@@ -85,7 +85,7 @@ function NotificationBoard({imgUrlBase}){
         notiConnection.on("ReceiveNotification", () =>{
             const getNotifications = async () =>{
                 try{
-                    var response = await appClient.get("api/Notification/get-all-notifications");
+                    var response = await appClient.get("api/notifications");
                     var data = response.data;
                     setNotiData(data);
                 }
@@ -131,7 +131,7 @@ function NotificationBoard({imgUrlBase}){
 
         const sendRequestMarkReadAll = async () =>{
             try{
-                var response = appClient.patch("api/Notification/mark-read-all")
+                var response = appClient.patch("api/notifications/read-all")
             }
             catch(error){
 
