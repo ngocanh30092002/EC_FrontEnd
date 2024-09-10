@@ -5,7 +5,7 @@ function ContinueLearning(){
     return (
         <div className='home-info__courses p-[15px]'>
             <div className="hi__course-header flex justify-between items-center">
-                <div className="hi__course-header--title text-[15px]">
+                <div className="hi__course-header--title text-[17px]">
                     Continue Learning
                 </div>
                 <div className='flex'>

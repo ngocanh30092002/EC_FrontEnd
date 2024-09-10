@@ -61,9 +61,13 @@ function LoginInfor({ onShowForgot }) {
 
 
     const submitData = () => {
+        console.log(userName);
+        console.log(password);
+        
         if (!userName || !password) {
             return;
         }
+
 
         const data = {
             username: userName,
@@ -178,7 +182,7 @@ function LoginButton(props) {
     }
 
     const handleKeyDown = (e) =>{
-        if(e.key == "Enter"){
+        if(e.key === "Enter"){
             props?.onEnterKeyDown();
         }
     }
@@ -195,6 +199,7 @@ function LoginButton(props) {
                     onFocus={handleFocusEvent}
                     autoComplete = "off"
                     onKeyDown={(e) => handleKeyDown(e)}
+                    onChange={(e) => props?.handleSetData?.(e.target.value)}
                     />
                 <div className={`login-button__label ${isFocus ? 'lable-transform' : ""}`}>{props.placeholder}</div>
 

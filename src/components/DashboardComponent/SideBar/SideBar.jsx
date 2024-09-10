@@ -64,7 +64,7 @@ function SideBarTitle({isExpand, onSetExpand}) {
 
     return (
         <div className="side-bar__title">
-            <span className={`sb__title-slogan w-0 text-[22px] md:text-[16px] lg:text-[18px] ${isExpand ? "w-[200px] md:w-[130px] lg:w-[150px]" : "md:w-0 md:mr-0"}`}>E-Center</span>
+            <span className={`sb__title-slogan w-0 text-[22px] md:text-[16px] lg:text-[18px] ${isExpand ? "w-[200px] md:w-[130px] lg:w-[150px]" : "md:w-0 md:mr-0"}`}>LinguaVibe </span>
             <button className='side-bar__btn' onClick={handleCloseSideBarClick}>
                 <img src={IMG_URL_BASE + "previous.svg"} alt="" className='hidden md:block md:w-[20px]' ref={imgRef} />
                 <img src={IMG_URL_BASE + "close.svg"} alt="" className='w-[20px] block md:hidden' ref={imgMobileRef}/>

@@ -42,7 +42,7 @@ function CalendarEvent() {
         catch (error) {
 
         }
-    })
+    }, [])
 
     const getNotiInWeek = useCallback(async (startTime, endTime) =>{
         try {
@@ -56,7 +56,7 @@ function CalendarEvent() {
         catch (error) {
 
         }
-    })
+    }, [])
 
     useEffect(() => {
         getScheduleEventsWithDate(currentDay.toISOString().split('T')[0]);

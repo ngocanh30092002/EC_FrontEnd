@@ -27,6 +27,13 @@
     border: solid 1px var(--border-color);
     padding: 10px;
     border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.rc__item-wrapper:hover{
+    background-color: #f6f6f6;
+    transform: scale(1.01);
 }
 
 .rc__item-img{
@@ -91,7 +98,7 @@
     height: 6px;
     background-color: var(--text-light-color);
     border-radius: 50%;
-    right: -25%;
+    right: -10px;
     top: 50%;
     transform: translate(0, -50%);
 }
