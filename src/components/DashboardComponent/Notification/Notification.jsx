@@ -6,11 +6,12 @@ import { appClient } from '~/AppConfigs';
 import { homeComponents, settingComponents, studyComponents } from '../SideBarInfo';
 import NotificationBoard from './NotificationBoard';
 import "./NotificationStyle.css";
+import { APP_URL, IMG_URL_BASE } from '~/GlobalConstant';
 
 function Notification({ className }) {
     const [isShowSearchInput, setShowInput] = useState(false);
     const [pageTitle, setPageTitle] = useState();
-    const imgUrlBase = "../../src/assets/imgs/"
+    const unknownUserImage = IMG_URL_BASE + "unknown_user.jpg";
     const location = useLocation();
 
     const [userInfo, setUserInfo] = useState();
@@ -68,12 +69,12 @@ function Notification({ className }) {
             <div className='h-[70px] flex justify-end items-center overflow-visible flex-1 bg-white'>
                 {isShowSearchInput && <input type='text' className='noti__search-input w-[150px] md:w-[200px]' />}
                 <div className='noti__item' onClick={() => setShowInput(!isShowSearchInput)}>
-                    <img src={imgUrlBase + "search_icon.svg"} alt="" className="w-[24px] noti__item--img" />
+                    <img src={IMG_URL_BASE + "search_icon.svg"} alt="" className="w-[24px] noti__item--img" />
                 </div>
 
-                <NotificationBoard imgUrlBase={imgUrlBase} />
+                <NotificationBoard />
                 <a className='noti__user-infor-wrapper' href='#'>
-                    <img src={imgUrlBase + "user_image.jpg"} alt="user image" className="user-infor__img" />
+                    <img src={userInfo?.image ? APP_URL + userInfo.image : unknownUserImage} alt="user image" className="user-infor__img" />
                     <div className="user-infor__body">
                         <div className="user-infor__name" title={userInfo?.userName ?? "User Name"}>
                             {userInfo?.userName ?? "User Name"}

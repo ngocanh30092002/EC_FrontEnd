@@ -24,9 +24,9 @@ function ContinueLearning(){
                 <table className='hi__course-table'>
                     <thead className='ct_header'>
                         <tr className='ct_row header'>
-                            <th className='w-1/2 md:w-1/3'>Course Name</th>
-                            <th className='w-1/2 md:w-1/3'>Progress</th>
-                            <th className='hidden md:block md:w-1/3'>Status</th>
+                            <th className='w-1/2 md:w-5/12 lg:w-1/3'>Course Name</th>
+                            <th className='w-1/2 md:w-4/12 lg:w-1/3'>Progress</th>
+                            <th className='hidden md:block md:w-3/12 lg:w-1/3'>Status</th>
                         </tr>
                     </thead>
 
@@ -45,8 +45,8 @@ function ContinueLearning(){
 function LearningItem({progress = 20}){
     return (
         <tr className="cursor-pointer">
-            <td className="w-1/2 md:w-1/3 h-[70px]"><LearningInfo  name="Design Accessibility" subName="Advanced" time="4 hours" imgUrl ="/src/assets/imgs/user_image.jpg"/></td>
-            <td className="w-1/2 md:w-1/3 h-[70px]">
+            <td className="w-1/2 md:w-5/12 lg:w-1/3 h-[70px]"><LearningInfo  name="Design Accessibility" subName="Advanced" time="4 hours" imgUrl ="/src/assets/imgs/user_image.jpg"/></td>
+            <td className="w-1/2 md:w-4/12 lg:w-1/3 h-[70px]">
                 <div className='li__study-wrapper flex items-center overflow-hidden'>
                     <div className='li__study-bar'>
                         <div className='li__study-bar-current' style={{width: progress + "%"}}/>
@@ -57,7 +57,7 @@ function LearningItem({progress = 20}){
                     </div>
                 </div>
             </td>
-            <td className="hidden md:block md:w-1/3 h-[70px]">
+            <td className="hidden md:block md:w-3/12 lg:w-1/3 h-[70px]">
                 <LearningStatus statusCode={1}/>
             </td>
         </tr>
@@ -114,7 +114,7 @@ function LearningStatus({statusCode}){
                 <span className='li__status-text'>{currentStatus.name}</span>
             </div>
 
-            <div className='li__status-next-icon '>
+            <div className='li__status-next-icon md:hidden lg:block'>
                 <i className="fa-solid fa-chevron-right"></i>
             </div>
         </div>

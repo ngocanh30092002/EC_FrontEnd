@@ -1,12 +1,11 @@
 import React, { useState , useRef} from 'react'
 import { useNavigate } from 'react-router-dom'
-import { CLIENT_URL , APP_API} from '~/GlobalConstant'
+import { CLIENT_URL , APP_API, IMG_URL_BASE} from '~/GlobalConstant'
 import LoginGoogleButton from './LoginGoogle'
 import toast from '@/helper/Toast'
 import './LoginStyle.css'
 
 const LoginPage = () => {
-    const imgUrlBase = '../src/assets/imgs/';
     const [isShow, setShow] = useState(false);
 
     return (
@@ -16,13 +15,13 @@ const LoginPage = () => {
                     <div className='w-4/5 lg:w-2/3 2xl:w-3/5 mx-auto h-full flex flex-col justify-between'>
                         <div className='login-containter__title text-center text-5xl lg:text-5xl my-[15px] lg:my-1 2xl:text-6xl 2xl:my-[40px] py-[20px]'>Welcome Back</div>
                         <div className='flex-1'>
-                            <LoginGoogleButton imageUrl={imgUrlBase + "googleLogo.svg"} description={"Log in with Google"} redirectUri={"https://localhost:5173/manage"} />
+                            <LoginGoogleButton imageUrl={IMG_URL_BASE + "googleLogo.svg"} description={"Log in with Google"} redirectUri={"https://localhost:5173/manage"} />
 
                             <div className='login-container__seperate seperate-title mt-[20px] 2xl:mt-[40px] 2xl:mb-[20px]'>
                                 OR LOGIN WITH ACCOUNT
                             </div>
 
-                            <LoginInfor imgUrlBase={imgUrlBase} onShowForgot = {setShow}/>
+                            <LoginInfor onShowForgot = {setShow}/>
 
                             <hr className='mt-5 hidden lg:block' />
 
@@ -33,13 +32,13 @@ const LoginPage = () => {
                 
                 <div className='flex-1 login-image--wrapper hidden sm:hidden lg:block'>
                     <div className='lg:w-[550px] lg:-right-4 xl:w-[700px] xl:-right-6 xl:-top-10 2xl:w-[900px] 2xl:-right-10 login-img-beside'>
-                        <img src={imgUrlBase + "loginImage7.png"} alt="login-beside" className="img-beside" />
+                        <img src={IMG_URL_BASE + "loginImage7.png"} alt="login-beside" className="img-beside" />
                     </div>
                     <div className='img-beside__background' />
                 </div>
             </div>
 
-            {isShow && <ForgotPasswordPage imgUrlBase = {imgUrlBase} onBackToLogin= {setShow} />}
+            {isShow && <ForgotPasswordPage onBackToLogin= {setShow} />}
         </>
     )
 }
@@ -53,7 +52,7 @@ function LoginExtention() {
     </>
 }
 
-function LoginInfor({ imgUrlBase, onShowForgot }) {
+function LoginInfor({ onShowForgot }) {
     const [userName, setUserName] = useState();
     const [password, setPassword] = useState();
     const [checked, setChecked] = useState(false);
@@ -133,7 +132,7 @@ function LoginInfor({ imgUrlBase, onShowForgot }) {
         <button className='w-full login-submit-button mt-[20px]' onClick={submitData}>
             <div className='flex items-center px-4'>
                 <span className='flex-1'>Log in</span>
-                <img src={imgUrlBase + "rightArrow.svg"} className='w-[20px] login-submit__icon' alt='arrow' />
+                <img src={IMG_URL_BASE + "rightArrow.svg"} className='w-[20px] login-submit__icon' alt='arrow' />
             </div>
         </button>
     </>
@@ -205,7 +204,7 @@ function LoginButton(props) {
     )
 }
 
-function ForgotPasswordPage({imgUrlBase, onBackToLogin}){
+function ForgotPasswordPage({onBackToLogin}){
     const [error, setError] = useState(null);
     const inputRef = useRef(null);
 
@@ -255,13 +254,13 @@ function ForgotPasswordPage({imgUrlBase, onBackToLogin}){
     return <>
         <div className='forgot-password-wrapper'>
             <div className='fp__wrapper flex flex-col items-center'>
-                <img src={imgUrlBase + "unlock.svg"} alt="" className="w-[100px] mt-[40px]" />
+                <img src={IMG_URL_BASE + "unlock.svg"} alt="" className="w-[100px] mt-[40px]" />
                 <span className='fp__title'>Forgot Password</span>
                 <span className='fp__message'>Enter your email and we'll send you a secret password to login.</span>
 
                 <div className='fp__input--wrapper'>
                     <input type='text' className='fp__input' placeholder="Enter your email" ref={inputRef}/>
-                    <img src={imgUrlBase + "letter-icon.svg"} alt="" className='w-[30px] fp__image'/>
+                    <img src={IMG_URL_BASE + "letter-icon.svg"} alt="" className='w-[30px] fp__image'/>
                 </div>
 
                 <span className='fp__error h-[18px]'>{error}</span>

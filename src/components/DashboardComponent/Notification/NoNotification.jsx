@@ -1,11 +1,10 @@
 import React from 'react'
+import { IMG_URL_BASE } from '~/GlobalConstant';
 
 function NoNotification() {
-    const imgUrlBase = '../../src/assets/imgs/';
-
     return (
         <div className='flex flex-col justify-center items-center h-full'>
-            <img src={imgUrlBase + "no_notifications.svg"} alt="no-notifications" className='w-[100px]'/>
+            <img src={IMG_URL_BASE + "no_notifications.svg"} alt="no-notifications" className='w-[100px]'/>
             <span>No notifications</span>
         </div>
 

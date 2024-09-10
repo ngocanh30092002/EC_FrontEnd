@@ -1,7 +1,7 @@
 import { CHANGE_USER_BACKGROUND } from "./constants";
 
 const initState = {
-    isReloadUserBackground: false
+    isReloadUserBackground: false,
 };
 
 function reducer(state, action){

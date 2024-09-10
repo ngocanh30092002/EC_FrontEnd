@@ -63,14 +63,6 @@ function EditBackgroundItem() {
                         dispatch(actions.changeUserBackground(false));
                     }, 1000);
                 }
-                else{
-                    toast({
-                        type: "error",
-                        title: "Error",
-                        duration: 5000,
-                        message: data.message
-                    })
-                }
             }
             catch(error){
                

@@ -3,10 +3,10 @@ import CustomButton from "../ButtonComponent/CustomButton"
 import { APP_API, CLIENT_URL } from "~/GlobalConstant"
 import { useState } from "react";
 import toast from "@/helper/Toast";
+import { IMG_URL_BASE } from "~/GlobalConstant";
 
 function SignUpPage() {
     const [isSuccess , setSuccess] = useState(false); 
-    const imgUrlBase = "../src/assets/imgs/";
 
     const handleBackToLogin = () => {
         window.location.href = CLIENT_URL + "account/login";
@@ -21,27 +21,27 @@ function SignUpPage() {
                             <span className="sign-up-sub-slogan lg:translate-x-[-70%] xl:translate-x-[-90%] 2xl:translate-x-[-100%] 2xl:top-[60px] 2xl:text-3xl">Sign up to begin</span>
                         </span>
                     </div>
-                    <img src={imgUrlBase + "signupImage.svg"} alt="login-beside" className="hidden absolute lg:block  lg:w-[600px] lg:bottom-[10%] lg:left-[-7%] xl:w-[700px] xl:top-[15%] xl:left-[-6%] 2xl:w-[950px] 2xl:left-[-6%]" />
+                    <img src={IMG_URL_BASE + "signupImage.svg"} alt="login-beside" className="hidden absolute lg:block  lg:w-[600px] lg:bottom-[10%] lg:left-[-7%] xl:w-[700px] xl:top-[15%] xl:left-[-6%] 2xl:w-[950px] 2xl:left-[-6%]" />
                 </div>
                 <div className="w-full lg:w-1/2 px-7 py-4 relative z-10">
                     <span className="sign-up-slogan text-5xl h-[60px]">Join us now</span>
-                    <SignUpForm imgBase={imgUrlBase} onSetSuccess = {setSuccess} />
+                    <SignUpForm  onSetSuccess = {setSuccess} />
 
                     <button className="sign-up-back" onClick={handleBackToLogin} >
                         <div className='flex items-center px-4 relative'>
-                            <img src={imgUrlBase + "left-Arrow.svg"} className='w-[20px] absolute top-0 left-[10px]' alt='arrow' />
+                            <img src={IMG_URL_BASE + "left-Arrow.svg"} className='w-[20px] absolute top-0 left-[10px]' alt='arrow' />
                             <span className='flex-1'>Log in</span>
                         </div>
                     </button>
                 </div>
             </div>
 
-            {isSuccess && <SignUpDialog imgUrlBase ={imgUrlBase}/>}
+            {isSuccess && <SignUpDialog/>}
         </>
     )
 }
 
-function SignUpDialog({imgUrlBase}) {
+function SignUpDialog() {
     const handleClickRedirect = () => {
         window.location.href = CLIENT_URL + "account/login";
     }
@@ -50,7 +50,7 @@ function SignUpDialog({imgUrlBase}) {
         <div className="sign-up__successBox">
             <div className="successBox__wrapper">
                 <div className="successBox__icon">
-                    <img src={imgUrlBase + "check_icon.svg"} alt='check_icon' />
+                    <img src={IMG_URL_BASE + "check_icon.svg"} alt='check_icon' />
                 </div>
                 <div className="successBox__title">Success</div>
 
@@ -62,7 +62,7 @@ function SignUpDialog({imgUrlBase}) {
 
                 <button className="successBox__btn flex" onClick={handleClickRedirect}>
                     <span>Log in</span>
-                    <img src={imgUrlBase + "rightArrow.svg"} alt="right-arrow" className="w-2" /> 
+                    <img src={IMG_URL_BASE + "rightArrow.svg"} alt="right-arrow" className="w-2" /> 
                 </button>
             </div>
         </div>
@@ -70,7 +70,7 @@ function SignUpDialog({imgUrlBase}) {
     )
 }
 
-function SignUpForm({ imgBase , onSetSuccess}) {
+function SignUpForm({ onSetSuccess}) {
     const [errors, setErrors] = useState({})
     const handleSignUpSubmit = (e) => {
         e.preventDefault();
@@ -212,7 +212,7 @@ function SignUpForm({ imgBase , onSetSuccess}) {
             <button type="submit" className="sign-up-btn">
                 <div className='flex items-center px-4 relative'>
                     <span className='flex-1'>Sign up</span>
-                    <img src={imgBase + "rightArrow.svg"} className='w-[20px] absolute top-0 right-[10px]' alt='arrow' />
+                    <img src={IMG_URL_BASE + "rightArrow.svg"} className='w-[20px] absolute top-0 right-[10px]' alt='arrow' />
                 </div>
             </button>
         </form>

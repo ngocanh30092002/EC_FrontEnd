@@ -2,13 +2,13 @@ import { GetCookie } from '@/helper/CookiesHelper';
 import toast from '@/helper/Toast';
 import * as signalR from '@microsoft/signalr';
 import { useEffect, useLayoutEffect, useState } from 'react';
-import { ACCESS_TOKEN, APP_API, REFRESH_TOKEN } from '~/GlobalConstant';
+import { ACCESS_TOKEN, APP_API, REFRESH_TOKEN, IMG_URL_BASE } from '~/GlobalConstant';
 import NoNotification from './NoNotification';
 import NotificationItem from './NotificationItem';
 import TokenHelpers from '@/helper/TokenHelper';
 import { appClient } from '~/AppConfigs';
 
-function NotificationBoard({imgUrlBase}){
+function NotificationBoard(){
     const [isShowBoard, setShowBoard] = useState(false);
     const [isReadAll, setReadAll] = useState(false);
     const [notiData , setNotiData] = useState([])
@@ -165,7 +165,7 @@ function NotificationBoard({imgUrlBase}){
                 ${isReadAll ? "" : "hasNoti" }`} 
                 onClick={(e) => handleShowNotify(e)}>
 
-                <img src={imgUrlBase + "alert_bell1.svg"} alt="" className="w-[24px] noti__item--img"/>
+                <img src={IMG_URL_BASE + "alert_bell1.svg"} alt="" className="w-[24px] noti__item--img"/>
 
                 <div className='noti__list-info flex flex-col w-[455px] md:w-[500px]' onClick={(e) => e.stopPropagation()}>
                     <div className='nli__header flex justify-between items-center overflow-hidden'>

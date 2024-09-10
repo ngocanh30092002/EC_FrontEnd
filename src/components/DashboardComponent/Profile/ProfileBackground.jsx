@@ -1,22 +1,24 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
 import "./ProfileStyle.css"
-import { useStore } from '@/store';
+import { useStore, actions } from '@/store';
 import { appClient } from '~/AppConfigs';
 import toast from '@/helper/Toast';
+import { APP_URL, IMG_URL_BASE} from '~/GlobalConstant.js';
 
 function ProfileBackground({ className }) {
     const userImageRef = useRef(null);
     const backgroundImageRef = useRef(null);
-    const imgUrlBase = '/src/assets/imgs/'
+    const unknownUserImage = IMG_URL_BASE + "unknown_user.jpg";
+    const defaultBackgroundImage = IMG_URL_BASE + "default_bg.jpg"
     const [userBackground , setUserBackground] = useState();
-    const [state] = useStore();
+    const [state, dispatch] = useStore();
     
 
     const getUserBackgroundInfo = useCallback(async () =>{
         try{
             const response = await appClient.get("api/users/user-background-info")
             const data = response.data;
-
+            console.log(data);
             if(data.success){
                 setUserBackground(data.message);
             }
@@ -34,13 +36,17 @@ function ProfileBackground({ className }) {
         }
     }, [])
 
-    const changeImageBackground = useCallback(async (fileData, apiPath) => {
+    const changeImageBackground = useCallback(async (fileData, apiPath, event) => {
         var formData = new FormData();
         formData.append("file", fileData)
-        formData.append("mineType", fileData.type);
 
         try{
-            const response = await appClient.post(apiPath, fileData);
+            const response = await appClient.post(apiPath, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+            });
+
             const data = response.data;
 
             if(data.success){
@@ -50,6 +56,13 @@ function ProfileBackground({ className }) {
                     message: "Uploaded successfully",
                     duration: 5000
                 })
+
+                event.target.value = null;
+                dispatch(actions.changeUserBackground(true))
+
+                setTimeout(() => {
+                    dispatch(actions.changeUserBackground(false));
+                }, 1000);
             }
             
         }
@@ -73,13 +86,17 @@ function ProfileBackground({ className }) {
 
     const handleUserImageChange = (e) =>{
         const fileData = e.target.files[0];
-        const apiPath = ""
+        const apiPath = "api/users/profile-image";
+
+        changeImageBackground(fileData, apiPath, e);
     }
 
     const handleBackgroundChange = (e) =>{
-        console.log(e.target.files);
-    }
+        const fileData = e.target.files[0];
+        const apiPath = "api/users/background-image";
 
+        changeImageBackground(fileData,apiPath, e);
+    }
 
     const handleClickUploadUserImage = () =>{
         userImageRef.current.click();
@@ -91,16 +108,16 @@ function ProfileBackground({ className }) {
     return (
         <div className={`h-[500px] ${className}`}>
             <div className='h-[300px] relative'>
-                <img src={imgUrlBase + "image-background.jpg"} alt='image-background' className='pb__image--bg' />
+                <img src={userBackground?.backgroundImage ? APP_URL + userBackground.backgroundImage : defaultBackgroundImage} alt='image-background' className='pb__image--bg' />
                 <span className='pb__edit--img' onClick={handleClickUploadBackground}>Edit</span>
             </div>
             
             <div className='pbb__line'>
                 <div className="pb__body">
                     <div className="pbb__user">
-                        <img src={imgUrlBase + "user_image.jpg"} alt="user-image" className="pbb__user--img" />
+                        <img src={userBackground?.image ? APP_URL + userBackground.image : unknownUserImage} alt="user-image" className="pbb__user--img" />
                         <img 
-                            src={imgUrlBase + 'camera-icon.svg'} 
+                            src={IMG_URL_BASE + 'camera-icon.svg'} 
                             alt='image-camera' 
                             className='pbb__user--icon'
                             onClick={handleClickUploadUserImage}/>
@@ -116,9 +133,10 @@ function ProfileBackground({ className }) {
                 type='file' 
                 ref ={userImageRef} 
                 className='hidden'
+                name='file'
                 accept="image/*"
                 onChange={handleUserImageChange}/>
-
+               
             <input 
                 type='file' 
                 ref ={backgroundImageRef} 

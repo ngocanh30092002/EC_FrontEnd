@@ -2,6 +2,7 @@ import React, { createContext, useContext, useRef, useState, useEffect } from 'r
 import './SideBarStyle.css';
 import { Link, useLocation } from 'react-router-dom';
 import {homeComponents, studyComponents, settingComponents} from "../SideBarInfo"
+import { IMG_URL_BASE } from '~/GlobalConstant';
 const SideBarContext = createContext();
 
 function SideBar({className}) {
@@ -32,20 +33,19 @@ function SideBar({className}) {
 }
 
 function SideBarTitle({isExpand, onSetExpand}) {
-    const imgUrlBase = "../../src/assets/imgs/";
     const imgRef = useRef(null);
     const imgMobileRef = useRef(null);
     const handleCloseSideBarClick = () =>{
         onSetExpand(!isExpand);
-        imgRef.current.src = isExpand ? imgUrlBase + "next.svg" : imgUrlBase + "previous.svg" ;
-        imgMobileRef.current.src = isExpand ? imgUrlBase + "menu.svg" : imgUrlBase + "close.svg";
+        imgRef.current.src = isExpand ? IMG_URL_BASE + "next.svg" : IMG_URL_BASE + "previous.svg" ;
+        imgMobileRef.current.src = isExpand ? IMG_URL_BASE + "menu.svg" : IMG_URL_BASE + "close.svg";
     }
 
     useEffect(() =>{
         const handleResizeWindow = () =>{
             if(window.innerWidth < 768){
                 onSetExpand(false);
-                imgMobileRef.current.src = imgUrlBase + "menu.svg";
+                imgMobileRef.current.src = IMG_URL_BASE + "menu.svg";
             }
         }
 
@@ -59,22 +59,21 @@ function SideBarTitle({isExpand, onSetExpand}) {
     },[]);
     
     useEffect(() =>{
-        imgRef.current.src = !isExpand ? imgUrlBase + "next.svg" : imgUrlBase + "previous.svg" ;
+        imgRef.current.src = !isExpand ? IMG_URL_BASE + "next.svg" : IMG_URL_BASE + "previous.svg" ;
     }, [isExpand])
 
     return (
         <div className="side-bar__title">
             <span className={`sb__title-slogan w-0 text-[22px] md:text-[16px] lg:text-[18px] ${isExpand ? "w-[200px] md:w-[130px] lg:w-[150px]" : "md:w-0 md:mr-0"}`}>E-Center</span>
             <button className='side-bar__btn' onClick={handleCloseSideBarClick}>
-                <img src={imgUrlBase + "previous.svg"} alt="" className='hidden md:block md:w-[20px]' ref={imgRef} />
-                <img src={imgUrlBase + "close.svg"} alt="" className='w-[20px] block md:hidden' ref={imgMobileRef}/>
+                <img src={IMG_URL_BASE + "previous.svg"} alt="" className='hidden md:block md:w-[20px]' ref={imgRef} />
+                <img src={IMG_URL_BASE + "close.svg"} alt="" className='w-[20px] block md:hidden' ref={imgMobileRef}/>
             </button>
         </div>
     )
 }
 
 function SideBarItem({isExpand, item, onActive, activeIndex}){
-    const imgUrlBase = "../../src/assets/imgs/";
     const location = useLocation();
     useEffect(() =>{
         const pathName = location.pathname;
@@ -89,7 +88,7 @@ function SideBarItem({isExpand, item, onActive, activeIndex}){
     return (
         <li className='overflow-visible'>
             <Link className={`sb-item__wrapper ${isExpand ? "" : "mini"} ${activeIndex == item.id ? "active" : ''}`} to={item.linkToRedirect} onClick={handleClickSideBar}>
-                <img src={imgUrlBase + item.img} alt={'image_' + item.name} className='sb-item__img'/>
+                <img src={IMG_URL_BASE + item.img} alt={'image_' + item.name} className='sb-item__img'/>
                 <span className={`sb-item__text`}>{item.name}</span>
 
                 {!isExpand && <div className='sb-sub__title'>{item.name}</div>}

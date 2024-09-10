@@ -2,47 +2,47 @@ import React from 'react'
 import "./HomeStyle.css"
 import ContinueLearning from './ContinueLearning';
 import RecommendCourses from './RecommendCourses';
-import { appClient } from '~/AppConfigs';
+import { IMG_URL_BASE } from '~/GlobalConstant';
+import CalendarEvent from './CalendarEvent';
 
 function HomePage() {
-    const imgUrlBase = '/src/assets/imgs/';
     const infoItems = [
         {
             number: 24,
             title: 'Enrolled Courses',
-            imgUrl: imgUrlBase + "enrolled_icon.svg",
+            imgUrl: IMG_URL_BASE + "enrolled_icon.svg",
             bgColor: "bg-green-400"
         }
         ,{
             number: 24,
             title: 'Completed Homework',
-            imgUrl: imgUrlBase + "hw_icon.svg",
+            imgUrl: IMG_URL_BASE + "hw_icon.svg",
             bgColor: "bg-violet-400"
         },
         {
             number: 24,
             title: 'Toeics Completed',
-            imgUrl: imgUrlBase + "test_icon.svg",
+            imgUrl: IMG_URL_BASE + "test_icon.svg",
             bgColor: "bg-rose-400"
         }
     ]
 
-    const handleSendNoti = () => {
-        const sendNoti = async () => {
-            const notification = {
-                Title: "New Notification",
-                Description: "This is a test notification.",
-                Image: "/notifications/images/user_image.jpg",
-            };
-           var response = await appClient.post("api/notifications?groupName=123", notification)
-        }
+    // const handleSendNoti = () => {
+    //     const sendNoti = async () => {
+    //         const notification = {
+    //             Title: "New Notification",
+    //             Description: "This is a test notification.",
+    //             Image: "/notifications/images/user_image.jpg",
+    //         };
+    //        var response = await appClient.post("api/notifications?groupName=123", notification)
+    //     }
 
-        sendNoti();
-    }
+    //     sendNoti();
+    // }
 
     return (
         <div className="grid grid-cols-12 gap-[15px] mx-[20px]">
-            <div className="col-span-12 lg:col-span-9 grid grid-cols-12 gap-[15px]">
+            <div className="col-span-12 lg:col-span-8 grid grid-cols-12 gap-[15px]">
                 {infoItems.map((item,index) =>{
                     return (
                     <div className="col-span-12 md:col-span-4" key={index}>
@@ -58,8 +58,8 @@ function HomePage() {
                     <ContinueLearning/>
                 </div>
             </div>
-            <div className="col-span-12 lg:col-span-3 bg-slate-400">
-                <button onClick={handleSendNoti}>Send Notification</button>
+            <div className="col-span-12 lg:col-span-4">
+                <CalendarEvent/>
             </div>
 
             <div className='col-span-12'>
