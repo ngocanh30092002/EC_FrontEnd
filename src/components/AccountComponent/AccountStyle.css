@@ -1,0 +1,7 @@
+.account-background-light {
+    background-color: #c8c8d0;
+}
+
+.account-background-bold {
+    background-color: var(--dark-background-color);
+}

@@ -1,1 +1,0 @@
-export const appApi = process.env.NODE_ENV === 'production' ? "" : "http://localhost:5056/api/";

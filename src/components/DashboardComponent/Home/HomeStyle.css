@@ -1,0 +1,56 @@
+.home-info__item{
+    padding: 15px;
+    border-radius: 8px;
+    border: solid 1px var(--border-color);
+}
+
+.home-info__courses{
+    border-radius: 8px;
+    border:solid 1px var(--border-color);
+}
+
+.hi__item-img{
+    padding: 10px;
+    border-radius: 8px;
+    margin-right: 10px;
+}
+
+.hi__item-body{
+    display: flex;
+    flex-direction: column;
+}
+
+.hi__item-number{
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.hi__item-title{
+    font-size: 13px;
+    color: var(--text-light-color);
+}
+
+.hi__item-sub{
+    margin-top: 5px;
+    padding-top: 10px;
+    border-top: dashed 1px #cccccc; 
+    cursor: pointer;
+}
+
+.hi__sub-des{
+    font-size: 13px;
+    color: var(--text-light-color);
+}
+
+
+.hi__sub-img{
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.hi__sub-img i{
+    font-size: 16px;
+    color: var(--text-light-color);
+}

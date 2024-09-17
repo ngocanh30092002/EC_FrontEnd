@@ -1,0 +1,230 @@
+.noti__item{
+    display: flex;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 6px;
+    margin-left: 5px;
+    position: relative;
+    overflow: visible;
+}
+
+.noti__item:hover .noti__item--img{
+    color: var(--text-hover-color);
+    filter: invert(43%) sepia(91%) saturate(454%) hue-rotate(175deg) brightness(101%) contrast(99%);
+}
+
+
+
+.noti__search-input{
+    outline: none;
+    border: solid 1px var(--border-color);
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    width: 200px;
+    color: var(--text-light-color);
+    animation:  slideIn 0.2s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(10%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.noti__item:hover{
+    background-color: var(--background-hover-color);
+}
+
+.noti__item.last::before{
+    position: absolute;
+    content: "";
+    width: 0.5px;
+    height: 60%;
+    background-color: var(--border-color);
+    z-index: 1;
+    position: absolute;
+    top: 50%;
+    right: -20%;
+    transform: translate(-50%, -50%);
+}
+
+.noti__item.last{
+    margin-right: 10px;
+}
+
+.noti__item.hasNoti::after{
+    position: absolute;
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: red;
+    top: 35%;
+    right: 35%;
+    transform: translate(50%, -50%);
+}
+
+.noti__user-infor-wrapper{
+    margin-left: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-infor__img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.user-infor__body{
+    width: 100px;
+    padding-left: 10px;
+    cursor: pointer;
+}
+
+.user-infor__name{
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.user-infor__role{
+    color: var(--text-light-color);
+    font-size: 12px;
+}
+
+
+.noti__welcome{
+    font-size: 25px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    font-family: "Inter Tight", sans-serif;
+}
+
+.noti__list-info{
+    position: absolute;
+    z-index: 20;
+    height: 450px;
+    top: 100%;
+    right: 50%;
+    transform: translate(38%, -20px);
+    margin-top: 5px;
+    border-radius: 8px;
+    box-shadow: 3px 4px 13px rgb(0 0 0 / 20%);
+    background-color: var(--white-color);
+    transition: all 0.5s ease;
+    opacity: 0;
+    visibility: hidden;
+}
+
+
+.noti__item.active{
+    background-color: var(--background-hover-color);
+}
+
+.noti__item.active .noti__list-info{
+    opacity: 1;
+    transform: translate(38%, 0px);
+    visibility: visible;
+}
+
+.noti__item.active .noti__item--img{
+    color: var(--text-hover-color);
+    filter: invert(43%) sepia(91%) saturate(454%) hue-rotate(175deg) brightness(101%) contrast(99%);
+}
+
+.noti__list-info{
+    padding: 15px;
+}
+
+.nli__header--title{
+    font-size: 17px;
+    font-weight: 600;
+    font-family: "Inter Tight", sans-serif;
+}
+
+.nli__header--mark{
+    font-size: 13px;
+    color: var(--text-primary-color);
+    padding: 5px 10px;
+    border-radius: 8px;
+}
+
+.nli__header--mark:hover{
+    color: var(--primary-color);
+    background-color: var(--background-hover-color);
+}
+
+.nli__header{
+    border-bottom: dashed 1px var(--border-color);
+    padding-bottom: 5px;
+}
+
+
+.noti-item__header{
+    width: 50px; 
+    -o-object-fit: cover;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 10px;
+}
+
+.noti-item__body{
+    display: flex;  
+    flex:1;
+    flex-direction: column;
+}
+
+.noti-item__body--title{
+    font-size: 13px;
+    font-weight: 600;
+    font-family: "Inter Tight", sans-serif;
+    padding-left: 10px;
+}
+
+.noti-item__body--des{
+    font-size: 13px;
+    font-family: "Inter Tight", sans-serif;
+    color: var(--text-color);
+    padding-left: 10px;
+    line-height: 18px;
+}
+
+.noti-item__body--time{
+    font-size: 12px;
+    color: var(--text-light-color);
+    font-family: "Inter Tight", sans-serif;
+    padding-left: 10px;
+}
+
+.nli__item{
+    padding: 5px 10px;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.nli__item:hover{
+    background-color: var(--background-hover-color);
+}
+
+.noti-item__unread{
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+}
+

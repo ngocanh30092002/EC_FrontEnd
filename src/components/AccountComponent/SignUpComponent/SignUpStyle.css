@@ -1,0 +1,103 @@
+.sign-up-wrapper{
+    position: absolute;
+    z-index: 1;
+    background-color: var(--white-color);
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    width: 90%;
+    height: 90%;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.gender-wrapper{
+    border: solid 1px var(--border-color);
+    border-radius: 4px;
+    height: 40px;
+    position: relative;
+    overflow: visible;
+}
+
+.gender-title{
+    position: absolute;
+    transform: translate(3px, -10px) scale(0.9);
+    z-index: 1;
+    outline: none;
+    padding: 0 10px;
+    background-color: var(--white-color);
+}
+
+.sign-up-btn{
+    width: 100%;
+    border-radius: 4px;
+    height: 40px;
+    color: var(--white-color);
+    background-color: var(--primary-color);
+    margin-top: 8px;
+}
+
+.sign-up-btn:hover {
+    opacity: 0.9;
+}
+
+.sign-up-slogan{
+    font-weight: 600;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    font-family: 'Nunito', sans-serif;
+}
+
+.sign-up-back{
+    margin-top: 10px;
+    width: 100%;
+    border-radius: 4px;
+    height: 40px;
+    color: var(--primary-color);
+    background-color: whitesmoke;
+}
+
+.sign-up-back:hover{
+    background-color: #c6c7ff;
+    transition: all 0.2s ease;
+}
+
+.sign-up-background{
+    background-color: #5154ff;
+    border-radius: 20px;
+    height: 100%;
+    
+}
+
+.sign-up-background > img {
+    object-fit: cover;
+    z-index: 1;
+}
+
+.sign-up-slogan-img{
+    position: relative;
+    color: var(--white-color);
+    font-size: 25px;
+    display: flex;
+    margin-top: 40px;
+    justify-content: center;
+    letter-spacing: 0.3px;
+    font-style: italic;
+    font-family:  'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    overflow: visible;
+}
+
+.sign-up-sub-slogan{
+    position: absolute;
+    top: 35px;
+    right: 0;
+    font-size: 20px;
+    font-style: italic;
+    letter-spacing: 0.3px;
+    font-family:  'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.sign-up-error{
+    font-size: 12px;
+}

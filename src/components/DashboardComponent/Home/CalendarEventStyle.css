@@ -1,0 +1,195 @@
+.calendar-event__wrapper{
+    border-radius: 8px;
+    border: solid 1px var(--border-color);
+    height: 100%;
+    padding: 15px;
+}
+
+.ce__title{
+    font-size: 15px;
+    color: var(--text-color);
+    font-family: "Inter Tight", sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+}
+
+
+.ce__btn-arrow{
+    padding: 4px;
+    border: solid 1px var(--border-color);
+    border-radius: 8px;
+    outline: none;
+}
+
+.ce__btn-arrow.un-active{
+    cursor: default;
+    opacity: 0.5;
+}
+
+.ce__btn-arrow img{
+    width: 15px;
+}
+
+.ce__btn-arrow:hover(){
+    opacity: 0.8;
+}
+
+.ce__btn-arrow.un-active:hover{
+    opacity: 0.5;
+}
+
+
+.ce__weekday-item{
+    flex: 1;
+    text-align: center;
+    padding: 10px 5px;
+    font-family: "Inter Tight", sans-serif;
+    font-size: 13px;
+    color: var(--text-light-color);
+}
+
+.ce__dayofweek-item{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ce__dayofweek-item--text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-family: "Inter Tight", sans-serif;
+    color: var(--text-light-color);
+    font-size: 15px;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: visible;
+}
+
+.ce__dayofweek-item--text.noti::after{
+    display: block;
+}
+
+.ce__dayofweek-item--text::after{
+    display: none;
+    position: absolute;
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: red;
+    top: 0;
+    right: 0;
+}
+
+.ce__dayofweek-item--text:hover{
+    background-color: var(--light-blue-color);
+    color: var(--text-color);
+}
+
+.ce__dayofweek-item--text.active{
+    background-color: var(--primary-color);
+    color: var(--white-color);
+}
+
+.ae__seperate{
+    flex: 1;
+    height: 0.5px;
+    border-top: dashed 1px #cccccc;
+}
+
+.ae__wrapper{
+    display: flex;
+    align-items: center;
+    background-color: #ECEDEF;
+    border-radius: 8px;
+    padding: 8px 15px;
+    margin-bottom: 10px;
+    overflow-x: visible;
+}
+
+.ae__icon{
+    padding: 8px;
+    border-radius: 8px;
+    background-color: var(--white-color);
+    min-width: 36px;
+    min-height: 36px;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+}
+
+.ae__icon img{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.2s ease;
+}
+
+.ae__body--range{
+    display: flex;
+    align-items: center;
+}
+
+.ae__body--input{
+    outline: none;
+    font-size: 13px;
+    font-family: "Inter Tight", sans-serif;
+    letter-spacing: 0.4px;
+    padding: 2px 10px;
+    background-color: transparent;
+}
+
+.ae__body--time{
+    display: block;
+    width: 100%;
+}
+
+.ae__body--between{
+    width: 20px;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ae__body--input:focus{
+    color: var(--text-color);
+}
+
+.ae__body--title{
+    font-weight: 600;
+}
+
+.ae__add-event--title{
+    font-size: 13px;
+    color: var(--text-light-color);
+}
+
+.ae__body{
+    margin-left: 4px;
+}
+
+.ae__body--input:read-only{
+    color: var(--text-color);
+}
+
+.ae__options{
+    cursor: pointer;
+    user-select: none;
+}
+
+.ae__options img{
+    position: absolute;
+    top: 0;
+    width: 20px;
+    transition: opacity 0.2s ease;
+}
+
