@@ -6,6 +6,7 @@ import { actions, useStore } from '../../../store';
 
 function EditBackgroundItem() {
     const [userInfo, setUserInfo] = useState(null);
+    const [roles, setRoles] = useState([]);
     const [description, setDescription] = useState();
     const [state, dispatch] = useStore();
 
@@ -31,7 +32,28 @@ function EditBackgroundItem() {
             }
         }
 
+        const getCurrentRoles = async() =>{
+            try{
+                var response = await appClient.get("api/users/roles");
+                var data = response.data;
+                if(!data.success){
+                    toast({
+                        type: "error",
+                        title: "ERROR",
+                        message: error.message,
+                        duration: 5000
+                    })
+                }
+
+                setRoles(data.message);
+            }
+            catch(erorr){
+
+            }
+        }
+
         getUserInfo();
+        getCurrentRoles();
     }, [])
 
 
@@ -91,7 +113,7 @@ function EditBackgroundItem() {
 
                 <div className='flex items-center mt-[10px]'>
                     <span className='input__item--title'>Current Role:</span>
-                    <span className='input__item--hashtag'>Student</span>
+                    {roles.map((item,index) => <span key={index} className='input__item--hashtag'>{item}</span>)}
                 </div>
 
                 <div className='flex justify-end'>

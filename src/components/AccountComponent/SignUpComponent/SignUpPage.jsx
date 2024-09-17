@@ -1,5 +1,5 @@
 import "./SignUpStyle.css"
-import CustomButton from "../ButtonComponent/CustomButton"
+import CustomButton from "@components/ButtonComponent/CustomButton"
 import { APP_API, CLIENT_URL } from "~/GlobalConstant"
 import { useState } from "react";
 import toast from "@/helper/Toast";
@@ -135,6 +135,7 @@ function SignUpForm({ onSetSuccess}) {
                 minLength={5}
                 maxLength={50}
                 errors={errors}
+                isFocus = {true}
                 onClearError={handleClearError}
             />
             <div className="flex">

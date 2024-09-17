@@ -50,7 +50,7 @@ export const studyComponents = [
         name: "Courses",
         component: <CoursesPage/>,
         img: 'hat_icon.svg',
-        link: "/courses",
+        link: "/courses/*",
         linkToRedirect: "/courses",
     },
     {

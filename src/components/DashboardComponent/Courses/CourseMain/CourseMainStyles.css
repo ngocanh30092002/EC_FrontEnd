@@ -1,0 +1,93 @@
+.ci__wrapper{
+    border: solid 1px var(--border-color);
+    padding: 15px 15px 10px 15px;
+    border-radius: 8px;
+}
+
+.ci__content{
+    display: flex;
+}
+
+.ci__img{
+    width: 60px;
+}
+
+.ci__img img{
+    width: 100%;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 8px;
+    object-position: center;
+}
+
+.ci__info{
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    align-content: space-between;
+}
+
+.ci__class-name{
+    font-size: 15px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+}
+
+.ci__class-code{    
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    margin-left: 4px;
+}
+
+.ci__teacher-by{
+    font-size: 15px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+}
+
+.ci__teacher--name{
+    font-size: 14px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 500;
+    margin-left: 5px;
+    color: var(--text-color);
+}
+
+.ci__teacher-name > span{
+    font-weight: 500;
+}
+
+.ci__sub-content{
+    margin-top: 15px;
+    border-top: dashed 1px var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+}
+
+.ci__registered-number{
+    font-size: 13px;
+    font-family: 'Nunito', sans-serif;
+    color: var(--text-light-color);
+}
+
+.ci__start-date,
+.ci__end-date{
+    font-size: 13px;
+    font-family: 'Nunito', sans-serif;
+    color: var(--text-light-color);
+}
+
+.ci__seperate{
+    color: var(--text-light-color)
+}
+
+.cch__title,
+.class-content__title{
+    font-family: "Inter Tight", sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}

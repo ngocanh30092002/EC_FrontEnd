@@ -194,6 +194,6 @@
     background-color: var(--primary-color);
     color: var(--white-color); 
     user-select: none;
-    margin-left: 20px;
+    margin-left: 10px;
     font-size: 13px;
 }

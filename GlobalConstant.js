@@ -8,3 +8,8 @@ export const CLIENT_URL = "https://localhost:5173/"
 export const APP_URL = "https://localhost:44314/"
 export const REDIRECT_HEADER = "Redirect"
 export const IMG_URL_BASE = "/src/assets/imgs/"
+export const ROLES = {
+    ADMIN: "Admin",
+    STUDENT: "Student",
+    TEACHER: "Teacher"
+};

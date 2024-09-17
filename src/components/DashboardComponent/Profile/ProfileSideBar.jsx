@@ -33,7 +33,7 @@ function ProfileSideBarItem({item, setActive, isActive, index}) {
         if(pathName.includes(item.link)){
             setActive(index);
         }
-    }, [])
+    }, [location])
 
     const handleClickSideBar = (e) =>{
         setActive(index);

@@ -45,13 +45,14 @@ function Notification({ className }) {
 
     useEffect(() => {
         const getCurrentPage = () => {
-            let item = homeComponents.find(i => i.link === location.pathname);
+            const pathItem = location.pathname.slice(1).split("/");
+            let item = homeComponents.find(i => pathItem.includes(i.linkToRedirect.slice(1)));
             if (item) return item;
 
-            item = studyComponents.find(i => i.link === location.pathname);
+            item = studyComponents.find(i => pathItem.includes(i.linkToRedirect.slice(1)));
             if (item) return item;
 
-            item = settingComponents.find(i => i.link === location.pathname);
+            item = settingComponents.find(i => pathItem.includes(i.linkToRedirect.slice(1)) );
             return item;
         }
 

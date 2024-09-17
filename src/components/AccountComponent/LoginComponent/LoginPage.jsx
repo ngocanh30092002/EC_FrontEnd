@@ -1,9 +1,11 @@
-import React, { useState , useRef} from 'react'
+import React, { useState , useRef, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom'
 import { CLIENT_URL , APP_API, IMG_URL_BASE} from '~/GlobalConstant'
 import LoginGoogleButton from './LoginGoogle'
 import toast from '@/helper/Toast'
 import './LoginStyle.css'
+import { appClient } from '~/AppConfigs';
+import { ROLES } from '~/GlobalConstant'
 
 const LoginPage = () => {
     const [isShow, setShow] = useState(false);
@@ -61,13 +63,9 @@ function LoginInfor({ onShowForgot }) {
 
 
     const submitData = () => {
-        console.log(userName);
-        console.log(password);
-        
         if (!userName || !password) {
             return;
         }
-
 
         const data = {
             username: userName,
@@ -75,7 +73,28 @@ function LoginInfor({ onShowForgot }) {
         }
 
         const handleLoginSuccess = (response) => {
-            navigate("/")
+            const handleRedirectWithRole = async () =>{
+                try{
+                    var response = await appClient.get("api/users/roles")
+                    var data = response.data;
+
+                    if(data.success){
+                        const roles = data.message;
+
+                        if(roles.includes(ROLES.ADMIN)){
+                            navigate("/admin")
+                        }
+                        else{
+                            navigate("/")
+                        }
+                    }
+                }
+                catch(error){
+
+                }
+            }
+
+            handleRedirectWithRole();
         }
 
         const handleLoginError = (error) =>{
@@ -108,6 +127,7 @@ function LoginInfor({ onShowForgot }) {
             }
         });
     }
+
 
     return <>
         <form>

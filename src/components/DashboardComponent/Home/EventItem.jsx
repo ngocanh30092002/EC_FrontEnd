@@ -30,7 +30,6 @@ function EventItem({ itemInfo , onRemoveEvent}) {
         setEdit(!isEditing);
 
         if(isEditing){
-            console.log("ok");
             handleUpdateEvent();
         }
     }

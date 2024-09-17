@@ -69,6 +69,13 @@ function CustomButton({errors, ...props}) {
             const formattedDate = today.toISOString().split('T')[0]; 
             setValue(formattedDate);
         }
+
+        if(props?.isFocus){
+            setFocus(true);
+            setTimeout(() => {
+                inputRef.current.focus();
+            }, 10);
+        }
     },[])
 
     return (
@@ -85,7 +92,6 @@ function CustomButton({errors, ...props}) {
                     onFocus={(e) => handleFocusEvent(e)}
                     onChange={(e) => handleChangeEvent(e)}
                     autoComplete = "off"
-
                     />
                 <div className={`custom-button__label ${isFocus ? 'lable-transform' : ""}`}>{props?.placeholder ?? ""}</div>
             </div>

@@ -18,7 +18,6 @@ function ProfileBackground({ className }) {
         try{
             const response = await appClient.get("api/users/user-background-info")
             const data = response.data;
-            console.log(data);
             if(data.success){
                 setUserBackground(data.message);
             }

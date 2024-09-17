@@ -1,7 +1,7 @@
 import React from 'react'
 import { Outlet, Route, Routes } from 'react-router-dom'
-import LoginPage from '../LoginComponent/LoginPage'
-import SignUpPage from '../SignUpComponent/SignUpPage'
+import LoginPage from './LoginComponent/LoginPage'
+import SignUpPage from './SignUpComponent/SignUpPage'
 import './AccountStyle.css'
 
 function AccountPage(){

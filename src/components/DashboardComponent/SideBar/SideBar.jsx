@@ -75,12 +75,13 @@ function SideBarTitle({isExpand, onSetExpand}) {
 
 function SideBarItem({isExpand, item, onActive, activeIndex}){
     const location = useLocation();
+
     useEffect(() =>{
         const pathName = location.pathname;
         if(pathName.includes(item.linkToRedirect)){
             onActive(item.id);
         }
-    }, [])
+    }, [location])
 
     const handleClickSideBar = () =>{
         onActive(item.id);

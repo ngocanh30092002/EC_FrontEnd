@@ -115,8 +115,6 @@ function CalendarEvent() {
     }
 
     const handleSelectedDate = (e) => {
-        console.log(e.target.innerHTML)
-
         setCurrentDay(prev => {
             const nextDate = new Date(prev);
             nextDate.setDate(e.target.innerHTML);
