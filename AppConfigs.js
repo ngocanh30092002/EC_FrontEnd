@@ -1,8 +1,22 @@
-import axios from 'axios';
-import { ACCESS_TOKEN, PROVIDER, APP_API, REFRESH_TOKEN, CLIENT_URL, REDIRECT_HEADER } from './GlobalConstant';
-import {GetCookie} from './src/helper/CookiesHelper';
-import TokenHelpers from './src/helper/TokenHelper';
 import toast from '@/helper/Toast';
+import axios from 'axios';
+import { ACCESS_TOKEN, REFRESH_TOKEN } from '~/GlobalConstant';
+import TokenHelpers from './src/helper/TokenHelper';
+
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error, token = null) => {
+    failedQueue.forEach(prom => {
+        if (error) {
+            prom.reject(error);
+        } else {
+            prom.resolve(token);
+        }
+    });
+
+    failedQueue = [];
+};
 
 export const appClient = axios.create({
     baseURL: "https://localhost:44314/",
@@ -10,17 +24,15 @@ export const appClient = axios.create({
 });
 
 appClient.interceptors.request.use(
-    async function (request){
-        var accessToken = GetCookie(ACCESS_TOKEN);
-        var refreshToken = GetCookie(REFRESH_TOKEN);
-        var isRedirect = request.headers[REDIRECT_HEADER] ?? true;
-        if(TokenHelpers.IsExpired(accessToken,refreshToken)){
-            await TokenHelpers.Renew(accessToken, refreshToken, JSON.parse(isRedirect));
+    function (request){
+        const token = sessionStorage.getItem(ACCESS_TOKEN);
+        if(token){
+            request.headers['Authorization'] = `Bearer ${token}`;
         }
 
         return request;
     },
-    function (error){
+    function (error){   
         return Promise.reject(error);
     }
 )
@@ -29,7 +41,47 @@ appClient.interceptors.response.use(
     function (response){
         return response
     },
-    function (error) {
+    async function (error) {
+        var statusCode = error.response.status;
+        const originalRequest = error.config;
+
+        if(statusCode === 401 && !originalRequest._retry){
+            if(isRefreshing){
+                return new Promise(function(resolve, reject) {
+                    failedQueue.push({resolve, reject});
+                })
+                .then(token => {
+                    originalRequest.headers["Authorization"] = "Bearer " + token;
+                    return appClient(originalRequest);
+                })
+                .catch(err => {
+                    return Promise.reject(err);
+                });
+            }
+
+            originalRequest._retry = true;
+            isRefreshing = true;
+
+            try{
+                const accessToken = sessionStorage.getItem(ACCESS_TOKEN);
+                const IsExpired = TokenHelpers.IsExpired(accessToken);
+
+                if(IsExpired){
+                    await TokenHelpers.Renew(true);
+                }
+
+                processQueue(null, sessionStorage.getItem(ACCESS_TOKEN));
+                isRefreshing = false;
+                originalRequest.headers['Authorization'] = 'Bearer ' + sessionStorage.getItem(ACCESS_TOKEN);
+                return appClient(originalRequest);
+            }
+            catch(err){
+                processQueue(err, null);
+                isRefreshing = false;
+                return Promise.reject(err);
+            }
+        }
+
         var time = 1;
         if(error.response){
             const serverReponseError = error.response.data.message;

@@ -1,5 +1,5 @@
 import { jwtDecode } from 'jwt-decode';
-import { APP_API , CLIENT_URL } from '~/GlobalConstant.js'
+import { APP_API , CLIENT_URL, ACCESS_TOKEN, REFRESH_TOKEN } from '~/GlobalConstant.js'
 
 
 function IsTokenExpired(accessToken){
@@ -13,8 +13,11 @@ function IsTokenExpired(accessToken){
     }
 }
 
-async function GenerateNewAccessToken(accessToken, refreshToken, isRedirect){
+async function GenerateNewAccessToken(isRedirect){
     try{
+        var accessToken = sessionStorage.getItem(ACCESS_TOKEN);
+        var refreshToken = sessionStorage.getItem(REFRESH_TOKEN)
+        
         var response = await fetch(APP_API + "tokens/renew",{
             method: "POST",
             credentials: "include",
@@ -22,14 +25,22 @@ async function GenerateNewAccessToken(accessToken, refreshToken, isRedirect){
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                'AccessToken': accessToken,
-                'RefreshToken': refreshToken,
+                'AccessToken':  encodeURIComponent(accessToken),
+                'RefreshToken':  encodeURIComponent(refreshToken),
             })
         })
-        
+
+        if(response.ok){
+            var data = await response.json();
+            sessionStorage.setItem(ACCESS_TOKEN, data.token);
+            sessionStorage.setItem(REFRESH_TOKEN, data.refreshToken);
+        }
+
+                
         if(!response.ok && isRedirect){
             window.location.href = CLIENT_URL + "account/login";
         }
+
     }
     catch(e){
         window.location.href = CLIENT_URL + "account/login";
@@ -61,7 +72,7 @@ async function VerifyAccessToken(accessToken){
 
 const TokenHelpers = {
     Verify: async (accessToken) => await VerifyAccessToken(accessToken),
-    Renew: async (accessToken, refreshToken, isRedirect = true) => await GenerateNewAccessToken(accessToken, refreshToken, isRedirect),
+    Renew: async (isRedirect = true) => await GenerateNewAccessToken(isRedirect),
     IsExpired: (accessToken) => IsTokenExpired(accessToken)
 }
 
