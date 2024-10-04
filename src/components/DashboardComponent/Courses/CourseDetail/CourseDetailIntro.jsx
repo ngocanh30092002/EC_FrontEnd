@@ -2,12 +2,14 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { IMG_URL_BASE } from '~/GlobalConstant';
 import { APP_URL } from '~/GlobalConstant.js';
 import { appClient } from '~/AppConfigs';
+import { useNavigate } from 'react-router-dom';
 
-function CourseDetailIntro({ course }) {
+function CourseDetailIntro({ course, status }) {
+    console.log(status);
     const [assignNum, setAssignNum] = useState(0);
     const [totalHours, setTotalHours] = useState(0);
     const [totalMinutes, setTotalMinutes] = useState(0);
-
+    const navigate = useNavigate();
     const getNumberAssignments = useCallback(async() =>{
         try{
             const response = await appClient.get(`api/assignments/course/${course.courseId}/number`)
@@ -41,10 +43,27 @@ function CourseDetailIntro({ course }) {
         getTotalTimeAssignments();
     },[])
 
+    const handleRegisterCourse = () =>{
+        const checkIsQualified = async () =>{
+            try{
+                var response = await appClient.get(`api/courses/${course.courseId}/student/is-qualified`);
+                var data = response.data;
+                if(data.success){
+                    sessionStorage.setItem("CourseId", course.courseId);
+                    navigate(`/courses/register`);
+                }
+            }
+            catch{
+            }
+        }
+
+        checkIsQualified();
+    }
+
     return (
         <div className='flex flex-col items-center cdi__wrapper'>
             <div className='cdi__course--img'>
-                <img src={APP_URL + course.imageUrl} />
+                <img src={APP_URL + course.imageThumbnailUrl} />
             </div>
 
             <div className='flex flex-col justify-start items-start w-full px-[10px] mt-[10px]'>
@@ -88,8 +107,7 @@ function CourseDetailIntro({ course }) {
                 </li>
             </ul>
 
-            <button className='cdi__course--btn'>Register Now</button>
-
+            {status != "Ongoing" && <button className='cdi__course--btn' onClick={handleRegisterCourse}>Register Now</button>}
         </div>
     )
 }

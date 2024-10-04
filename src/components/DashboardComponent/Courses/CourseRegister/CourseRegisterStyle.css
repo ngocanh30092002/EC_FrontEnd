@@ -1,0 +1,304 @@
+.cr__wrapper{
+    margin: 0 20px;
+}
+
+.cd__wrapper{
+    margin-top: 20px;
+    height: auto;
+}
+
+.cb__wrapper{
+    position: relative;
+}
+
+.cb__image-bg{
+    width: 100%;
+    object-position: center;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.cb__infor{
+   display: flex;
+   justify-content: center;
+}
+
+.cbi__title{
+    font-size: 50px;
+    font-weight: bold;
+    font-family: "Inter Tight", sans-serif;
+    letter-spacing: 2px;
+}
+
+.cd__sidebar-title{
+    font-size: 21px;
+    padding: 10px 10px;
+    font-family: "Inter Tight", sans-serif;
+    font-weight: 600;
+}
+
+.cd__list--wrapper{
+    margin: 0 20px;
+}
+
+.cd__item-link{
+    display: block;
+    padding: 10px 20px;
+    font-family: 'Poppins', sans-serif;
+    color: var(--text-gray-color);
+    font-weight: 500;
+    font-size: 13px;
+    transition: all 0.05s ease;
+    line-height: 18px;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    white-space: nowrap;
+    user-select: none;
+}
+
+.cd__list-item:hover .cd__item-link{
+    color: var(--text-color);
+    background-color: var(--background-hover-color);
+    transform: scale(1.01);
+    
+}
+
+.cd__list-item.active .cd__item-link{
+    background-color: var(--background-hover-color);
+    font-weight: 600;
+    transform: scale(1.01);
+    color: var(--text-color);
+}
+
+.cd__sidebar--wrapper{
+    border-right : solid 0.5px var(--border-color);
+    min-height: 300px;
+}
+
+.cci__wrapper{
+    height: 530px;
+    border-radius: 8px;
+    border: solid 1px var(--border-color);
+    box-shadow: 2px 3px 5px #ebebeb;
+    transition: all 0.3s ease;
+    margin: 5px;
+}
+
+.cci__wrapper:hover{
+    transform: scale(1.01);
+}
+
+.cci__teacher-info{
+}
+
+.cci__teacher-img{
+    width: 50px;
+    border-radius: 50%;
+    object-fit: contain;
+}
+
+.cci__teacher-name{
+    font-size: 17px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: bold;
+}
+
+.cci__class-name{
+    font-size: 15px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 500;
+}
+
+.cci__class-img{
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.cci__class-info{
+    padding: 15px;
+}
+
+.cci__class-des{
+    text-align: justify;
+    font-size: 15px;
+    font-family: 'Nunito', sans-serif;
+    margin-bottom: 10px;
+}
+
+.cci__class-info-item{
+    display: flex;
+    margin-bottom: 5px;
+}
+
+.cci__ci--img{
+    width: 20px;
+}
+
+.cci__ci--text{
+    margin-left: 10px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 500;
+    color:var(--text-color);
+}
+
+.cci__btn{
+    cursor: pointer; 
+    display: inline-block;
+    height: 40px;
+    background-color: var(--background-hover-color);
+    transition: color .8s;
+    position: relative; 
+    z-index: 1; 
+    overflow: hidden; 
+}
+
+.cci__btn-bg{
+    width: 0;
+    height: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    background-image: linear-gradient(var(--primary-color), var(--primary-color));
+    transition: .8s;
+    z-index: -1;
+    border-radius: 50%;
+}
+
+.cci__btn:hover {
+    color: white;
+}
+
+.cci__btn.registering{
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.cci__btn.registering:hover{
+    background-color: var(--primary-color);
+}
+
+.cci__btn:hover .cci__btn-bg {
+    width: 120%;
+    height: 500%; 
+}
+
+
+.ce__header-col{
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #F8F8F8;
+}
+
+.ce__header-col > div{
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: left;
+}
+
+
+.ceb_row{
+    border-bottom: 1px solid var(--border-color);
+    padding: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.ceb__teacher-name{
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.ceb__class-info span{
+    font-size: 13px;
+}
+
+.ceb__status{
+    border-radius: 8px;
+    padding: 4px 0;
+    display: inline-flex;
+    align-items: center;
+}
+
+.ceb__status-circle{
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.ceb__status > span{
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+}
+
+.ce__wrapper{
+    padding: 0 0 20px 20px;
+    height: 500px;
+}
+.ceb__option-list{
+    border: solid 1px var(--border-color);
+    border-radius: 8px;
+    width: 100px;
+}
+
+.ceb__option-item{
+    padding: 5px 10px;
+}
+
+.ceb__list-class{
+    width: 100%;
+    position: absolute;
+    top: 100%;
+    left: -10px;
+    border-radius: 8px;
+    margin-top: 10px;
+    display: none;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid var(--border-color);
+    z-index: 1;
+}
+
+.ceb__list-class.show{
+    display: block;
+}
+
+.ceb__class-item{
+    cursor: pointer;
+   
+    transition: all 0.2s ease;
+}
+
+.ceb__list-class.show .ceb__class-item{
+    padding: 10px 10px;
+}
+
+.ceb__list-class.show .ceb__class-item:hover{
+    background-color: #ebebeb;
+}
+
+.ceb__option div{
+    padding: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ceb__option div:hover{
+    opacity: 0.8;
+    background: var(--background-hover-color);
+}
+
+.ce__no-enrollments{
+    display: flex;
+    justify-content:  center;
+    align-items: center;
+    font-size: 16px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 500;
+}

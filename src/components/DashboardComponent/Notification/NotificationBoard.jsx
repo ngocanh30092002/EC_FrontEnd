@@ -30,8 +30,7 @@ function NotificationBoard(){
     useEffect(() =>{
         const notiConnection = new signalR.HubConnectionBuilder()
             .withUrl("https://localhost:44314/api/hub/notification", {
-                accessTokenFactory: () => sessionStorage.getItem(ACCESS_TOKEN),
-                withCredentialsL: true
+                withCredentials: true
             })
             .withAutomaticReconnect()
             .build();
@@ -45,12 +44,7 @@ function NotificationBoard(){
                     const handleError = async () =>{
                         var errorMessage = e.message;
                         if(errorMessage.includes("401") && connectNum < 3){
-                            var accessToken = sessionStorage.getItem(ACCESS_TOKEN);
-
-                            if(TokenHelpers.IsExpired(accessToken)){
-                                await TokenHelpers.Renew(false);
-                            }
-
+                            await TokenHelpers.Renew(false);
                             startConnection(connectNum++);
                         }
                         else{

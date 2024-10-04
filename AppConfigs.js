@@ -1,22 +1,22 @@
 import toast from '@/helper/Toast';
 import axios from 'axios';
-import { ACCESS_TOKEN, REFRESH_TOKEN } from '~/GlobalConstant';
 import TokenHelpers from './src/helper/TokenHelper';
 
 let isRefreshing = false;
 let failedQueue = [];
 
-const processQueue = (error, token = null) => {
+const processQueue = (error) => {
     failedQueue.forEach(prom => {
         if (error) {
             prom.reject(error);
         } else {
-            prom.resolve(token);
+            prom.resolve();
         }
     });
 
     failedQueue = [];
 };
+
 
 export const appClient = axios.create({
     baseURL: "https://localhost:44314/",
@@ -25,11 +25,6 @@ export const appClient = axios.create({
 
 appClient.interceptors.request.use(
     function (request){
-        const token = sessionStorage.getItem(ACCESS_TOKEN);
-        if(token){
-            request.headers['Authorization'] = `Bearer ${token}`;
-        }
-
         return request;
     },
     function (error){   
@@ -50,8 +45,7 @@ appClient.interceptors.response.use(
                 return new Promise(function(resolve, reject) {
                     failedQueue.push({resolve, reject});
                 })
-                .then(token => {
-                    originalRequest.headers["Authorization"] = "Bearer " + token;
+                .then(() => {
                     return appClient(originalRequest);
                 })
                 .catch(err => {
@@ -63,20 +57,14 @@ appClient.interceptors.response.use(
             isRefreshing = true;
 
             try{
-                const accessToken = sessionStorage.getItem(ACCESS_TOKEN);
-                const IsExpired = TokenHelpers.IsExpired(accessToken);
-
-                if(IsExpired){
-                    await TokenHelpers.Renew(true);
-                }
-
-                processQueue(null, sessionStorage.getItem(ACCESS_TOKEN));
+                await TokenHelpers.Renew(true);
+                processQueue(null);
                 isRefreshing = false;
-                originalRequest.headers['Authorization'] = 'Bearer ' + sessionStorage.getItem(ACCESS_TOKEN);
+
                 return appClient(originalRequest);
             }
             catch(err){
-                processQueue(err, null);
+                processQueue(err);
                 isRefreshing = false;
                 return Promise.reject(err);
             }
@@ -132,7 +120,7 @@ appClient.interceptors.response.use(
                 else{
                     toast({
                         type: "error",
-                        title: error.code,
+                        title: "Error",
                         message: serverReponseError,
                         duration: 4000*time
                     });

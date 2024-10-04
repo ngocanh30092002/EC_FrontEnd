@@ -112,9 +112,9 @@ function ProfileBackground({ className }) {
             </div>
             
             <div className='pbb__line'>
-                <div className="pb__body">
+                <div className="pb__body left-[10px] bottom-[40%] md:left-[40px] md:bottom-[25%]">
                     <div className="pbb__user">
-                        <img src={userBackground?.image ? APP_URL + userBackground.image : unknownUserImage} alt="user-image" className="pbb__user--img" />
+                        <img src={userBackground?.image ? APP_URL + userBackground.image : unknownUserImage} alt="user-image" className="pbb__user--img w-[150px] h-[150px] md:w-[200px] md:h-[200px]" />
                         <img 
                             src={IMG_URL_BASE + 'camera-icon.svg'} 
                             alt='image-camera' 

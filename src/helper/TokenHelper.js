@@ -15,32 +15,17 @@ function IsTokenExpired(accessToken){
 
 async function GenerateNewAccessToken(isRedirect){
     try{
-        var accessToken = sessionStorage.getItem(ACCESS_TOKEN);
-        var refreshToken = sessionStorage.getItem(REFRESH_TOKEN)
-        
         var response = await fetch(APP_API + "tokens/renew",{
             method: "POST",
             credentials: "include",
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                'AccessToken':  encodeURIComponent(accessToken),
-                'RefreshToken':  encodeURIComponent(refreshToken),
-            })
+            }
         })
 
-        if(response.ok){
-            var data = await response.json();
-            sessionStorage.setItem(ACCESS_TOKEN, data.token);
-            sessionStorage.setItem(REFRESH_TOKEN, data.refreshToken);
-        }
-
-                
         if(!response.ok && isRedirect){
             window.location.href = CLIENT_URL + "account/login";
         }
-
     }
     catch(e){
         window.location.href = CLIENT_URL + "account/login";

@@ -12,7 +12,6 @@ function CoursesContent() {
             const data = response.data;
             
             if(data.success){
-                console.log(data.message)
                 setCourses(data.message);
             }
         }
@@ -29,7 +28,7 @@ function CoursesContent() {
         <div className='mt-[20px]'>
             <CourseContentHeader/>
 
-            <div className='grid grid-cols-3 gap-4 p-[5px] mx-[15px]'>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-[5px] mx-[15px]'>
                 {courses.map((item,index) => 
                     <CourseItem key={index} itemInfo={item} urlBaseLink={"detail"}/>
                 )}

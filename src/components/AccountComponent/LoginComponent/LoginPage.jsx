@@ -1,10 +1,10 @@
 import toast from '@/helper/Toast'
 import React, { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ACCESS_TOKEN, APP_API, CLIENT_URL, IMG_URL_BASE, REFRESH_TOKEN, ROLES } from '~/GlobalConstant'
+import { appClient } from '~/AppConfigs'
+import { APP_API, CLIENT_URL, IMG_URL_BASE, ROLES } from '~/GlobalConstant'
 import LoginGoogleButton from './LoginGoogle'
 import './LoginStyle.css'
-import { appClient } from '~/AppConfigs';
 
 const LoginPage = () => {
     const [isShow, setShow] = useState(false);
@@ -93,8 +93,6 @@ function LoginInfor({ onShowForgot }) {
                 }
             }
 
-            sessionStorage.setItem(ACCESS_TOKEN, response.token);
-            sessionStorage.setItem(REFRESH_TOKEN, response.refreshToken);
             handleRedirectWithRole();
         }
 

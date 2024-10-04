@@ -3,7 +3,7 @@ import { appClient } from '~/AppConfigs';
 import { IMG_URL_BASE } from '~/GlobalConstant.js';
 import CourseLectureList from './CourseLectureList';
 
-function CourseDetailLecture({course}) {
+function CourseDetailLecture({course, status}) {
     const [contents, setContents] = useState([]);
     const [assignNum, setAssignNum] = useState(0);
     const [hours, setHours] = useState(0);
@@ -55,6 +55,10 @@ function CourseDetailLecture({course}) {
         getTotalTimeAssignments();
     }, [])
 
+    useEffect(() =>{
+        console.log("handle status");
+    }, [status])
+
     return (
         <div className='cdl__wrapper'>
             <div className="cdl__course--intro">
@@ -81,7 +85,7 @@ function CourseDetailLecture({course}) {
                 <div className="cc__overview">
                     <div className="cc__overview-item">
                         Chapters:
-                        <span className='cc__overview--special'>{assignNum}</span>
+                        <span className='cc__overview--special'>{contents.length}</span>
                     </div>
                     <div className="cc__overview-item">
                         Lessons: 

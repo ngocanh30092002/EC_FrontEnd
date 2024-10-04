@@ -45,7 +45,7 @@ function CourseItem({itemInfo, urlBaseLink}){
     return (
         <Link className='rc__item-wrapper' to={ urlBaseLink ? urlBaseLink + "/" + itemInfo.courseId.toLowerCase() : itemInfo.courseId.toLowerCase()}>
             <div className='rc__item-img'>
-                <img src={itemInfo?.imageUrl ? APP_URL + itemInfo.imageUrl : defaultImage} alt='image-course' />
+                <img src={itemInfo?.imageThumbnailUrl ? APP_URL + itemInfo.imageThumbnailUrl : defaultImage} alt='image-course' />
             </div>
 
             <div className='rc__item-body'>
