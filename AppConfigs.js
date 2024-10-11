@@ -1,6 +1,8 @@
 import toast from '@/helper/Toast';
 import axios from 'axios';
 import TokenHelpers from './src/helper/TokenHelper';
+import { useNavigate } from 'react-router-dom';
+import { CLIENT_URL } from './GlobalConstant';
 
 let isRefreshing = false;
 let failedQueue = [];
@@ -37,44 +39,46 @@ appClient.interceptors.response.use(
         return response
     },
     async function (error) {
-        var statusCode = error.response.status;
-        const originalRequest = error.config;
-
-        if(statusCode === 401 && !originalRequest._retry){
-            if(isRefreshing){
-                return new Promise(function(resolve, reject) {
-                    failedQueue.push({resolve, reject});
-                })
-                .then(() => {
-                    return appClient(originalRequest);
-                })
-                .catch(err => {
-                    return Promise.reject(err);
-                });
-            }
-
-            originalRequest._retry = true;
-            isRefreshing = true;
-
-            try{
-                await TokenHelpers.Renew(true);
-                processQueue(null);
-                isRefreshing = false;
-
-                return appClient(originalRequest);
-            }
-            catch(err){
-                processQueue(err);
-                isRefreshing = false;
-                return Promise.reject(err);
-            }
-        }
+       
 
         var time = 1;
         if(error.response){
+            var statusCode = error?.response?.status;
+            const originalRequest = error?.config;
+    
+            if(statusCode === 401 && !originalRequest._retry){
+                if(isRefreshing){
+                    return new Promise(function(resolve, reject) {
+                        failedQueue.push({resolve, reject});
+                    })
+                    .then(() => {
+                        return appClient(originalRequest);
+                    })
+                    .catch(err => {
+                        return Promise.reject(err);
+                    });
+                }
+    
+                originalRequest._retry = true;
+                isRefreshing = true;
+    
+                try{
+                    await TokenHelpers.Renew(true);
+                    processQueue(null);
+                    isRefreshing = false;
+    
+                    return appClient(originalRequest);
+                }
+                catch(err){
+                    processQueue(err);
+                    isRefreshing = false;
+                    return Promise.reject(err);
+                }
+            }
+
             const serverReponseError = error.response.data.message;
             const invalidError = error.response.data.errors;
-
+            
             if(invalidError){
                 for(const key in invalidError){
                     if(invalidError.hasOwnProperty(key)){
@@ -139,6 +143,9 @@ appClient.interceptors.response.use(
                     duration: 4000*time
                 });
             }
+        }
+        else{
+            window.location.href = CLIENT_URL + "account/login";
         }
 
         return Promise.reject(error);
