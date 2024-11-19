@@ -79,7 +79,6 @@ function SideBarItem({item, index, isActive, onActive}){
 
     useEffect(() =>{
         const pathName = location.pathname;
-        console.log(pathName);
         if(pathName.includes(item.link)){
             onActive(index);
         }

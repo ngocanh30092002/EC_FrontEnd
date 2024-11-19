@@ -22,8 +22,6 @@ function AdminPage() {
         getAudio();
     }, [])
 
-    console.log(APP_URL + audioLink?.audioUrl);
-
     return (
         <div>
             {audioLink &&  

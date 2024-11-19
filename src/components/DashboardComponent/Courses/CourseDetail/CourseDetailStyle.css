@@ -217,4 +217,83 @@
     display: flex;
     align-items: center;
     margin-left: 25px;
+    
+}
+
+
+.his-process__wrapper{
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.his-process__header{
+    padding: 15px 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: #474747;
+    font-family: 'Nunito', sans-serif;
+    margin-bottom: 10px;
+}
+
+.his-process__title{
+    font-size: 35px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    font-family: "Roboto", sans-serif;
+}
+
+.his-process__row{
+    padding: 5px 20px;
+    font-family: 'Nunito', sans-serif;
+    margin-bottom: 5px;
+    border-radius: 8px;
+}
+.his-process__item-passed,
+.his-process__item-failed{
+    overflow: hidden;
+    display: flex;
+    padding: 5px 0;
+}
+.his-process__item-passed > span{
+    display: inline-block;
+    align-items: center;
+    background: #dcf6e4;
+    padding: 5px 10px;
+    color:#20802d;
+    font-weight: 600;
+    border-radius: 8px;
+}
+.his-process__item-failed > span{
+    display: inline-block;
+    align-items: center;
+    background: #f7e7e7;
+    padding: 5px 10px;
+    color:#802320;
+    font-weight: 600;
+    border-radius: 8px;
+}
+
+.his-process__row:hover{
+    background-color: var(--background-hover-color);
+    cursor: pointer;
+}
+
+.his-process__content{
+    box-shadow: 3px 4px 13px rgb(0 0 0 / 20%);
+}
+
+.his-process__btn{
+    font-family: 'Nunito', sans-serif;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all ease 0.3s;
+}
+
+.his-process__btn:hover{
+    background-color: var(--primary-color);
+    color: var(--white-color);
+}
+
+.his-process__btn.close:hover {
+    background-color: rgb(255, 54, 54);
+    color: var(--text-color)
 }

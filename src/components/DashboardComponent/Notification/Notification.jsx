@@ -1,19 +1,17 @@
-import toast from "@/helper/Toast";
 import { useStore } from '@/store';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { appClient } from '~/AppConfigs';
+import { APP_URL, IMG_URL_BASE } from '~/GlobalConstant';
 import { homeComponents, settingComponents, studyComponents } from '../SideBarInfo';
 import NotificationBoard from './NotificationBoard';
 import "./NotificationStyle.css";
-import { APP_URL, IMG_URL_BASE } from '~/GlobalConstant';
 
 function Notification({ className }) {
     const [isShowSearchInput, setShowInput] = useState(false);
     const [pageTitle, setPageTitle] = useState();
     const unknownUserImage = IMG_URL_BASE + "unknown_user.jpg";
     const location = useLocation();
-
     const [userInfo, setUserInfo] = useState();
     const [state] = useStore();
 
@@ -65,7 +63,7 @@ function Notification({ className }) {
 
 
     return (
-        <div className={`flex justify-end items-center pr-[10px] md:justify-between md:px-[20px] overflow-visible ${className}`}>
+        <div className={`flex justify-end items-center pr-[10px] md:justify-between md:px-[20px] md:overflow-visible overflow-hidden ${className}`}>
             <div className='noti__welcome hidden md:block'>{pageTitle}</div>
             <div className='h-[70px] flex justify-end items-center overflow-visible flex-1 bg-white'>
                 {isShowSearchInput && <input type='text' className='noti__search-input w-[150px] md:w-[200px]' />}

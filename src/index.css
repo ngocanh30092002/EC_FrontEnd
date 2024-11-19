@@ -18,6 +18,7 @@ img{
 
 :root {
     --primary-color: #1e1f6f;
+    --light-primary-color: #0035f4;
     --light-background-color: #e6f2ff;
     --dark-background-color: #141549;
     --background-hover-color: #eef2f9;

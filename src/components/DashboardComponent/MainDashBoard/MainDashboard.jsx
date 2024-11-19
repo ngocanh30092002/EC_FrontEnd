@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { homeComponents, settingComponents, studyComponents } from '../SideBarInfo';
-import { Route, Routes} from 'react-router-dom';
 
 
 function MainDashboard({className}) {
@@ -18,6 +18,8 @@ function MainDashboard({className}) {
             {settingComponents.map((item, index) => {
                 return <Route key={index} path={item.link} element={item.component} />
             })}
+
+            <Route path='*' element={<Navigate to="/not-found"/>} />
         </Routes>
     </div>
   )

@@ -1,0 +1,249 @@
+.ttr__toeic-exams--wrapper {
+    padding: 10px;
+    background-color: var(--white-color);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.ttr__toeic-exam {
+    padding: 10px;
+    border-radius: 8px;
+    border: solid 1px var(--border-color);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ttr__toeic-exam:hover {
+    transform: scale(1.01);
+    color: var(--white-color);
+    background: #5f97d2;
+}
+
+.ttr__toeic-exam:hover .te__title,
+.ttr__toeic-exam:hover .te__made-num,
+.ttr__toeic-exam:hover .te__time {
+    font-weight: 600;
+}
+
+.te__title {
+    text-transform: uppercase;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.te__time,
+.te__made-num {
+    font-size: 12px;
+    font-family: 'Nunito', sans-serif;
+}
+
+.te__icon-img {
+    width: 25px;
+}
+
+
+.ttr__toeic-name {
+    margin-left: 30px;
+    font-size: 18px;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-family: 'Nunito', sans-serif;
+    letter-spacing: 0.5px;
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    border-radius: 10px;
+    display: inline-block;
+}
+
+.tt__timeline {
+    width: 8px;
+    height: 100%;
+    background-color: var(--primary-color);
+    overflow: visible;
+    position: relative;
+    z-index: 10;
+}
+
+.tt__timeline::after {
+    content: "";
+    width: 8px;
+    height: 100%;
+    background-color: var(--primary-color);
+    position: absolute;
+    left: 0;
+    bottom: -20%;
+    overflow: visible;
+    z-index: 1;
+}
+
+.tt__timeline-no {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    background-color: var(--light-primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 16px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    z-index: 10;
+}
+
+.toeic-time__wrapper:last-of-type .tt__timeline::after {
+    background-color: var(--primary-color);
+    bottom: 0;
+}
+
+.ttr__toeic-now-name {
+    margin-left: 30px;
+    font-size: 18px;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-family: 'Nunito', sans-serif;
+    letter-spacing: 0.5px;
+    padding: 10px 20px;
+    color: var(--white-color);
+    border-radius: 10px;
+    display: inline-block;
+    background-color: #ff7900;
+}
+
+.tt__timeline-now {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    background-color: #ff7900;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 16px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    z-index: 10;
+}
+
+.tt__timeline-header {
+    border: solid var(--primary-color);
+    border-width: 0 6px 6px 0;
+    display: inline-block;
+    padding: 15px;
+    position: absolute;
+    top: 0;
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+}
+
+.tni__description {
+    font-size: 16px;
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    color: var(--white-color);
+    background-color: var(--primary-color);
+    padding: 20px 30px;
+    margin-top: 5%;
+    margin-left: 20px;
+    border-radius: 10px;
+}
+
+.ttr__next-button {
+    position: absolute;
+    top: 50%;
+    right: -30px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    height: 100%;
+    padding: 10px 0;
+    display: flex;
+}
+
+.toeic-history__wrapper{
+    background-color: rgba(255, 255, 255, 0.298);
+}
+
+.th__header-item{
+    padding: 15px 20px;
+    font-size: 15px;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-family: 'Roboto', sans-serif;
+    color: var(--white-color);
+    letter-spacing: 0.5px;
+}
+
+.th__header--wrapper{
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.th__title{
+    font-size: 30px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.th__item{
+    font-size: 14px;
+    padding: 15px 20px;
+}
+
+.th__body-row{
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.th__body--wrapper .th__body-row:nth-child(even){
+    background-color: #f2f2f2;
+}
+
+.th__body--wrapper .th__body-row:nth-child(even):hover{
+    opacity: 0.8;
+    background-color: #cccccc;
+}
+
+
+.th__body-row:hover{
+    opacity: 0.8;
+    background-color: #cccccc;
+}
+
+.th__item-btn{
+    padding: 10px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.th__item-btn:hover{
+    background-color: var(--text-gray-color);
+}
+
+.th__item-close-btn{
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Nunito', sans-serif;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: solid 1px var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.th__item-close-btn:hover{
+    background-color: var(--primary-color);
+    color: vaR(--white-color);
+}

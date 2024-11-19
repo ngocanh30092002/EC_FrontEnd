@@ -1,47 +1,15 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { appClient } from '~/AppConfigs';
 import { IMG_URL_BASE } from '~/GlobalConstant';
 import { APP_URL } from '~/GlobalConstant.js';
-import { appClient } from '~/AppConfigs';
-import { useNavigate } from 'react-router-dom';
+import { CourseDetailItemContext } from './CourseDetailItem';
 
-function CourseDetailIntro({ course, status }) {
-    console.log(status);
-    const [assignNum, setAssignNum] = useState(0);
-    const [totalHours, setTotalHours] = useState(0);
-    const [totalMinutes, setTotalMinutes] = useState(0);
+function CourseDetailIntro() {
+    const {dataContext} = useContext(CourseDetailItemContext);
+    const course = dataContext.course;
+
     const navigate = useNavigate();
-    const getNumberAssignments = useCallback(async() =>{
-        try{
-            const response = await appClient.get(`api/assignments/course/${course.courseId}/number`)
-            const data = response.data;
-
-            if(data.success){
-                setAssignNum(data.message);
-            }
-        }
-        catch(error){
-        }
-    }, [])
-
-    const getTotalTimeAssignments = useCallback( async () =>{
-        try{
-            const response = await appClient.get(`api/assignments/course/${course.courseId}/total-time`)
-            const data = response.data;
-
-            if(data.success){
-                var [hours,minutes] = data.message.split(":");
-                setTotalHours(hours);
-                setTotalMinutes(minutes);
-            }
-        }
-        catch(error){
-        }
-    }, [])
-
-    useEffect(() =>{
-        getNumberAssignments();
-        getTotalTimeAssignments();
-    },[])
 
     const handleRegisterCourse = () =>{
         const checkIsQualified = async () =>{
@@ -93,12 +61,12 @@ function CourseDetailIntro({ course, status }) {
 
                 <li className='cdi__course--item'>
                     <img className='w-[16px]' src={IMG_URL_BASE + "video-icon.svg"} />
-                    <span className='cdi__item--title'>Total: {assignNum} lessons</span>
+                    <span className='cdi__item--title'>Total: {dataContext.numLessons} lessons</span>
                 </li>
 
                 <li className='cdi__course--item'>
                     <img className='w-[16px]' src={IMG_URL_BASE + "clock-icon.svg"} />
-                    <span className='cdi__item--title'>{totalHours} hours {totalMinutes} minutes</span>
+                    <span className='cdi__item--title'>{dataContext.hours} hours {dataContext.minutes} minutes</span>
                 </li>
 
                 <li className='cdi__course--item'>
@@ -107,7 +75,7 @@ function CourseDetailIntro({ course, status }) {
                 </li>
             </ul>
 
-            {status != "Ongoing" && <button className='cdi__course--btn' onClick={handleRegisterCourse}>Register Now</button>}
+            {dataContext?.enroll?.enrollStatus != "Ongoing" && <button className='cdi__course--btn' onClick={handleRegisterCourse}>Register Now</button>}
         </div>
     )
 }

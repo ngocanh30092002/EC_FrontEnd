@@ -1,1 +1,4 @@
-<?xml version="1.0" ?><svg style="enable-background:new 0 0 50 50;" version="1.1" viewBox="0 0 50 50" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="Layer_1"><polygon points="36.942,29.648 30.051,2.081 20.09,37.941 14.175,12.312 10.279,24 1,24 1,26 11.721,26 13.825,19.688    19.91,46.059 29.949,9.919 37.058,38.352 39.802,26 49,26 49,24 38.198,24  "/></g><g/></svg>
+<svg viewBox="0 0 50 50" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
+  <path d="M36.942 29.648 30.051 2.081l-9.961 35.86-5.915-25.629L10.279 24H1v2h10.721l2.104-6.312 6.085 26.371 10.039-36.14 7.109 28.433L39.802 26H49v-2H38.198z"/>
+  <g/>
+</svg>

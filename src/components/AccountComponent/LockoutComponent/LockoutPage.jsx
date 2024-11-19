@@ -1,6 +1,4 @@
-import React, { useEffect } from 'react'
-import { SetCookie } from '@/helper/CookiesHelper';
-import { ACCESS_TOKEN, REFRESH_TOKEN } from '~/GlobalConstant.js';
+import React from 'react';
 
 const LockoutPage = () => {
 

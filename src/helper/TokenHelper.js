@@ -1,5 +1,5 @@
 import { jwtDecode } from 'jwt-decode';
-import { APP_API , CLIENT_URL, ACCESS_TOKEN, REFRESH_TOKEN } from '~/GlobalConstant.js'
+import { APP_API, CLIENT_URL } from '~/GlobalConstant.js';
 
 
 function IsTokenExpired(accessToken){

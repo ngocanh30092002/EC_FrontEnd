@@ -1,8 +1,7 @@
 import toast from '@/helper/Toast';
 import axios from 'axios';
-import TokenHelpers from './src/helper/TokenHelper';
-import { useNavigate } from 'react-router-dom';
 import { CLIENT_URL } from './GlobalConstant';
+import TokenHelpers from './src/helper/TokenHelper';
 
 let isRefreshing = false;
 let failedQueue = [];
@@ -78,7 +77,6 @@ appClient.interceptors.response.use(
 
             const serverReponseError = error.response.data.message;
             const invalidError = error.response.data.errors;
-            
             if(invalidError){
                 for(const key in invalidError){
                     if(invalidError.hasOwnProperty(key)){
@@ -135,13 +133,18 @@ appClient.interceptors.response.use(
             else{
                 var errorCode = error.code
                 var errorMessage = error.message;
-
-                toast({
-                    type: "error",
-                    title: errorCode,
-                    message: errorMessage,
-                    duration: 4000*time
-                });
+                
+                if(errorMessage.includes("403")){
+                    window.location.href = CLIENT_URL + "access-denied";
+                }
+                else{
+                    toast({
+                        type: "error",
+                        title: errorCode,
+                        message: errorMessage,
+                        duration: 4000*time
+                    });
+                }
             }
         }
         else{

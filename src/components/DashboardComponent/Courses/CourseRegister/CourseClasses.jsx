@@ -12,8 +12,6 @@ function CourseClasses({course}) {
         try{
             var response = await appClient.get(`api/enrolls/courses/${course.courseId}`)
             var data = response.data;
-            console.log(response.data);
-            console.log(classes);
             if(data.success){
                 setEnroll(data.message);
             }

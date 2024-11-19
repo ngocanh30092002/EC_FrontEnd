@@ -1,7 +1,8 @@
-import { CHANGE_USER_BACKGROUND } from "./constants";
+import { CHANGE_USER_BACKGROUND, CHANGE_USER } from "./constants";
 
 const initState = {
     isReloadUserBackground: false,
+    user: {}
 };
 
 function reducer(state, action){
@@ -14,10 +15,15 @@ function reducer(state, action){
                 }
             }
             return state;
+        case CHANGE_USER:
+            return{
+                ...state,
+                user: action.payload
+            }
         default: 
             throw new Error("Invalid action.");
     }
 };
 
-export {initState}
+export { initState };
 export default reducer;
