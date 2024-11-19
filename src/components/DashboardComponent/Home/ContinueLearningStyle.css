@@ -84,10 +84,6 @@
     cursor: pointer;
 }
 
-.li__study-bar-current{
-
-}
-
 .li__study-wrapper{
     padding: 8px 10px;
     height: 100%;
@@ -141,19 +137,19 @@
 }
 
 
-tbody > tr{
+.hi__course-table tbody > tr{
     border-bottom: dashed 1px var(--border-color)
 }
 
-tbody > tr:last-child{
+.hi__course-table tbody > tr:last-child{
     border:none;
 }
 
 
-tbody > tr:last-child > td{
+.hi__course-table tbody > tr:last-child > td{
     height: 55px !important;
 }
-tbody > tr:last-child td:first-child .li__info-wrapper{
+.hi__course-table tbody > tr:last-child td:first-child .li__info-wrapper{
     padding-bottom: 0;
 }
 
@@ -218,7 +214,6 @@ tbody > tr:last-child td:first-child .li__info-wrapper{
 
 
 thead, tbody, tr, td, th { display: block; }
-
 
 tbody {
     overflow-y: auto;

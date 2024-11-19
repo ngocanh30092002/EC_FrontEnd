@@ -1,11 +1,10 @@
-import React, { useState , useRef, useEffect} from 'react'
-import { useNavigate } from 'react-router-dom'
-import { CLIENT_URL , APP_API, IMG_URL_BASE} from '~/GlobalConstant'
-import LoginGoogleButton from './LoginGoogle'
 import toast from '@/helper/Toast'
+import React, { useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { appClient } from '~/AppConfigs'
+import { APP_API, CLIENT_URL, IMG_URL_BASE, ROLES } from '~/GlobalConstant'
+import LoginGoogleButton from './LoginGoogle'
 import './LoginStyle.css'
-import { appClient } from '~/AppConfigs';
-import { ROLES } from '~/GlobalConstant'
 
 const LoginPage = () => {
     const [isShow, setShow] = useState(false);
@@ -17,7 +16,7 @@ const LoginPage = () => {
                     <div className='w-4/5 lg:w-2/3 2xl:w-3/5 mx-auto h-full flex flex-col justify-between'>
                         <div className='login-containter__title text-center text-5xl lg:text-5xl my-[15px] lg:my-1 2xl:text-6xl 2xl:my-[40px] py-[20px]'>Welcome Back</div>
                         <div className='flex-1'>
-                            <LoginGoogleButton imageUrl={IMG_URL_BASE + "googleLogo.svg"} description={"Log in with Google"} redirectUri={"https://localhost:5173/manage"} />
+                            <LoginGoogleButton imageUrl={IMG_URL_BASE + "googleLogo.svg"} description={"Log in with Google"} redirectUri={CLIENT_URL + "manager"} />
 
                             <div className='login-container__seperate seperate-title mt-[20px] 2xl:mt-[40px] 2xl:mb-[20px]'>
                                 OR LOGIN WITH ACCOUNT
@@ -75,7 +74,7 @@ function LoginInfor({ onShowForgot }) {
         const handleLoginSuccess = (response) => {
             const handleRedirectWithRole = async () =>{
                 try{
-                    var response = await appClient.get("api/users/roles")
+                    var response = await appClient.get("api/students/roles")
                     var data = response.data;
 
                     if(data.success){
@@ -127,7 +126,6 @@ function LoginInfor({ onShowForgot }) {
             }
         });
     }
-
 
     return <>
         <form>

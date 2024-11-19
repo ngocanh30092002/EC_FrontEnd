@@ -35,8 +35,8 @@ function ProfilePage() {
             <ProfileContext.Provider value={contextData}>
                 <ProfileBackground className={""} />
 
-                <div className='flex min-h-[400px]'>
-                    <ProfileSideBar className={"w-[280px]"} />
+                <div className='md:flex min-h-[400px]'>
+                    <ProfileSideBar className={"w-full flex justify-center md:w-[280px] md:block "} />
                     <ProfileUserInfo className={"flex-1 px-[20px]"} />
                 </div>
             </ProfileContext.Provider>

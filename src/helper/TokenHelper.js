@@ -1,5 +1,5 @@
 import { jwtDecode } from 'jwt-decode';
-import { APP_API , CLIENT_URL } from '~/GlobalConstant.js'
+import { APP_API, CLIENT_URL } from '~/GlobalConstant.js';
 
 
 function IsTokenExpired(accessToken){
@@ -13,20 +13,16 @@ function IsTokenExpired(accessToken){
     }
 }
 
-async function GenerateNewAccessToken(accessToken, refreshToken, isRedirect){
+async function GenerateNewAccessToken(isRedirect){
     try{
         var response = await fetch(APP_API + "tokens/renew",{
             method: "POST",
             credentials: "include",
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                'AccessToken': accessToken,
-                'RefreshToken': refreshToken,
-            })
+            }
         })
-        
+
         if(!response.ok && isRedirect){
             window.location.href = CLIENT_URL + "account/login";
         }
@@ -61,7 +57,7 @@ async function VerifyAccessToken(accessToken){
 
 const TokenHelpers = {
     Verify: async (accessToken) => await VerifyAccessToken(accessToken),
-    Renew: async (accessToken, refreshToken, isRedirect = true) => await GenerateNewAccessToken(accessToken, refreshToken, isRedirect),
+    Renew: async (isRedirect = true) => await GenerateNewAccessToken(isRedirect),
     IsExpired: (accessToken) => IsTokenExpired(accessToken)
 }
 

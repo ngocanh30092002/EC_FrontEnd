@@ -1,1 +1,3 @@
-<?xml version="1.0" ?><!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'><svg enable-background="new 0 0 70 70" height="70px" id="Icons" version="1.1" viewBox="0 0 70 70" width="70px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g><rect height="32" width="4" x="17" y="19"/><polygon points="40,51 42.828,48.172 31.657,37 53,37 53,33 31.657,33 42.828,21.828 40,19 24,35  "/></g></svg>
+<svg height="70" viewBox="0 0 70 70" width="70" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
+  <path d="M17 19h4v32h-4zm23 32 2.828-2.828L31.657 37H53v-4H31.657l11.171-11.172L40 19 24 35z"/>
+</svg>

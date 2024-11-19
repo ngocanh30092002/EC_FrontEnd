@@ -7,13 +7,13 @@ import { actions, useStore } from '../../../store';
 function EditBackgroundItem() {
     const [userInfo, setUserInfo] = useState(null);
     const [roles, setRoles] = useState([]);
-    const [description, setDescription] = useState();
+    const [description, setDescription] = useState(null);
     const [state, dispatch] = useStore();
 
     useEffect(() => {
         const getUserInfo = async () =>{
             try{
-                var response = await appClient.get("api/users/user-background-info");
+                var response = await appClient.get("api/students/user-background-info");
                 var data = response.data;
                 if(!data.success){
                     toast({
@@ -34,7 +34,7 @@ function EditBackgroundItem() {
 
         const getCurrentRoles = async() =>{
             try{
-                var response = await appClient.get("api/users/roles");
+                var response = await appClient.get("api/students/roles");
                 var data = response.data;
                 if(!data.success){
                     toast({
@@ -67,7 +67,7 @@ function EditBackgroundItem() {
 
         const submitForm = async () =>{
             try{
-                const response = await appClient.post("api/users/user-background", formData)
+                const response = await appClient.post("api/students/user-background", formData)
 
                 var data = response.data;
 
@@ -107,7 +107,7 @@ function EditBackgroundItem() {
                     id='Description' 
                     name={"Description"} 
                     className='input__item--input w-full h-auto resize-none pt-[10px]'
-                    value={description}
+                    value={description == null ? "": description}
                     onChange={handleChangeDes} />
                 
 

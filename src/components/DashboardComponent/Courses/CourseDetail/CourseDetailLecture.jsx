@@ -1,48 +1,31 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { appClient } from '~/AppConfigs';
 import { IMG_URL_BASE } from '~/GlobalConstant.js';
 import CourseLectureList from './CourseLectureList';
+import { CourseDetailItemContext } from './CourseDetailItem';
 
-function CourseDetailLecture({course}) {
+function CourseDetailLecture() {
     const [contents, setContents] = useState([]);
-    const [assignNum, setAssignNum] = useState(0);
-    const [hours, setHours] = useState(0);
-    const [minutes, setMinutes] = useState(0);
-    const getNumberAssignments = useCallback(async() =>{
-        try{
-            const response = await appClient.get(`api/assignments/course/${course.courseId}/number`)
-            const data = response.data;
+    const {dataContext} = useContext(CourseDetailItemContext);
+    const course = dataContext.course;
 
-            if(data.success){
-                setAssignNum(data.message);
+    const getCourseContents = useCallback( async (enrollId) =>{
+        try{
+            if(enrollId == null){
+                const response = await appClient.get(`api/coursecontent/course/${course.courseId}`);
+                const data = response.data;
+    
+                if(data.success){
+                    setContents(data.message);
+                }
             }
-        }
-        catch(error){
-        }
-    }, [])
-
-    const getCourseContents = useCallback( async () =>{
-        try{
-            const response = await appClient.get(`api/coursecontent/course/${course.courseId}`);
-            const data = response.data;
-
-            if(data.success){
-                setContents(data.message);
-            }
-        }
-        catch(error){
-        }
-    }, [])
-
-    const getTotalTimeAssignments = useCallback( async () =>{
-        try{
-            const response = await appClient.get(`api/assignments/course/${course.courseId}/total-time`)
-            const data = response.data;
-
-            if(data.success){
-                var [hours,minutes] = data.message.split(":");
-                setHours(hours);
-                setMinutes(minutes);
+            else{
+                const response = await appClient.get(`api/coursecontent/course/${course.courseId}/enroll/${enrollId}`)
+                const data = response.data;
+    
+                if(data.success){
+                    setContents(data.message);
+                }
             }
         }
         catch(error){
@@ -50,10 +33,12 @@ function CourseDetailLecture({course}) {
     }, [])
 
     useEffect(() => {
-        getCourseContents();
-        getNumberAssignments();
-        getTotalTimeAssignments();
-    }, [])
+        getCourseContents(dataContext?.enroll?.enrollId);
+    }, [dataContext.enroll])
+
+    useEffect(() =>{
+        // console.log("handle status");
+    }, [dataContext?.enroll?.enrollStatus])
 
     return (
         <div className='cdl__wrapper'>
@@ -81,16 +66,16 @@ function CourseDetailLecture({course}) {
                 <div className="cc__overview">
                     <div className="cc__overview-item">
                         Chapters:
-                        <span className='cc__overview--special'>{assignNum}</span>
+                        <span className='cc__overview--special'>{contents.length}</span>
                     </div>
                     <div className="cc__overview-item">
                         Lessons: 
-                        <span className='cc__overview--special'>{assignNum}</span>
+                        <span className='cc__overview--special'>{dataContext.numLessons}</span>
                     </div>
                     <div className="cc__overview-item">
                         Time:
                         <span className="cc__overview--special">
-                            {hours} hours {minutes} minutes 
+                            {dataContext.hours} hours {dataContext.minutes} minutes 
                         </span>
                     </div>
                 </div>

@@ -7,8 +7,8 @@ function ProfileSideBar({ className }) {
     const {profileInfo} = useContext(ProfileContext);
     
     return (
-        <div className={`${className} border-r`}>
-            <ul className='ps__wrapper'>
+        <div className={`${className} mb-[20px] md:mb-0 md:border-r`}>
+            <ul className='ps__wrapper flex md:block gap-4'>
                 {profileInfo.map((item,index) =>{
                     return (
                         <ProfileSideBarItem 

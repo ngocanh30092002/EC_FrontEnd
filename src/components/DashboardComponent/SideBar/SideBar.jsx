@@ -10,7 +10,7 @@ function SideBar({className}) {
     const [activeIndex, setActiveIndex] = useState(0); 
     return (
         <div className={`side-bar__wrapper 
-            absolute overflow-hidden z-[999] ${isExpand ? "h-full flex flex-col border-1":"h-[70px] border-0"}
+            absolute !overflow-hidden z-[999] ${isExpand ? "h-full flex flex-col border-1":"h-[70px] !border-none"}
             md:static md:h-screen md:border-r md:overflow-visible md:flex-col md:inline-flex md:max-w-[200px] 
             lg:max-w-[230px] ${className}`}>
             <SideBarContext.Provider value={{isExpand, onSetExpand: setExpand}}>

@@ -2,12 +2,12 @@ import HomePage from './Home/HomePage';
 import BookmarksPage from './Bookmarks/BookmarksPage';
 import ToeicsPage from './Toeics/ToeicsPage';
 import CoursesPage from './Courses/CoursesPage';
-import HomeworkPage from './Homework/HomeworkPage';
 import DictionaryPage from './Dictionary/DictionaryPage';
 import SettingPage from './Setting/SettingPage';
 import HelpCenterPage from './HelpCenter/HelpCenterPage';
 import LogoutPage from './Logout/LogoutPage';
 import ProfilePage from './Profile/ProfilePage';
+import ClassPage from './Class/ClassPage';
 
 export const homeComponents = [
     {
@@ -55,11 +55,11 @@ export const studyComponents = [
     },
     {
         id: 5,
-        name: "Homework",
-        component: <HomeworkPage/>,
+        name: "Class",
+        component: <ClassPage/>,
         img: 'homework_icon.svg',
-        link: "/homework",
-        linkToRedirect: "/homework",
+        link: "/class",
+        linkToRedirect: "/class",
     },
     {
         id: 6,

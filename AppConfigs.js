@@ -1,8 +1,23 @@
-import axios from 'axios';
-import { ACCESS_TOKEN, PROVIDER, APP_API, REFRESH_TOKEN, CLIENT_URL, REDIRECT_HEADER } from './GlobalConstant';
-import {GetCookie} from './src/helper/CookiesHelper';
-import TokenHelpers from './src/helper/TokenHelper';
 import toast from '@/helper/Toast';
+import axios from 'axios';
+import { CLIENT_URL } from './GlobalConstant';
+import TokenHelpers from './src/helper/TokenHelper';
+
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error) => {
+    failedQueue.forEach(prom => {
+        if (error) {
+            prom.reject(error);
+        } else {
+            prom.resolve();
+        }
+    });
+
+    failedQueue = [];
+};
+
 
 export const appClient = axios.create({
     baseURL: "https://localhost:44314/",
@@ -10,17 +25,10 @@ export const appClient = axios.create({
 });
 
 appClient.interceptors.request.use(
-    async function (request){
-        var accessToken = GetCookie(ACCESS_TOKEN);
-        var refreshToken = GetCookie(REFRESH_TOKEN);
-        var isRedirect = request.headers[REDIRECT_HEADER] ?? true;
-        if(TokenHelpers.IsExpired(accessToken,refreshToken)){
-            await TokenHelpers.Renew(accessToken, refreshToken, JSON.parse(isRedirect));
-        }
-
+    function (request){
         return request;
     },
-    function (error){
+    function (error){   
         return Promise.reject(error);
     }
 )
@@ -29,12 +37,46 @@ appClient.interceptors.response.use(
     function (response){
         return response
     },
-    function (error) {
+    async function (error) {
+       
+
         var time = 1;
         if(error.response){
+            var statusCode = error?.response?.status;
+            const originalRequest = error?.config;
+    
+            if(statusCode === 401 && !originalRequest._retry){
+                if(isRefreshing){
+                    return new Promise(function(resolve, reject) {
+                        failedQueue.push({resolve, reject});
+                    })
+                    .then(() => {
+                        return appClient(originalRequest);
+                    })
+                    .catch(err => {
+                        return Promise.reject(err);
+                    });
+                }
+    
+                originalRequest._retry = true;
+                isRefreshing = true;
+    
+                try{
+                    await TokenHelpers.Renew(true);
+                    processQueue(null);
+                    isRefreshing = false;
+    
+                    return appClient(originalRequest);
+                }
+                catch(err){
+                    processQueue(err);
+                    isRefreshing = false;
+                    return Promise.reject(err);
+                }
+            }
+
             const serverReponseError = error.response.data.message;
             const invalidError = error.response.data.errors;
-
             if(invalidError){
                 for(const key in invalidError){
                     if(invalidError.hasOwnProperty(key)){
@@ -80,7 +122,7 @@ appClient.interceptors.response.use(
                 else{
                     toast({
                         type: "error",
-                        title: error.code,
+                        title: "Error",
                         message: serverReponseError,
                         duration: 4000*time
                     });
@@ -91,14 +133,22 @@ appClient.interceptors.response.use(
             else{
                 var errorCode = error.code
                 var errorMessage = error.message;
-
-                toast({
-                    type: "error",
-                    title: errorCode,
-                    message: errorMessage,
-                    duration: 4000*time
-                });
+                
+                if(errorMessage.includes("403")){
+                    window.location.href = CLIENT_URL + "access-denied";
+                }
+                else{
+                    toast({
+                        type: "error",
+                        title: errorCode,
+                        message: errorMessage,
+                        duration: 4000*time
+                    });
+                }
             }
+        }
+        else{
+            window.location.href = CLIENT_URL + "account/login";
         }
 
         return Promise.reject(error);

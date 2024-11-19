@@ -22,7 +22,7 @@ function DictionaryPage() {
     }, [])
 
     const handleEnrollClass = (item)=>{
-        console.log(item);
+        
     }
 
     return (

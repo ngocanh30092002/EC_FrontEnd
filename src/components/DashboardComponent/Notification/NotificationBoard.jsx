@@ -1,12 +1,11 @@
-import { GetCookie } from '@/helper/CookiesHelper';
 import toast from '@/helper/Toast';
 import * as signalR from '@microsoft/signalr';
 import { useEffect, useLayoutEffect, useState } from 'react';
-import { ACCESS_TOKEN, APP_API, REFRESH_TOKEN, IMG_URL_BASE } from '~/GlobalConstant';
+import { appClient } from '~/AppConfigs';
+import { ACCESS_TOKEN, APP_API, IMG_URL_BASE } from '~/GlobalConstant';
 import NoNotification from './NoNotification';
 import NotificationItem from './NotificationItem';
-import TokenHelpers from '@/helper/TokenHelper';
-import { appClient } from '~/AppConfigs';
+import TokenHelpers from '../../../helper/TokenHelper';
 
 function NotificationBoard(){
     const [isShowBoard, setShowBoard] = useState(false);
@@ -30,12 +29,9 @@ function NotificationBoard(){
 
     useEffect(() =>{
         const notiConnection = new signalR.HubConnectionBuilder()
-            .withUrl(APP_API + "noti", {
-                accessTokenFactory: () => {
-                    GetCookie(ACCESS_TOKEN);
-                }
+            .withUrl("https://localhost:44314/api/hub/notification", {
+                withCredentials: true
             })
-            .configureLogging(signalR.LogLevel.Error)
             .withAutomaticReconnect()
             .build();
 
@@ -48,12 +44,7 @@ function NotificationBoard(){
                     const handleError = async () =>{
                         var errorMessage = e.message;
                         if(errorMessage.includes("401") && connectNum < 3){
-                            var accessToken = GetCookie(ACCESS_TOKEN);
-                            var refreshToken = GetCookie(REFRESH_TOKEN);
-                            if(TokenHelpers.IsExpired(accessToken,refreshToken)){
-                                await TokenHelpers.Renew(accessToken, refreshToken, false);
-                            }
-
+                            await TokenHelpers.Renew(false);
                             startConnection(connectNum++);
                         }
                         else{
@@ -66,7 +57,7 @@ function NotificationBoard(){
                         }
                     }
 
-                    setTimeout(handleError,1000);
+                    setTimeout(handleError,5000);
                 });
             }
 

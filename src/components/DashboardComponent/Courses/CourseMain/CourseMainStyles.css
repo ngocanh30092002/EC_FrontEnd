@@ -91,3 +91,14 @@
     font-weight: 600;
     margin-bottom: 10px;
 }
+
+
+.ci__status{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: blue;
+}

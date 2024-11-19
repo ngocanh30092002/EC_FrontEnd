@@ -7,7 +7,6 @@ function NotificationItem({itemInfo, onMarkNoti}){
     const getTimeBefore = (time) =>{
         const pastDate = new Date(time);
         const timeDifference = new Date() - pastDate;
-
         const minuteDiff = timeDifference / (1000 * 60);
         const hoursDiff = timeDifference / (1000 * 60 * 60);
         const dayDiff = timeDifference / (1000 * 60 * 60 * 24);

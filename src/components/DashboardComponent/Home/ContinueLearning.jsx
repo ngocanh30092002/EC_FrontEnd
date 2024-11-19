@@ -80,7 +80,7 @@ function LearningInfo(props){
                     <div className='li__info-sub--name '>
                         {props.subName}
                     </div>
-                    <div className='li__info-sub--time '>
+                    <div className='li__info-sub--time line-clamp-1 '>
                         {props.time}
                     </div>
                 </div>
