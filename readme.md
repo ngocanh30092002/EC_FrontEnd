@@ -395,3 +395,79 @@
 ### useDebugValue
 
 
+# Bất đồng bộ
+	+ Callback
+		truyền func vào làm tham số của hàm
+	+ Promises
+		Giải quyết vấn đề callback hell
+
+		+ Là một lời hứa 
+			+ Có thể thực hiện
+			+ Không thể thực hiện
+		+ 3 trạng thái:
+			+ Pending ( chưa có kết quả trả về )
+			+ Fulfilled ( nếu thành công )
+			+ Rejected ( nếu thất bại )
+		+ Cách sử dụng
+			const currentPromise = new Promise( (resolve, reject) => {
+				let condition = true
+				if(condition){
+					setTimeOut(() => {
+						resolve("Success")
+					}, 3000)
+				}
+				else{
+					reject("error");
+				}
+			})
+
+			currentPromise
+			.then((data) =>{
+				console.log(data) // Success
+
+				return promise
+			})
+			.then(data =>{
+				...
+			})
+			.catch(err =>{
+				console.log(err) // error
+			})
+	+ Async await
+		Không được nằm ở global
+		Chỉ nằm trong hàm
+
+		const demo = async() =>{
+			var response = await promiseName
+			...
+		}
+
+
+	+ Event Loop, Web Apis, Micro task Queue
+
+		+ WebApis: 
+			fetch , setTimeout, URL, localStorage, ...
+			document, indexedDb, XMLHttpRequest
+			callback
+
+			Cách hoạt động:
+				navigator.geolocation.getCurrentPosition(position => console.log(position), error => console.log(error));
+
+				Đầu tiên thì ở call stack: thực thi getCurrentPosition luôn
+				sau đó khi mà được allow thì callback thành công sẽ được đẩy đến Task Queue
+				Event Loop: Có tác dụng kiểm tra xem liệu call stack đang trống hay không 
+					+ trống => đẩy callback từ task queue vào
+					+ không => giữ lại chưa đẩy vào
+
+				setTimeout thời gian là delay việc đẩy vào task queuee chứ kp delay để đưa vào callstack
+		+ Promise: được thực thi ngay khi tạo
+			+ Pending ( chưa có kết quả trả về )
+			+ Fulfilled ( nếu thành công )
+			+ Rejected ( nếu thất bại )
+
+			=> trả về giá trị qua resolve reject
+
+			new Promise((resolve, reject) => {
+				resovlve("done!");
+			})
+			.then(result => console.log(result)) => // sẽ chuyển callback này vào promisefullfillreaction (nhận promise result là tham số) => thêm vào microtask queue

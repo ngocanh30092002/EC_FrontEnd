@@ -10,7 +10,7 @@ function CourseDetailItem({ course }) {
 
     const getNumberAssignments = useCallback(async () => {
         try {
-            const response = await appClient.get(`api/assignments/course/${course.courseId}/number`)
+            const response = await appClient.get(`api/coursecontent/course/${course.courseId}/total-num`)
             const data = response.data;
 
             if (data.success) {
