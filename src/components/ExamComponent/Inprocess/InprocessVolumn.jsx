@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { IMG_URL_BASE } from '~/GlobalConstant.js';
-
+import "../ExamStyle.css"
 function InprocessVolumn({ onSetVolume, volume }) {
     const [isShowVolumn, setIsShowVolumn] = useState(false);
     const [volumeValue, setVolumeValue] = useState(volume);

@@ -4,7 +4,7 @@ import { appClient } from '~/AppConfigs';
 import { useState, useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-function ClassItem({classId}) {
+function ClassItem({data}) {
     const [classInfo, setClassInfo] = useState({});
     const defaultImageClass = IMG_URL_BASE + "unknown_user.jpg";
     const colors = ["bg-neutral-400","bg-green-500","bg-red-600"]
@@ -17,11 +17,12 @@ function ClassItem({classId}) {
 
     const getClassInfo = useCallback(async () =>{
         try{
-            var response = await appClient.get("api/classes/"+classId);
-            const data = response.data;
+            var response = await appClient.get("api/classes/"+ data.classId);
+
+            const dataRes = response.data;
         
-            if(data.success){
-                setClassInfo(data.message);
+            if(dataRes.success){
+                setClassInfo(dataRes.message);
             }
         }
         catch{
@@ -34,7 +35,9 @@ function ClassItem({classId}) {
     }, [])
 
     return (
-        <Link className='ci__wrapper' to={`classes/${classId}`}>
+        <Link className='ci__wrapper' to={`/classes/${data.classId}`} state={{
+            enrollId: data.enrollId
+        }}>
             <div className='ci__content relative'>
                 <div className="ci__img">
                     <img src={classInfo?.imageUrl ? APP_URL + classInfo.imageUrl : defaultImageClass}/>

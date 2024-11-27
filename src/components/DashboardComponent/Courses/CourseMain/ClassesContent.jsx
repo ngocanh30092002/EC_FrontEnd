@@ -28,7 +28,7 @@ function ClassesContent() {
 
             <div className='class-content__list grid grid-cols-4 gap-[15px]'>
                 {classes.map((item,index) =>
-                    <ClassItem key={index} classId={item.classId}/>
+                    <ClassItem key={index} data ={item}/>
                 )}
             </div>
         </div>

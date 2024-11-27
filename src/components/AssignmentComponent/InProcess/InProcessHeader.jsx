@@ -2,8 +2,8 @@ import React, { memo, useContext, useEffect, useRef, useState } from 'react'
 import { IMG_URL_BASE, CLIENT_URL } from '~/GlobalConstant.js';
 import { InProcessContext } from './InProcessAssignPage';
 
-function InProcessHeader({ onShowAnswerList, countDownTime, isSubmitted }) {
-    const { assignment } = useContext(InProcessContext);
+function InProcessHeader({ onShowAnswerList, countDownTime, isSubmitted, mode }) {
+    const { assignment, homework } = useContext(InProcessContext);
     const [hours, minutes, seconds] = countDownTime.split(':').map(Number);
     const time = (hours * 3600) + (minutes * 60) + seconds;
     return (
@@ -13,7 +13,7 @@ function InProcessHeader({ onShowAnswerList, countDownTime, isSubmitted }) {
             </a>
 
             <div className='flex items-center'>
-                {<CountdownTimer initialSeconds={time} onSubmitAssignment={assignment.submit} isSubmitted={isSubmitted} />}
+                {<CountdownTimer initialSeconds={time} onSubmitAssignment={mode == 0 ? assignment.submit : homework.submit} isSubmitted={isSubmitted} />}
 
                 <button className='assignment__btn-menu' onClick={onShowAnswerList}>
                     <img src={IMG_URL_BASE + "menu-icon.svg"} className='w-[30px]' />

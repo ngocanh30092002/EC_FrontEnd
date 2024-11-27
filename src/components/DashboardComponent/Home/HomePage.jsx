@@ -28,22 +28,8 @@ function HomePage() {
         }
     ]
 
-    const handleSendNoti = () => {
-        const sendNoti = async () => {
-            const notification = {
-                Title: "New Notification",
-                Description: "This is a test notification.",
-                Image: "/notifications/images/user_image.jpg",
-            };
-           var response = await appClient.post("api/notifications?groupName=123", notification)
-        }
-
-        sendNoti();
-    }
-
     return (
         <div className="grid grid-cols-12 gap-[15px] mx-[20px]">
-            {/* <button onClick={handleSendNoti}>Click Here</button> */}
             <div className="col-span-12 lg:col-span-8 grid grid-cols-12 gap-[15px]">
                 {infoItems.map((item,index) =>{
                     return (

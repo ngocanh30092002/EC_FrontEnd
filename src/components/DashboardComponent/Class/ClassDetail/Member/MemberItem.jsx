@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { ClassPageContext } from '../ClassPage';
+import { ClassPageContext } from '../ClassDetailPage';
 import { APP_URL, IMG_URL_BASE } from '~/GlobalConstant.js';
 
 function MemberItem({ data }) {

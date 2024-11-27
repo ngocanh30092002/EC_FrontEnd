@@ -2,18 +2,19 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IMG_URL_BASE, APP_URL } from '~/GlobalConstant.js';
 import HistoryProcesses from '../../DashboardComponent/Courses/CourseDetail/HistoryProcesses';
+import HistoryHomework from '../../DashboardComponent/Courses/CourseDetail/HistoryHomework';
 
-function OverviewBody({onAttempAssignment, assignment, enroll, numberAttempted}) {
+function OverviewBody({ onAttempAssignment, assignment, enroll, numberAttempted, homework, mode }) {
     const navigate = useNavigate();
     const [isShowHis, setIsShow] = useState(false);
 
-    const handleAttempAssignment = (e) =>{
+    const handleAttempt = (e) => {
         onAttempAssignment();
     }
-    const handleSetShow = (data) =>{
+    const handleSetShow = (data) => {
         setIsShow(data);
     }
-    const handleViewResult = () =>{
+    const handleViewResult = () => {
         setIsShow(true);
     }
 
@@ -25,25 +26,54 @@ function OverviewBody({onAttempAssignment, assignment, enroll, numberAttempted})
 
                 <div className='grid grid-cols-12 gap-[20px] px-[40px] py-[10px] mt-[20px] min-h-[420px] h-full'>
                     <div className='col-span-9 aob__assignment-info--wrapper flex items-center justify-center '>
-                        <div className='w-[600px] translate-y-[-15%] h-[95%] aob__assginment-container bg-white max-h-[380px]'>
-                            <div className='aob__assignment-title text-center'>{assignment?.title}</div>
-                            <div className='px-[20px]' >
-                                <div className='flex items-center '>
-                                    <span className='aob__assignment-header flex-1 border-t-0'>Time </span>
-                                    <span className='aob__assignment-value flex-1 border-t-0'> {assignment?.time}</span>
+                        <div className='w-[600px] translate-y-[-10%] h-[95%] aob__assginment-container bg-white max-h-[450px]'>
+                            <div className='aob__assignment-title text-center'>{mode == 0 ? assignment?.title : homework?.title}</div>
+                            {
+                                mode == 0 &&
+                                <div className='px-[20px]' >
+                                    <div className='flex items-center '>
+                                        <span className='aob__assignment-header flex-1 !border-t-0'>Time </span>
+                                        <span className='aob__assignment-value flex-1 !border-t-0'> {assignment?.time}</span>
+                                    </div>
+                                    <div className='flex items-center'>
+                                        <span className='aob__assignment-header flex-1'>Pass Rate</span>
+                                        <span className='aob__assignment-value flex-1'>{assignment?.achieved_Percentage}%</span>
+                                    </div>
+                                    <div className='flex items-center'>
+                                        <span className='aob__assignment-header flex-1'>Number Attempted</span>
+                                        <span className='aob__assignment-value flex-1'>{numberAttempted}</span>
+                                    </div>
                                 </div>
-                                <div className='flex items-center'>
-                                    <span className='aob__assignment-header flex-1'>Pass Rate</span>
-                                    <span className='aob__assignment-value flex-1'>{assignment?.achieved_Percentage}%</span>
+                            }
+
+                            {
+                                mode == 1 &&
+                                <div className='px-[20px]' >
+                                    <div className='flex items-center '>
+                                        <span className='aob__assignment-header flex-1 !border-t-0'>Time </span>
+                                        <span className='aob__assignment-value flex-1 !border-t-0'> {homework?.time}</span>
+                                    </div>
+                                    <div className='flex items-center'>
+                                        <span className='aob__assignment-header flex-1'>Pass Rate</span>
+                                        <span className='aob__assignment-value flex-1'>{homework?.achieved_Percentage}%</span>
+                                    </div>
+                                    <div className='flex items-center'>
+                                        <span className='aob__assignment-header flex-1'>Start Time</span>
+                                        <span className='aob__assignment-value flex-1'>{homework?.startTime}</span>
+                                    </div>
+                                    <div className='flex items-center'>
+                                        <span className='aob__assignment-header flex-1'>End Time</span>
+                                        <span className='aob__assignment-value flex-1'>{homework?.endTime}</span>
+                                    </div>
+                                    <div className='flex items-center'>
+                                        <span className='aob__assignment-header flex-1'>Number Attempted</span>
+                                        <span className='aob__assignment-value flex-1'>{numberAttempted}</span>
+                                    </div>
                                 </div>
-                                <div className='flex items-center'>
-                                    <span className='aob__assignment-header flex-1'>Number Attempted</span>
-                                    <span className='aob__assignment-value flex-1'>{numberAttempted}</span>
-                                </div>
-                            </div>
+                            }
 
                             <div className='flex items-center justify-between px-[20px]'>
-                                <button className='aob-btn' onClick={handleAttempAssignment}>Attempt Now</button>
+                                <button className='aob-btn' onClick={handleAttempt}>Attempt Now</button>
                                 <button className='aob-btn hover:bg-red-700' onClick={handleViewResult}>View Result</button>
                             </div>
                         </div>
@@ -52,7 +82,7 @@ function OverviewBody({onAttempAssignment, assignment, enroll, numberAttempted})
                     <div className='col-span-3 flex justify-center items-center'>
                         <div className="aob__user-info--wrapper translate-y-[-15%] w-[95%] h-[95%] max-h-[380px] flex flex-col">
                             <div className='flex justify-center p-[10px]'>
-                                <img src={enroll?.studentBackground?.image ? APP_URL + enroll.studentBackground.image : IMG_URL_BASE + "unknown_user.jpg" } className='aob__user-img' />
+                                <img src={enroll?.studentBackground?.image ? APP_URL + enroll.studentBackground.image : IMG_URL_BASE + "unknown_user.jpg"} className='aob__user-img' />
                             </div>
                             <div className='flex items-center flex-col'>
                                 <div className='aob__full-name'>{enroll?.student?.firstName} {enroll?.student?.lastName}</div>
@@ -78,7 +108,8 @@ function OverviewBody({onAttempAssignment, assignment, enroll, numberAttempted})
                 </div>
             </div>
 
-            {isShowHis && <HistoryProcesses onSetShow={handleSetShow} type={1} assignmentId={assignment.assignmentId} enrollId={enroll.enrollId}/>}
+            {isShowHis && mode == 0 && <HistoryProcesses onSetShow={handleSetShow} type={1} assignmentId={assignment.assignmentId} enrollId={enroll.enrollId} />}
+            {isShowHis && mode == 1 && <HistoryHomework onSetShow={handleSetShow} homeworkId={homework.homeworkId} enrollId ={enroll.enrollId}/>}
         </div>
     )
 }

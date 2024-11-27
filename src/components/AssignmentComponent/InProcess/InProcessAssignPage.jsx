@@ -16,7 +16,7 @@ function InProcessAssignPage() {
     const navigate = useNavigate();
     const location = useLocation();
     const isBlockingRef = useRef(true);
-
+    const [mode, setMode] = useState(location.state.mode);
     const [volume, setVolume] = useState(1);
     const [userInfo, setUserInfo] = useState(location.state)
     const [isLoading, setIsLoading] = useState(false);
@@ -34,6 +34,7 @@ function InProcessAssignPage() {
 
         return quesIndex;
     });
+
     const [answerSheet, setAnswerSheet] = useState(() => {
         let answerRecords = sessionStorage.getItem("answer-sheet");
         if (answerRecords) {
@@ -45,90 +46,12 @@ function InProcessAssignPage() {
     const params = new URLSearchParams(location.search);
 
     useEffect(() => {
-        if (userInfo == null) {
+        if (userInfo == null || mode == null) {
             navigate("/access-denied");
         }
     }, [])
 
     useEffect(() => {
-        const assignQuesPromise = async () => {
-            try {
-                const response = await appClient.get(`api/AssignQues/assignments/${userInfo.assignment.assignmentId}`)
-                const data = response.data;
-                if (data.success) {
-                    return data.message;
-                }
-                return null;
-            }
-            catch {
-                return null;
-            }
-        };
-
-        assignQuesPromise().then(data => {
-            let i = 1;
-            if (data) {
-                data.map((ques) => {
-                    if (ques.quesInfo?.questions) {
-                        ques.quesInfo.questions.map(item => {
-                            item.quesNo = i++;
-                            return item;
-                        })
-                    }
-                    else {
-                        return ques.quesNo = i++;
-                    }
-                })
-            }
-
-            setAssignQues(data);
-
-            if (answerSheet.length === 0) {
-                i = 1;
-                const result = data.flatMap(ques => {
-                    if (ques.quesInfo?.questions) {
-                        return ques.quesInfo.questions.map((item) => {
-                            return ({
-                                id: i++,
-                                answered: false,
-                                marked: false,
-                                subQuesId: item.quesId,
-                                assignQuesId: ques.assignQuesId,
-                                userSelected: null,
-                                replay: 0
-                            })
-                        });
-                    }
-
-                    return {
-                        id: i++,
-                        answered: false,
-                        marked: false,
-                        subQuesId: null,
-                        assignQuesId: ques.assignQuesId,
-                        userSelected: null,
-                        replay: 0
-                    };
-                })
-
-                if (params.get("mode") == "view-answer") {
-                    const getResult = () => {
-                        appClient.get(`api/AssignmentRecords/processes/${userInfo?.processId}/result`)
-                            .then(res => res.data)
-                            .then(data => {
-                                setAnswerSheet(pre => result);
-                                handleAddResult(data.message);
-                            })
-                    }
-                    getResult();
-                }
-                else {
-                    setAnswerSheet(result);
-
-                }
-            }
-        })
-
         const getIsSubmitted = () => {
             if (userInfo?.processId) {
                 appClient.get(`api/LearningProcesses/${userInfo.processId}/is-submitted`)
@@ -146,7 +69,187 @@ function InProcessAssignPage() {
             }
         };
 
-        getIsSubmitted();
+        const getIsSubmittedByHw = () => {
+            if (userInfo?.hwSubmissionId) {
+                appClient.get(`api/HwSubmission/${userInfo.hwSubmissionId}/is-submitted`)
+                    .then((response) => {
+                        return response.data;
+                    })
+                    .then((data) => {
+                        if (data.success) {
+                            setIsSubmitted(data.message);
+                        }
+                    })
+                    .catch(() => {
+                        setIsSubmitted(false);
+                    })
+            }
+        }
+
+        if (mode == 0) {
+            const assignQuesPromise = async () => {
+                try {
+                    const response = await appClient.get(`api/AssignQues/assignments/${userInfo.assignment.assignmentId}`)
+                    const data = response.data;
+                    if (data.success) {
+                        return data.message;
+                    }
+                    return null;
+                }
+                catch {
+                    return null;
+                }
+            };
+
+            assignQuesPromise().then(data => {
+                let i = 1;
+                if (data) {
+                    data.map((ques) => {
+                        if (ques.quesInfo?.questions) {
+                            ques.quesInfo.questions.map(item => {
+                                item.quesNo = i++;
+                                return item;
+                            })
+                        }
+                        else {
+                            return ques.quesNo = i++;
+                        }
+                    })
+                }
+
+                setAssignQues(data);
+
+                if (answerSheet.length === 0) {
+                    i = 1;
+                    const result = data.flatMap(ques => {
+                        if (ques.quesInfo?.questions) {
+                            return ques.quesInfo.questions.map((item) => {
+                                return ({
+                                    id: i++,
+                                    answered: false,
+                                    marked: false,
+                                    subQuesId: item.quesId,
+                                    assignQuesId: ques.assignQuesId,
+                                    userSelected: null,
+                                    replay: 0
+                                })
+                            });
+                        }
+
+                        return {
+                            id: i++,
+                            answered: false,
+                            marked: false,
+                            subQuesId: null,
+                            assignQuesId: ques.assignQuesId,
+                            userSelected: null,
+                            replay: 0
+                        };
+                    })
+
+                    if (params.get("mode") == "view-answer") {
+                        const getResult = () => {
+                            appClient.get(`api/AssignmentRecords/processes/${userInfo?.processId}/result`)
+                                .then(res => res.data)
+                                .then(data => {
+                                    setAnswerSheet(pre => result);
+                                    handleAddResult(data.message);
+                                })
+                        }
+                        getResult();
+                    }
+                    else {
+                        setAnswerSheet(result);
+
+                    }
+                }
+            })
+
+            getIsSubmitted();
+        }
+        else {
+            const homeQuesPromise = async () => {
+                try {
+                    const response = await appClient.get(`api/HomeQues/homework/${userInfo.homework.homeworkId}`);
+                    const data = response.data;
+                    if (data.success) {
+                        return data.message;
+                    }
+
+                    return null;
+                }
+                catch {
+                    return null;
+                }
+            }
+
+            homeQuesPromise().then(data => {
+                let i = 1;
+                if (data) {
+                    data.map((ques) => {
+                        if (ques.quesInfo?.questions) {
+                            ques.quesInfo.questions.map(item => {
+                                item.quesNo = i++;
+                                return item;
+                            })
+                        }
+                        else {
+                            return ques.quesNo = i++;
+                        }
+                    })
+                }
+
+                setAssignQues(data);
+
+                console.log(answerSheet);
+                if (answerSheet.length === 0) {
+                    i = 1;
+                    const result = data.flatMap(ques => {
+                        if (ques.quesInfo?.questions) {
+                            return ques.quesInfo.questions.map((item) => {
+                                return ({
+                                    id: i++,
+                                    answered: false,
+                                    marked: false,
+                                    subQuesId: item.quesId,
+                                    assignQuesId: ques.homeQuesId,
+                                    userSelected: null,
+                                    replay: 0
+                                })
+                            });
+                        }
+
+                        return {
+                            id: i++,
+                            answered: false,
+                            marked: false,
+                            subQuesId: null,
+                            assignQuesId: ques.homeQuesId,
+                            userSelected: null,
+                            replay: 0
+                        };
+                    })
+
+                    // Todo
+                    if (params.get("mode") == "view-answer") {
+                        const getResult = () => {
+                            appClient.get(`api/HwSubRecords/${userInfo?.hwSubmissionId}/result`)
+                                .then(res => res.data)
+                                .then(data => {
+                                    setAnswerSheet(pre => result);
+                                    handleAddResult(data.message);
+                                })
+                        }
+                        getResult();
+                    }
+                    else {
+                        setAnswerSheet(result);
+                    }
+                }
+            })
+
+            getIsSubmittedByHw();
+        }
     }, [])
 
     useEffect(() => {
@@ -187,8 +290,10 @@ function InProcessAssignPage() {
 
         return () => {
             if (isSubmittedRef.current == true) {
-                localStorage.clear();
-                sessionStorage.clear();
+                setTimeout(() => {
+                    localStorage.clear();
+                    sessionStorage.clear();
+                }, 2000)
             }
         }
     }, [isSubmitted])
@@ -440,24 +545,110 @@ function InProcessAssignPage() {
         }
     }
 
+    const handleSubmitHomework = (isTimeOut = false) => {
+        const handleSubmit = async () => {
+            try {
+                const formData = new FormData();
+                formData.append("homeworkId", userInfo.homework.homeworkId);
+
+                answerSheet.forEach((item, index) => {
+                    formData.append(`Answers[${index}][submissionId]`, userInfo.hwSubmissionId);
+                    formData.append(`Answers[${index}][hwQuesId]`, item.assignQuesId);
+                    if (item?.subQuesId) {
+                        formData.append(`Answers[${index}][hwSubQuesId]`, item.subQuesId);
+                    }
+                    if (item.userSelected) {
+                        formData.append(`Answers[${index}][selectedAnswer]`, item.userSelected);
+                    }
+                });
+
+                setIsLoading(prev => true);
+                const response = await appClient.put(`api/HwSubmission/${userInfo.hwSubmissionId}/submit`, formData)
+                const data = response.data;
+                if (data.success) {
+                    setIsShowSubmitInfo(true);
+                    setIsSubmitted(true);
+                    setIsLoading(prev => false);
+                }
+            }
+            catch {
+
+            }
+        }
+
+        if (!isTimeOut) {
+            let isExistNotAnswer = answerSheet.some(a => a.answered === false);
+            let isMarkedAnswer = answerSheet.some(a => a.marked === true);
+
+            if (isExistNotAnswer) {
+                let confirmAnswer = confirm("You still have unanswered questions, are you sure you want to submit?");
+                if (confirmAnswer) {
+                    if (params.get("mode") !== "view-answer") {
+                        handleSubmit()
+                    }
+                }
+
+                return;
+            }
+            else if (isMarkedAnswer) {
+                let confirmAnswer = confirm("You still have questions marked, Do you want to submit now?");
+                if (confirmAnswer) {
+                    if (params.get("mode") !== "view-answer") {
+                        handleSubmit()
+                    }
+                }
+
+                return;
+            }
+            else {
+                if (params.get("mode") !== "view-answer") {
+                    handleSubmit()
+                }
+                return;
+            }
+        }
+
+        if (params.get("mode") !== "view-answer") {
+            handleSubmit()
+        }
+    }
+
     const handleSetShowSubmitInfo = (data) => {
         setIsShowSubmitInfo(data);
     }
 
     const handleAddResult = (data) => {
         setAnswerSheet(oldAnswerSheet => {
-            oldAnswerSheet.map((item, index) => {
-                let answerInfo = data.find(a => a.assignQuesId == item.assignQuesId && a.subQueId == item.subQuesId)
-                item.isCorrect = answerInfo.isCorrect;
-                item.answerInfo = answerInfo.answerInfo;
-                item.userSelected = answerInfo.selectedAnswer;
-                return item;
-            })
+            if (mode == 0) {
+                oldAnswerSheet.map((item, index) => {
+                    let answerInfo = data.find(a => a.assignQuesId == item.assignQuesId && a.subQueId == item.subQuesId)
+                    item.isCorrect = answerInfo.isCorrect;
+                    item.answerInfo = answerInfo.answerInfo;
+                    item.userSelected = answerInfo.selectedAnswer;
+                    return item;
+                })
+            }
+            else {
+                oldAnswerSheet.map((item, index) => {
+                    let answerInfo = data.find(a => a.hwQuesId == item.assignQuesId && a.hwSubQuesId == item.subQuesId)
+                    item.isCorrect = answerInfo.isCorrect;
+                    item.answerInfo = answerInfo.answerInfo;
+                    item.userSelected = answerInfo.selectedAnswer;
+                    return item;
+                })
+            }
 
             sessionStorage.setItem("answer-sheet", JSON.stringify([...oldAnswerSheet]));
 
             return [...oldAnswerSheet];
         });
+
+        console.log("here");
+        setVolume(vol => vol - 0.5);
+        console.log("here1");
+        setTimeout(() => {
+            setVolume(vol => 1);
+        }, (1000));
     }
 
     const InProcessData = {
@@ -477,8 +668,12 @@ function InProcessAssignPage() {
         },
         assignment: {
             submit: handleSubmitAssignment
+        },
+        homework: {
+            submit: handleSubmitHomework
         }
     }
+
 
     return (
         <InProcessContext.Provider value={InProcessData}>
@@ -487,6 +682,7 @@ function InProcessAssignPage() {
                     onShowAnswerList={handleShowAnswerSheet}
                     countDownTime={userInfo.time ?? "00:00:00"}
                     isSubmitted={isSubmitted}
+                    mode={mode}
                 />
 
                 <div className="flex bg-gray-300 h-full p-[10px]">
@@ -498,18 +694,27 @@ function InProcessAssignPage() {
                     />
 
                     <InProcessAnswers
-                        className={`ml-[10px] ${!isShowAnswerSheet && "max-w-0 opacity-0 translate-x-[100%] p-0 !ml-[0]"}`}
+                        className={`ml-[10px] ${!isShowAnswerSheet && "!max-w-0 opacity-0 translate-x-[100%] !p-0 !ml-[0]"}`}
                         answerSheet={answerSheet}
                         isSubmitted={isSubmitted}
                         courseId={userInfo?.course}
+                        onShowSubmitInfo = {handleSetShowSubmitInfo}
+                        mode={mode}
                     />
                 </div>
 
                 <AssignmentFooter isFixed={false} />
 
-                {isShowSubmitInfo && <InProcessSubmitInfo processId={userInfo.processId} onShowSubmitInfo={handleSetShowSubmitInfo} userInfo={userInfo} />}
+                {isShowSubmitInfo &&
+                    <InProcessSubmitInfo
+                        processId={userInfo.processId}
+                        hwSubmissionId={userInfo.hwSubmissionId}
+                        onShowSubmitInfo={handleSetShowSubmitInfo}
+                        userInfo={userInfo}
+                        mode={mode}
+                    />}
 
-                <InprocessVolumn onSetVolume={setVolume} volume={volume} />
+                {isSubmitted == false && <InprocessVolumn onSetVolume={setVolume} volume={volume} />}
 
                 {
                     isLoading == true &&

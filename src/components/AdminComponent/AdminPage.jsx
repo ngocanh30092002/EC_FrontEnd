@@ -1,39 +1,57 @@
 import React, { useEffect, useState } from 'react'
-import { appClient } from '../../../AppConfigs';
-import { APP_URL } from '~/GlobalConstant.js';
+import SideBarPage from './SideBarAdmin/SideBarPage';
+import AdminMainPage from './MainAdmin/AdminMainPage';
+import { appClient } from './../../../AppConfigs';
+import { ROLES } from '~/GlobalConstant';
+import { useNavigate } from 'react-router-dom';
+import toast from '@/helper/Toast';
+
 
 function AdminPage() {
-    const [audioLink , setAudioLink] = useState(null);
+    const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
 
-    useEffect(() =>{
-        const getAudio = async() =>{
-            try{
-                const response = await appClient.get("api/lc-images")
+    useEffect(() => {
+        const getRoleAsync = async () => {
+            try {
+                const response = await appClient.get("api/roles/user")
                 const data = response.data;
-                if(data.success){
-                    setAudioLink(...data.message);
+                if (data.success) {
+                    const roles = data.message;
+                    let isExist = roles.some(r => r == ROLES.ADMIN);
+                    if (!isExist) {
+                        toast({
+                            type: "error",
+                            title: "Error",
+                            message: "You are not allowed to access this page",
+                            duration: 4000
+                        });
+
+                        setTimeout(() => {
+                            navigate("/");
+                        }, 1000);
+                    }
+                    else {
+                        setIsLoading(true);
+                    }
                 }
             }
-            catch(error){
-    
+            catch {
+
             }
         }
-        
-        getAudio();
+
+        getRoleAsync();
     }, [])
 
     return (
-        <div>
-            {audioLink &&  
-            <div>
-                <audio controls>
-                    <source src={APP_URL + audioLink?.audioUrl} type="audio/mpeg"/>
-                </audio>
-
-                <img src={APP_URL + audioLink?.imageUrl}></img>
-            </div>
-            }
-        </div>
+        <>
+            {isLoading == true &&
+                <div className='flex w-screen h-screen relative'>
+                    <SideBarPage />
+                    <AdminMainPage />
+                </div>}
+        </>
     )
 }
 

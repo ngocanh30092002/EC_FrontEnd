@@ -1,19 +1,17 @@
-import HomePage from './Home/HomePage';
-import BookmarksPage from './Bookmarks/BookmarksPage';
-import ToeicsPage from './Toeics/ToeicsPage';
+import ClassPage from './Class/ClassPage';
 import CoursesPage from './Courses/CoursesPage';
 import DictionaryPage from './Dictionary/DictionaryPage';
-import SettingPage from './Setting/SettingPage';
-import HelpCenterPage from './HelpCenter/HelpCenterPage';
+import HomePage from './Home/HomePage';
 import LogoutPage from './Logout/LogoutPage';
 import ProfilePage from './Profile/ProfilePage';
-import ClassPage from './Class/ClassPage';
+import ToeicsPage from './Toeics/ToeicsPage';
+import { CLIENT_URL } from '~/GlobalConstant.js';
 
 export const homeComponents = [
     {
         id: 0,
         name: "Home",
-        component: <HomePage/>,
+        component: <HomePage />,
         img: 'home_icon.svg',
         link: "/",
         linkToRedirect: "/",
@@ -21,50 +19,42 @@ export const homeComponents = [
     {
         id: 1,
         name: "Profile",
-        component: <ProfilePage/>,
+        component: <ProfilePage />,
         img: "user-profile.svg",
-        link:"/profile/*",
+        link: "/profile/*",
         linkToRedirect: "/profile"
     },
-    {
-        id: 2,
-        name: "Bookmarks",
-        component: <BookmarksPage/>,
-        img: 'bookmark_icon.svg',
-        link: "/bookmarks",
-        linkToRedirect: "/bookmarks",
-    }
 ]
 
 export const studyComponents = [
     {
-        id: 3,
+        id: 2,
         name: "Toeics",
-        component: <ToeicsPage/>,
+        component: <ToeicsPage />,
         img: 'toeic_icon.svg',
         link: "/toeics",
         linkToRedirect: "/toeics",
     },
     {
-        id: 4,
+        id: 3,
         name: "Courses",
-        component: <CoursesPage/>,
+        component: <CoursesPage />,
         img: 'hat_icon.svg',
         link: "/courses/*",
         linkToRedirect: "/courses",
     },
     {
-        id: 5,
-        name: "Class",
-        component: <ClassPage/>,
+        id: 4,
+        name: "Classes",
+        component: <ClassPage />,
         img: 'homework_icon.svg',
-        link: "/class",
-        linkToRedirect: "/class",
+        link: "/classes/*",
+        linkToRedirect: "/classes",
     },
     {
-        id: 6,
+        id: 5,
         name: "Dictionary",
-        component: <DictionaryPage/>,
+        component: <DictionaryPage />,
         img: 'dictionary_icon.svg',
         link: "/dictionary",
         linkToRedirect: "/dictionary",
@@ -74,26 +64,67 @@ export const studyComponents = [
 export const settingComponents = [
     {
         id: 7,
-        name: "Setting",
-        component: <SettingPage/>,
-        img: 'setting.svg',
-        link: "/setting",
-        linkToRedirect: "/setting",
-    },
-    {
-        id: 8,
-        name: "Help Center",
-        component: <HelpCenterPage/>,
-        img: 'question_icon.svg',
-        link: "/helpcenter",
-        linkToRedirect: "/helpcenter",
-    },
-    {
-        id: 9,
         name: "Log Out",
-        component: <LogoutPage/>,
+        component: <LogoutPage />,
         img: 'close_sidebar.svg',
         link: "/logout",
         linkToRedirect: "/logout",
     },
- ]
+]
+
+export const adminUserComponents = [
+    {
+        id: 8,
+        name: "Members",
+        component: <div>Hi</div>,
+        img: 'close_sidebar.svg',
+        link: "/admin/*",
+        linkToRedirect: "/admin",
+    },
+    {
+        id: 9,
+        name: "Roles",
+        component: <div>Hi</div>,
+        img: 'close_sidebar.svg',
+        link: "/admin/roles/*",
+        linkToRedirect: "/admin/roles",
+    },
+]
+
+export const adminStudyComponents = [
+    {
+        id: 10,
+        name: "Classes",
+        component: <div>Hi</div>,
+        img: 'close_sidebar.svg',
+        link: "/admin/classes/*",
+        linkToRedirect: "/admin/classes",
+    },
+    {
+        id: 11,
+        name: "Courses",
+        component: <div>Hi</div>,
+        img: 'close_sidebar.svg',
+        link: "/admin/courses/*",
+        linkToRedirect: "/admin/courses",
+    }
+]
+
+export const adminRedirectComponents = [
+    {
+        id: 12,
+        name: "Dash Broad",
+        component: <LogoutPage />,
+        img: 'sync-icon.svg',
+        link: "/admin/*",
+        linkToRedirect: CLIENT_URL,
+    },
+    {
+        id: 13,
+        name: "Log Out",
+        component: <HomePage />,
+        img: 'close_sidebar.svg',
+        link: "/logout",
+        linkToRedirect: "/logout",
+    },
+]

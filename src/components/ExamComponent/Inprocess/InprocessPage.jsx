@@ -551,7 +551,7 @@ function InprocessPage() {
                     }
 
                     <InprocessAnswerSheet
-                        className={`ml-[10px] ${!isShowAnswerSheet && "max-w-0 opacity-0 translate-x-[100%] p-0 !ml-[0]"}`}
+                        className={`ml-[10px] ${!isShowAnswerSheet && "!max-w-0 opacity-0 translate-x-[100%] !p-0 !ml-[0]"}`}
                         answerSheet={answerSheet}
                         isSubmitted={isSubmitted}
                         courseId={userInfo?.class?.courseId}
@@ -568,7 +568,7 @@ function InprocessPage() {
                         attemptId={attemptId}
                     />}
 
-                {isSubmitted && <InprocessVolumn onSetVolume={setVolume} volume={volume} />}
+                {isSubmitted == false && <InprocessVolumn onSetVolume={setVolume} volume={volume} />}
 
                 {
                     isLoading == true &&

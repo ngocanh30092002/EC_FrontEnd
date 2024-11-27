@@ -29,7 +29,7 @@ function MemberBroad({onShowMembers, isShow, members}) {
     }, [members])
 
     return (
-        <div className={` overflow-hidden flex flex-col border-l ${isShow ? "w-[250px] max-w-[250px] ml-[10px]" :"max-w-0 ml-0" } transition-all duration-300  ease-out`}>
+        <div className={`fixed z-[1] bottom-0 right-0 h-full bg-white overflow-hidden flex flex-col border-l ${isShow ? "w-[250px] max-w-[250px] ml-[10px]" :"max-w-0 ml-0" } transition-all duration-300  ease-out`}>
             <div className='flex justify-between items-center p-[10px]'>
                 <div className='member-title'>
                     Teachers

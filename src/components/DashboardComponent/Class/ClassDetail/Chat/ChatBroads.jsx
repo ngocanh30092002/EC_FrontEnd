@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { appClient } from '~/AppConfigs';
 import { APP_API, APP_URL, IMG_URL_BASE } from '~/GlobalConstant.js';
-import { ClassPageContext } from '../ClassPage';
+import { ClassPageContext } from '../ClassDetailPage';
 
 
 

@@ -38,7 +38,7 @@
 }
 
 .pi__process-title {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
     font-family: 'Nunito', sans-serif;
 }
@@ -118,7 +118,7 @@
 }
 
 .pi__answer-title {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
     font-family: 'Nunito', sans-serif;
 }
@@ -139,7 +139,7 @@
     text-align: center;
     border-radius: 10px;
     font-family: 'Nunito', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
     letter-spacing: 0.4px;
     border: solid 1px var(--border-color);
@@ -150,7 +150,6 @@
 }
 
 .pi__answer-submit-btn {
-    margin-top: 30px;
     color: var(--white-color);
     border: none;
     background-color: var(--primary-color);
