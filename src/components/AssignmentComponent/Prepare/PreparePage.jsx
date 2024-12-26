@@ -79,7 +79,8 @@ function PreparePage() {
                         teacher: enrollment.teacherName,
                         enrollId: enrollment.enrollId,
                         time: "00:00:00",
-                        assignment: assignment
+                        assignment: assignment,
+                        mode: 0
                     }
                 });
                 localStorage.clear();

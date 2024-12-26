@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import "./DropDownList.css";
 
-function DropDownList({ data, defaultIndex, onSelectedItem, placeholder, className }) {
+function DropDownList({ data, defaultIndex, onSelectedItem, placeholder, className, tblClassName,name, hideDefault, readOnly = false }) {
     const [isShowList, setIsShowList] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(defaultIndex);
     const [inputValue, setInputValue] = useState(data[defaultIndex]?.key ?? "");
@@ -14,10 +14,16 @@ function DropDownList({ data, defaultIndex, onSelectedItem, placeholder, classNa
     useEffect(() => {
         setSelectedIndex(defaultIndex);
         setInputValue(data[defaultIndex]?.key ?? "");
+
+        if (onSelectedItem) {
+            onSelectedItem(data[defaultIndex], defaultIndex);
+        }
     }, [defaultIndex])
 
     const handleClickDDL = () => {
-        setIsShowList(!isShowList);
+        if (readOnly == false) {
+            setIsShowList(!isShowList);
+        }
     }
 
     const handleSetValue = (item, index) => {
@@ -40,20 +46,23 @@ function DropDownList({ data, defaultIndex, onSelectedItem, placeholder, classNa
             <input
                 type="text"
                 placeholder={placeholder}
+                name={name}
                 value={inputValue}
                 readOnly={true}
                 className={`cursor-pointer ddl--input w-full ${className}`}
                 onClick={handleClickDDL}
             />
 
-            <div className={`ddl-list absolute z-10 top-[95%] left-0  w-full pt-[10px] transition-all duration-200 ease-out ${isShowList ? "max-h-fit" : "max-h-0 pt-0"}`}>
+            <div className={`${tblClassName} ddl-list absolute z-[100] w-full top-[95%] left-0 h-[256px] overflow-scroll  mt-[10px] transition-all duration-200 ease-out ${isShowList ? "max-h-fit" : "max-h-0 pt-0"}`}>
 
-                <div
-                    className={`ddl--item ${selectedIndex == -1 && "selected"}`}
-                    onClick={(e) => handleSetValue("", -1)}
-                >
-                    Default
-                </div>
+                {hideDefault == false &&
+                    <div
+                        className={`ddl--item ${selectedIndex == -1 && "selected"}`}
+                        onClick={(e) => handleSetValue("", -1)}
+                    >
+                        Default
+                    </div>
+                }
 
                 {data.map((item, index) => {
                     return (

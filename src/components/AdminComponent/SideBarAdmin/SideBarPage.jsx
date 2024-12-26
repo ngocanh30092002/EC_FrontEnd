@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useRef, useState } from 'react'
 import { IMG_URL_BASE } from '~/GlobalConstant';
-import { adminRedirectComponents, adminStudyComponents, adminUserComponents } from '../../DashboardComponent/SideBarInfo';
+import { redirectComponents, adminStudyComponents, adminUserComponents } from '../../DashboardComponent/SideBarInfo';
 import { Link, useLocation } from 'react-router-dom';
 import "@components/DashboardComponent/SideBar/SideBarStyle.css"
 const SideBarContext = createContext();
@@ -25,7 +25,7 @@ function SideBarPage({className}) {
                 </ul>
 
                 <ul className='side-bar__extension'>
-                    {adminRedirectComponents.map((item, index) => <SideBarItem key={index} item={item} isExpand={isExpand} onActive = {setActiveIndex} activeIndex = {activeIndex}/>)}
+                    {redirectComponents.map((item, index) => <SideBarItem key={index} item={item} isExpand={isExpand} onActive = {setActiveIndex} activeIndex = {activeIndex}/>)}
                 </ul>
 
             </SideBarContext.Provider>
@@ -77,8 +77,6 @@ function SideBarTitle({ isExpand, onSetExpand }) {
 
 function SideBarItem({ isExpand, item, onActive, activeIndex }) {
     const location = useLocation();
-
-    console.log(location.pathname);
 
     useEffect(() => {
         const pathName = location.pathname;

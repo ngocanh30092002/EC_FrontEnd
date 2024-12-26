@@ -1,0 +1,104 @@
+.irp__icon-search{
+    border: solid 1px var(--border-color);
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-right: 0;
+    height: 43px;
+    width: 43px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.irp__input-search{
+    padding: 10px 10px;
+    margin-right: 20px;
+    border: solid 1px var(--border-color);
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-left: 0;
+    font-size: 14px;
+    font-family: 'Nunito', sans-serif;
+}
+
+.irp__btn-add{
+    font-size: 14px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: bold;
+    color: var(--white-color);
+    background-color: var(--primary-color);
+    padding: 10px 20px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+.irp__btn-add:hover{
+    opacity: 0.8;
+}
+
+.irp__wrapper{
+    animation: fadeInDown 1s ease-out; 
+    opacity: 0; 
+    animation-fill-mode: forwards;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 100;
+}
+
+.arb__title--text{
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    min-width: 100px;
+}
+
+.arb__input{
+    padding:  10px 20px;
+    border: solid 1px var(--border-color);
+    flex: 1;
+    border-radius: 20px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+}
+
+.irp__error{
+    border: solid 1px red;
+}
+
+.idr__wrapper{
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.idr__title--no-res{
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.idr__btn-close{
+    padding: 10px 20px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--white-color);
+    background-color: rgb(133, 0, 0);
+    border-radius: 15px;
+    transition: all 0.4s ease;
+}
+
+.idr__btn-close:hover{
+    opacity: 0.8;
+    background-color: rgb(234, 0, 0);
+}
+
+@keyframes fadeInDown {
+    0% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }

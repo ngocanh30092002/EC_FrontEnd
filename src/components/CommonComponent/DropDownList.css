@@ -27,3 +27,7 @@
 .ddl--item.selected{
     background-color: #edecec;
 }
+
+.drop-down-list__wrapper{
+    width: 100%;
+}

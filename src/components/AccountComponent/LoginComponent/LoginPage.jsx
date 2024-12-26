@@ -5,6 +5,7 @@ import { appClient } from '~/AppConfigs'
 import { APP_API, CLIENT_URL, IMG_URL_BASE, ROLES } from '~/GlobalConstant'
 import LoginGoogleButton from './LoginGoogle'
 import './LoginStyle.css'
+import LoaderPage from '../../LoaderComponent/LoaderPage'
 
 const LoginPage = () => {
     const [isShow, setShow] = useState(false);
@@ -22,7 +23,7 @@ const LoginPage = () => {
                                 OR LOGIN WITH ACCOUNT
                             </div>
 
-                            <LoginInfor onShowForgot = {setShow}/>
+                            <LoginInfor onShowForgot={setShow} />
 
                             <hr className='mt-5 hidden lg:block' />
 
@@ -30,7 +31,7 @@ const LoginPage = () => {
                         </div>
                     </div>
                 </div>
-                
+
                 <div className='flex-1 login-image--wrapper hidden sm:hidden lg:block'>
                     <div className='lg:w-[550px] lg:-right-4 xl:w-[700px] xl:-right-6 xl:-top-10 2xl:w-[900px] 2xl:-right-10 login-img-beside'>
                         <img src={IMG_URL_BASE + "loginImage7.png"} alt="login-beside" className="img-beside" />
@@ -39,7 +40,7 @@ const LoginPage = () => {
                 </div>
             </div>
 
-            {isShow && <ForgotPasswordPage onBackToLogin= {setShow} />}
+            {isShow && <ForgotPasswordPage onBackToLogin={setShow} />}
         </>
     )
 }
@@ -58,6 +59,8 @@ function LoginInfor({ onShowForgot }) {
     const [password, setPassword] = useState();
     const [checked, setChecked] = useState(false);
     const [errorMessage, setErrorMessage] = useState();
+    const [isLoading, setIsLoading] = useState(false);
+
     const navigate = useNavigate();
 
 
@@ -72,23 +75,49 @@ function LoginInfor({ onShowForgot }) {
         }
 
         const handleLoginSuccess = (response) => {
-            const handleRedirectWithRole = async () =>{
-                try{
+            const handleRedirectWithRole = async () => {
+                try {
                     var response = await appClient.get("api/students/roles")
                     var data = response.data;
 
-                    if(data.success){
+                    if (data.success) {
                         const roles = data.message;
 
-                        if(roles.includes(ROLES.ADMIN)){
+                        if (roles.includes(ROLES.ADMIN)) {
                             navigate("/admin")
+                            toast({
+                                type: "success",
+                                title: "SUCCESS",
+                                message: "Login Successfully",
+                                duration: 4000
+                            })
+
+                            return;
                         }
-                        else{
+                        else if (roles.includes(ROLES.TEACHER)) {
+                            navigate("/teacher");
+                            toast({
+                                type: "success",
+                                title: "SUCCESS",
+                                message: "Login Successfully",
+                                duration: 4000
+                            })
+
+                            return;
+                        }
+                        else {
                             navigate("/")
+                            toast({
+                                type: "success",
+                                title: "SUCCESS",
+                                message: "Login Successfully",
+                                duration: 4000
+                            })
+                            return;
                         }
                     }
                 }
-                catch(error){
+                catch (error) {
 
                 }
             }
@@ -96,11 +125,16 @@ function LoginInfor({ onShowForgot }) {
             handleRedirectWithRole();
         }
 
-        const handleLoginError = (error) =>{
-            if(error){
-                setErrorMessage(error.message);
+        const handleLoginError = (error) => {
+            if (error) {
+                toast({
+                    type: "error",
+                    duration: 5000,
+                    title: "Error",
+                    message: error.message
+                })
             }
-            else{
+            else {
                 toast({
                     type: "error",
                     duration: 5000,
@@ -109,6 +143,9 @@ function LoginInfor({ onShowForgot }) {
                 })
             }
         }
+
+        setIsLoading(true);
+
         $.ajax({
             method: 'POST',
             url: APP_API + "accounts/login",
@@ -125,33 +162,29 @@ function LoginInfor({ onShowForgot }) {
                 handleLoginError(xhr.responseJSON);
             }
         });
+
+        setIsLoading(false);
     }
 
     return <>
+        {isLoading && <LoaderPage />}
         <form>
-            <LoginButton type="text" name="username" placeholder="User Name" required={true} handleSetData={setUserName} onEnterKeyDown = {submitData} />
-            <LoginButton type="password" name="password" placeholder="Password" required={true} handleSetData={setPassword} isShowEye={true}  onEnterKeyDown = {submitData} />
+            <LoginButton type="text" name="username" placeholder="User Name" required={true} handleSetData={setUserName} onEnterKeyDown={submitData} />
+            <LoginButton type="password" name="password" placeholder="Password" required={true} handleSetData={setPassword} isShowEye={true} onEnterKeyDown={submitData} />
         </form>
 
         <div className="infor-extension flex items-center justify-between mt-1">
             <div className='flex justify-center'>
-                <input
-                    type="checkbox"
-                    className='infor-checkbox mr-2'
-                    id='cb-keep-login'
-                    checked={checked}
-                    style={{visibility: 'visible'}}
-                    onChange={() => setChecked(!checked)}></input>
-                <label htmlFor="cb-keep-login" className='mt-1'>Keep me logged in</label>
+                {errorMessage && <div className='error-message'>{errorMessage}</div>}
             </div>
-            <a className='underline cursor-pointer' onClick={(e) => onShowForgot(true)}>Forgot password</a>
+            <a className='underline cursor-pointer py-[10px]' onClick={(e) => onShowForgot(true)}>Forgot password</a>
 
-            
+
         </div>
-        
-        {errorMessage && <div className='error-message'>{errorMessage}</div>}
 
-        <button className='w-full login-submit-button mt-[20px]' onClick={submitData}>
+
+
+        <button className='w-full login-submit-button' onClick={submitData}>
             <div className='flex items-center px-4'>
                 <span className='flex-1'>Log in</span>
                 <img src={IMG_URL_BASE + "rightArrow.svg"} className='w-[20px] login-submit__icon' alt='arrow' />
@@ -163,9 +196,9 @@ function LoginInfor({ onShowForgot }) {
 function LoginButton(props) {
     const [isFocus, setFocus] = useState(false);
     const [isValid, setIsValid] = useState(true);
-    const [isShow , setShow] = useState(false);
+    const [isShow, setShow] = useState(false);
     const inputRef = useRef();
-    
+
     const handleBlurEvent = (e) => {
         if (e.target.value) {
             setFocus(true);
@@ -184,23 +217,23 @@ function LoginButton(props) {
         setIsValid(true);
     }
 
-    const ShowPassword = () =>{
+    const ShowPassword = () => {
         const className = 'absolute w-12 top-0 right-0 p-2 mt-0.5 z-10 cursor-pointer';
-        const handleShowPassword = () =>{
+        const handleShowPassword = () => {
             setShow(!isShow);
             inputRef.current.type = !isShow ? "text" : "password";
         }
 
         return <>
-            {isShow ? 
-                <img src='/src/assets/imgs/open_eye.svg' className={className} onClick={handleShowPassword}/> : 
-                <img src='/src/assets/imgs/close_eye.svg' className={className} onClick={handleShowPassword}/>
+            {isShow ?
+                <img src='/src/assets/imgs/open_eye.svg' className={className} onClick={handleShowPassword} /> :
+                <img src='/src/assets/imgs/close_eye.svg' className={className} onClick={handleShowPassword} />
             }
-        </> 
+        </>
     }
 
-    const handleKeyDown = (e) =>{
-        if(e.key === "Enter"){
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter") {
             props?.onEnterKeyDown();
         }
     }
@@ -208,17 +241,17 @@ function LoginButton(props) {
         <div className='pt-[20px]'>
             <div className='login-button__wrapper'>
                 <input
-                    type= {props.type}
-                    name= {props.name}
-                    required = {props.required}
-                    ref = {inputRef}
+                    type={props.type}
+                    name={props.name}
+                    required={props.required}
+                    ref={inputRef}
                     className={`login-button__text ${isValid ? "" : "error"}`}
                     onBlur={handleBlurEvent}
                     onFocus={handleFocusEvent}
-                    autoComplete = "off"
+                    autoComplete="off"
                     onKeyDown={(e) => handleKeyDown(e)}
                     onChange={(e) => props?.handleSetData?.(e.target.value)}
-                    />
+                />
                 <div className={`login-button__label ${isFocus ? 'lable-transform' : ""}`}>{props.placeholder}</div>
 
                 {props.isShowEye && ShowPassword()}
@@ -227,54 +260,61 @@ function LoginButton(props) {
     )
 }
 
-function ForgotPasswordPage({onBackToLogin}){
+function ForgotPasswordPage({ onBackToLogin }) {
     const [error, setError] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
     const inputRef = useRef(null);
 
-    const handleSubmit = () =>{
-        if(inputRef.current.value === ''){
+    const handleSubmit = () => {
+        if (inputRef.current.value === '') {
             setError("Email is required")
         }
         setError(null);
 
-        fetch(APP_API + "accounts/renew-password",{
+        setIsLoading(true);
+
+        fetch(APP_API + "accounts/renew-password", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(inputRef.current.value)
         })
-        .then(res => res.json())
-        .then(data => {
-            if(data.success){
-                toast({
-                    type: "success",
-                    duration: 5000,
-                    title: "Success",
-                    message:"Password change successful"
-                })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    toast({
+                        type: "success",
+                        duration: 5000,
+                        title: "Success",
+                        message: "Password change successful"
+                    })
 
-                setError(null);
-                
-                setTimeout(() => {
-                    onBackToLogin(false);
-                }, 1000);
-            }
-            else{
-                setError(data.message)
-            }
-        })
-        .catch(error =>{
-            toast({
-                type: "error",
-                duration: 5000,
-                title: "Error",
-                message: error.message
+                    setError(null);
+
+                    setTimeout(() => {
+                        onBackToLogin(false);
+                    }, 1000);
+                }
+                else {
+                    setError(data.message)
+                }
             })
-        });
+            .catch(error => {
+                toast({
+                    type: "error",
+                    duration: 5000,
+                    title: "Error",
+                    message: error.message
+                })
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
     }
 
     return <>
+        {isLoading && <LoaderPage />}
         <div className='forgot-password-wrapper'>
             <div className='fp__wrapper flex flex-col items-center'>
                 <img src={IMG_URL_BASE + "unlock.svg"} alt="" className="w-[100px] mt-[40px]" />
@@ -282,8 +322,8 @@ function ForgotPasswordPage({onBackToLogin}){
                 <span className='fp__message'>Enter your email and we'll send you a secret password to login.</span>
 
                 <div className='fp__input--wrapper'>
-                    <input type='text' className='fp__input' placeholder="Enter your email" ref={inputRef}/>
-                    <img src={IMG_URL_BASE + "letter-icon.svg"} alt="" className='w-[30px] fp__image'/>
+                    <input type='text' className='fp__input' placeholder="Enter your email" ref={inputRef} />
+                    <img src={IMG_URL_BASE + "letter-icon.svg"} alt="" className='w-[30px] fp__image' />
                 </div>
 
                 <span className='fp__error h-[18px]'>{error}</span>

@@ -25,7 +25,7 @@ function MemberBroad({onShowMembers, isShow, members}) {
     }
 
     useEffect(() =>{
-        setCurrentMembers(members.slice(1));
+        setCurrentMembers([...members].slice(1));
     }, [members])
 
     return (

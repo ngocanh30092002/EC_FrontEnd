@@ -4,21 +4,23 @@ import { APP_URL, IMG_URL_BASE } from '~/GlobalConstant.js';
 
 function MemberItem({ data }) {
     const {chats} = useContext(ClassPageContext);
-    let message = "";
-    if(data.isDelete == true){
-        message = "This message has been deleted."
-    }
-    else if(data.lastMessage){
-        message = data.lastMessage;
-    }
-    else{
-        message = "Say hi with friend"
-    }
+    let [message, setMessage ] = useState("");
+    
+    useEffect(() =>{
+        if(data.isDelete == true){
+            setMessage("This message has been deleted.");
+        }
+        else if(data.lastMessage){
+            setMessage(data.lastMessage);
+        }
+        else{
+            setMessage("Say hi with friend");
+        }
+    }, [data.lastMessage])
 
     const handleShowChat = () => {
         chats.add(data);
     }
-
 
     return (
         <div className='member-item__wrapper flex items-center' onClick={handleShowChat}>

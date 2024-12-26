@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import LoaderPage from './../LoaderComponent/LoaderPage';
+import MenuContextPage from '../MenuContextComponent/MenuContextPage';
 
 const LazyLoading = (importFunc, delay = 1000) => {
     return React.lazy(async () => {
@@ -27,6 +28,8 @@ function AssignmentPage() {
                     <Route path='/*' element={<StatusPage status={404} />} />
                 </Routes>
             </Suspense>
+
+            <MenuContextPage/>
         </div>
     )
 }

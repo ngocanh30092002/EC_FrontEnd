@@ -4,13 +4,46 @@ import { appClient } from '~/AppConfigs';
 import { IMG_URL_BASE, APP_URL } from '~/GlobalConstant.js';
 import toast from '@/helper/Toast';
 import { CreateRandom } from '@/helper/RandomHelper';
+import DropDownList from './../../../../CommonComponent/DropDownList';
 
 
 function HomeworkPage({ enrollId }) {
     const { classId } = useParams();
     const navigate = useNavigate();
     const [homework, setHomework] = useState([]);
+    const [renderHomework, setRenderHomework] = useState([]);
     const [submissonTasks, setSubmissionTasks] = useState([]);
+    const [defaultIndex, setDefaultIndex] = useState(0);
+    const [selectedFilter, setSelectedFilter] = useState(null);
+
+    const filterData = [
+        {
+            key: "All",
+            value: 1
+        },
+        {
+            key: "Waiting",
+            value: 2
+        },
+        {
+            key: "Open",
+            value: 3
+        },
+        {
+            key: "Late",
+            value: 4
+        },
+        {
+            key: "Overdue",
+            value: 5
+        },
+    ]
+
+    const handleSelectedFilter = (item,index)=>{
+        setSelectedFilter(item);
+        setDefaultIndex(index);
+    }
+
     useEffect(() => {
         if (!classId) {
             navigate(-1);
@@ -24,6 +57,9 @@ function HomeworkPage({ enrollId }) {
                 const resData = response.data;
                 if (resData.success) {
                     setHomework(resData.message);
+                    setDefaultIndex(0);
+                    setSelectedFilter(filterData[0]);
+                    setRenderHomework(resData.message);
                 }
             }
             catch {
@@ -36,7 +72,7 @@ function HomeworkPage({ enrollId }) {
                 const response = await appClient.get(`api/submissiontasks/classes/${classId}`);
                 const resData = response.data;
                 if (resData.success) {
-                    setSubmissionTasks([...resData.message, ...resData.message]);
+                    setSubmissionTasks(resData.message);
                 }
             }
             catch {
@@ -48,12 +84,45 @@ function HomeworkPage({ enrollId }) {
         getSubmissionTask();
     }, [])
 
+    useEffect(() =>{
+        let newListHomework = homework;
+
+        if(selectedFilter?.value == 2){
+            newListHomework = newListHomework.filter(i => i.status == 0);
+        }
+        
+        if(selectedFilter?.value == 3){
+            newListHomework = newListHomework.filter(i => i.status == 1);
+        }
+
+        if(selectedFilter?.value == 4){
+            newListHomework = newListHomework.filter(i => i.status == 2);
+        }
+
+        if(selectedFilter?.value == 5){
+            newListHomework = newListHomework.filter(i => i.status == 3);
+        }
+
+        setRenderHomework(newListHomework);
+    }, [selectedFilter])
+
     return (
         <div>
-            <div className='hp__current--wrapper p-[20px]'>
-                <div className='hp__current-title'>Current Available</div>
-                <div className='hp__homework--wrapper grid grid-cols-3 gap-[10px]'>
-                    {homework.map((item, index) => {
+            <div className='hp__current--wrapper p-[20px] overflow-visible'>
+                <div className='flex justify-between items-center overflow-visible mb-[15px]'>
+                    <div className='hp__current-title'>Current Available</div>
+                    <div className='flex items-center overflow-visible'>
+                        <div className='hp__filter--title'>Filter</div>
+                        <DropDownList 
+                            data={filterData} 
+                            className={"border !w-[120px] !py-[8px]"} tblClassName={"!w-[120px]"}
+                            defaultIndex={defaultIndex}
+                            onSelectedItem={handleSelectedFilter}
+                            />
+                    </div>
+                </div>
+                <div className='hp__homework--wrapper grid grid-cols-3 gap-[10px] min-h-[465px]'>
+                    {renderHomework.map((item, index) => {
                         return (
                             <HomeworkItem data={item} key={index} enrollId={enrollId} />
                         )
@@ -65,7 +134,7 @@ function HomeworkPage({ enrollId }) {
 
             {submissonTasks.length != 0 &&
                 <div className='hp__submission--wrapper p-[20px]'>
-                    <div className='hp__current-title'>Submisson Tasks</div>
+                    <div className='hp__current-title mb-[15px]'>Submisson Tasks</div>
 
                     <div className='hp__tasks--wrapper grid grid-cols-2 gap-[10px]'>
                         {
@@ -89,7 +158,12 @@ function HomeworkItem({ data, enrollId }) {
         const sessionId = CreateRandom();
         sessionStorage.setItem(sessionId, enrollId);
 
-        navigate(`/assignment?id=${sessionId}&homeworkId=${data.homeworkId}&mode=1`);
+        if (data.type == 1) {
+            navigate(`/assignment?id=${sessionId}&homeworkId=${data.homeworkId}&mode=1`);
+        }
+        else {
+            navigate(`/examination/prepare-homework?id=${sessionId}&homeworkId=${data.homeworkId}`)
+        }
     }
     return (
         <div className='hpi--wrapper flex flex-col'>
@@ -127,9 +201,12 @@ function HomeworkItem({ data, enrollId }) {
                     <button className='hpi__btn waiting'>Waiting Open</button>
                     :
                     data.status == 1 ?
-                    <button className='hpi__btn' onClick={handleAttempHomework}>Attemp Now</button>
-                    :
-                    <button className='hpi__btn late' onClick={handleAttempHomework}>Attemp Late</button>
+                        <button className='hpi__btn' onClick={handleAttempHomework}>Attemp Now</button>
+                        :
+                        data.status == 2 ?
+                            <button className='hpi__btn late' onClick={handleAttempHomework}>Attemp Late</button>
+                            :
+                            <button className='hpi__btn overdue' onClick={handleAttempHomework}>Overdue</button>
             }
         </div>
     )
@@ -178,8 +255,6 @@ function SubmissionTask({ data, enrollId }) {
                     formData.append(`files`, file);
                 });
 
-                console.log(files);
-
                 const response = await appClient.post(`api/SubmissionFiles/files`, formData);
                 const resData = response.data;
 
@@ -220,6 +295,17 @@ function SubmissionTask({ data, enrollId }) {
 
                 <div className='flex justify-between items-center'>
                     <div className='flex items-center'>
+                        <div className='hps__title-info'>Lesson day</div>
+                        <div className='hps__value-info'>{data.lesson.dayOfWeek}</div>
+                    </div>
+                    <div className='flex items-center'>
+                        <div className='hps__title-info'>Lesson date</div>
+                        <div className='hps__value-info'>{data.lesson.date.split("-").reverse().join("-")}</div>
+                    </div>
+                </div>
+
+                <div className='flex justify-between items-center'>
+                    <div className='flex items-center'>
                         <div className='hps__title-info'>Start date</div>
                         <div className='hps__value-info'>{data.startTime}</div>
                     </div>
@@ -244,7 +330,7 @@ function SubmissionTask({ data, enrollId }) {
                         <span>Link</span>
                     </div>
 
-                    <input className='hps__input flex-1' placeholder='Import link ...' value={linkUrl} onChange={handleChangeLink} />
+                    <input className='hps__input link flex-1' placeholder='Import link ...' value={linkUrl} onChange={handleChangeLink} />
                 </div>
 
                 <div className='flex justify-between items-center mt-[20px]'>

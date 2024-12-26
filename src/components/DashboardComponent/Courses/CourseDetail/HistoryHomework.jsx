@@ -56,15 +56,10 @@ function HistoryHomework({ onSetShow, enrollId, homeworkId }) {
     };
 
     const handleRedirectHref = (e, item) => {
-        console.log(item);
         const sessionId = CreateRandom();
         sessionStorage.setItem(sessionId, item.submissionId);
         
         navigate(`/assignment/prepare-homework?id=${sessionId}`)
-    }
-
-    const handleReAttempt = (e) => {
-
     }
 
     return (
@@ -123,7 +118,6 @@ function HistoryHomework({ onSetShow, enrollId, homeworkId }) {
                                 </div>
 
                                 <div>
-                                    <button className='his-process__btn mr-2 px-[20px] py-[9.5px]' onClick={handleReAttempt}>Re-Attempt</button>
                                     <button className='his-process__btn py-[9.5px] px-[15px] close' onClick={handleCloseHistory}>Close</button>
                                 </div>
                             </div>

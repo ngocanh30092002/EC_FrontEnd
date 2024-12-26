@@ -1,11 +1,55 @@
 import React, { useCallback, useEffect, useState } from 'react'
+import * as signalR from '@microsoft/signalr';
 import "./CalendarEventStyle.css"
 import { IMG_URL_BASE } from '~/GlobalConstant';
 import AddEvent from './AddEvent';
 import EventItem from './EventItem';
 import { appClient } from '~/AppConfigs';
+import { APP_API } from '~/GlobalConstant.js';
+import toast from '@/helper/Toast';
 
 function CalendarEvent() {
+    const [notiConnection, setNotiConnection] = useState(null);
+    useEffect(() => {
+        const connectNotificationServer = async () => {
+            const notiConnection = new signalR.HubConnectionBuilder()
+                .withUrl(`${APP_API}hub/notification`, {
+                    withCredentials: true
+                })
+                .withAutomaticReconnect([3000, 3000, 3000])
+                .configureLogging(signalR.LogLevel.Information)
+                .build();
+
+            try {
+                await notiConnection.start();
+            } catch (err) {
+                toast({
+                    type: "error",
+                    duration: 5000,
+                    title: "Error",
+                    message: err.message
+                })
+            }
+
+            setNotiConnection(notiConnection);
+        }
+
+        connectNotificationServer();
+
+        return()=>{
+            if(notiConnection){
+                notiConnection.stop().catch(e => {
+                    toast({
+                        type: "error",
+                        duration: 5000,
+                        title: "SignalR Connection Error",
+                        message: e.message
+                    })
+                });
+            }
+        }
+    }, [])
+
     const weekDay = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
     const [currentDay, setCurrentDay] = useState(new Date());
     const [notiInWeek, setNotiInWeek] = useState([]);
@@ -44,6 +88,7 @@ function CalendarEvent() {
         }
     }, [])
 
+
     const getNotiInWeek = useCallback(async (startTime, endTime) =>{
         try {
             const response = await appClient.get(`api/Events/date/${startTime}/${endTime}`);
@@ -58,12 +103,28 @@ function CalendarEvent() {
         }
     }, [])
 
+    const sendNoti = async (scheduleEventId) =>{
+        try{
+            var response = await appClient.put(`api/events/${scheduleEventId}/send-noti`);
+            var data = response.data;
+
+            if(data.success){
+                if(notiConnection != null){
+                    await notiConnection.invoke("SendNotiToUserAsync");
+                }
+                console.log(notiConnection);
+            }
+        }
+        catch{
+
+        }
+    }
+
     useEffect(() => {
-        getScheduleEventsWithDate(currentDay.toISOString().split('T')[0]);
+        getScheduleEventsWithDate(currentDay.toLocaleDateString("en-CA"));
 
         getNotiInWeek(dayOfWeek.at(0),dayOfWeek.at(-1));
     }, [])
-
 
     useEffect(() => {
         setDayOfWeek(prev => {
@@ -84,16 +145,34 @@ function CalendarEvent() {
             return result;
         })
 
-        getScheduleEventsWithDate(currentDay.toISOString().split('T')[0]);
+        getScheduleEventsWithDate(currentDay.toLocaleDateString("en-CA"));
     }, [currentDay])
 
     useEffect(() =>{
         getNotiInWeek(dayOfWeek.at(0), dayOfWeek.at(-1));
-
     }, [dayOfWeek])
 
     useEffect(() =>{
         getNotiInWeek(dayOfWeek.at(0), dayOfWeek.at(-1));
+
+        const isCurrentTimeInRange = ({date , startTime, endTime}) => {
+            const now = new Date();
+
+            const start = new Date(`${date} ${startTime}`);
+            const end = new Date(`${date} ${endTime}`);
+        
+            start.setMinutes(start.getMinutes() - 5);
+        
+            return now >= start && now <= end;
+        }
+
+        events.forEach((item) =>{
+            var isInTime = isCurrentTimeInRange(item);
+            if(isInTime && item.isSend == false){
+                sendNoti(item.scheduleId);
+            }
+        })
+
     }, [events])
 
     const handleNextCalendar = (e) => {
@@ -123,7 +202,7 @@ function CalendarEvent() {
     }
 
     const handleAddEvent = () => {
-        getScheduleEventsWithDate(currentDay.toISOString().split('T')[0]);
+        getScheduleEventsWithDate(currentDay.toLocaleDateString("en-CA"));
     }
 
     const hanleRemoveEvent = (eventId) => {
@@ -176,7 +255,7 @@ function CalendarEvent() {
                 )}
             </div>
 
-            <AddEvent onAddEvent={handleAddEvent} currentDate = {currentDay.toISOString().split('T')[0]} />
+            <AddEvent onAddEvent={handleAddEvent} currentDate = {currentDay.toLocaleDateString("en-CA")} />
 
             <div className={`flex items-center mt-[10px] mb-[10px] ${events.length == 0 ? "hidden" : ""}`}>
                 <span className='ae__add-event--title mr-[10px]'>Today</span>

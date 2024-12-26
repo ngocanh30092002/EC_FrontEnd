@@ -33,16 +33,21 @@ function SchedulePage({ enrollId }) {
             return acc;
         }, {});
 
+
         const { startOfWeek, endOfWeek } = getWeekRange(offset);
+        const startOfDay = new Date(startOfWeek.setHours(0, 0, 0, 0));
+        const endOfDay = new Date(endOfWeek.setHours(23, 59, 59, 999));
 
         schedules.forEach(schedule => {
             const scheduleTime = new Date(schedule.date)
-            if (startOfWeek <= scheduleTime && scheduleTime <= endOfWeek) {
+            if (startOfDay <= scheduleTime && scheduleTime <= endOfDay) {
                 if (weekObject[schedule.dayOfWeek]) {
                     weekObject[schedule.dayOfWeek].push(schedule);
                 }
             }
         })
+
+        console.log(weekObject);
 
         const formatDate = (date) =>
             date.toLocaleDateString("en-GB", {

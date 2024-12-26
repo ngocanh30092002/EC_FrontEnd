@@ -16,7 +16,7 @@ function ProfileBackground({ className }) {
 
     const getUserBackgroundInfo = useCallback(async () =>{
         try{
-            const response = await appClient.get("api/students/user-background-info")
+            const response = await appClient.get("api/users/bg-info")
             const data = response.data;
             if(data.success){
                 setUserBackground(data.message);
@@ -40,7 +40,7 @@ function ProfileBackground({ className }) {
         formData.append("file", fileData)
 
         try{
-            const response = await appClient.post(apiPath, formData, {
+            const response = await appClient.patch(apiPath, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 },
@@ -85,14 +85,14 @@ function ProfileBackground({ className }) {
 
     const handleUserImageChange = (e) =>{
         const fileData = e.target.files[0];
-        const apiPath = "api/students/profile-image";
+        const apiPath = "api/users/profile-image";
 
         changeImageBackground(fileData, apiPath, e);
     }
 
     const handleBackgroundChange = (e) =>{
         const fileData = e.target.files[0];
-        const apiPath = "api/students/background-image";
+        const apiPath = "api/users/background-image";
 
         changeImageBackground(fileData,apiPath, e);
     }

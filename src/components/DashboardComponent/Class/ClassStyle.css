@@ -467,6 +467,15 @@
     color: black;
 }
 
+.hpi__btn.overdue{
+    background-color: rgb(161, 0, 0);
+    color: white;
+}
+
+.hpi__btn.overdue:hover{
+    opacity: 0.8;
+}
+
 .hpi__btn.late:hover{
     color: white;
     background-color: rgb(255, 76, 76);
@@ -484,7 +493,6 @@
     font-family: 'Roboto', sans-serif;
     font-weight: 500;
     text-transform: uppercase;
-    margin-bottom: 10px;
 }
 
 .hps__title{
@@ -505,12 +513,14 @@
     font-weight: bold;
     font-family: 'Nunito', sans-serif;
     min-width: 80px;
+    margin-right: 10px;
 }
 
 .hps__value-info{
     font-size: 14px;
     font-family: 'Nunito', sans-serif;
-
+    min-width: 180px;
+    text-align: left;
 }
 
 .hps__item--wrapper{
@@ -540,6 +550,15 @@
     padding: 5px 10px;
     font-size: 14px;
     font-family: 'Nunito', sans-serif;
+}
+
+.hps__input.link{
+    text-decoration: underline;
+    color:rgb(0, 106, 255);
+}
+
+input::placeholder{
+    text-decoration: none;
 }
 
 .hps__btn{
@@ -830,4 +849,74 @@
 
 .cmp__class__wrapper{
     box-shadow: 1px 1px 20px 1px #ebebeb;
+}
+
+.hsi__item-text{
+    font-size: 14px;
+    font-family: 'Nunito', sans-serif;
+    margin-left: 10px;
+    font-weight: 500;
+}
+
+.hsi__item-time{
+    font-size: 14px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 500;
+    padding: 2px;
+}
+
+.hsi__item-score > *{
+    font-size: 14px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 500;
+}
+
+.hsi__item-status-hw{
+    font-size: 14px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: bold;
+    padding: 5px 3px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.hsi__item-status{
+    font-size: 14px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: bold;
+    padding: 5px 3px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.hsi__item-status.OnTime{
+    color: green;
+    background-color: rgb(204, 255, 204);
+}
+
+.hsi__item-status.Overdue{
+    color: rgb(112, 0, 0);
+    background-color: rgb(255, 230, 230);
+}
+
+.hsi__item-status.Late{
+    color: rgb(98, 86, 0);
+    background-color: rgb(255, 242, 179);
+}
+
+.hsi__item-status-hw.pass{
+    color: green;
+    background-color: rgb(204, 255, 204);
+}
+
+.hsi__item-status-hw.fail{
+    color: rgb(112, 0, 0);
+    background-color: rgb(255, 230, 230);
+}
+
+.hp__filter--title{
+    font-size: 14px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: bold;
+    min-width: 50px;
 }

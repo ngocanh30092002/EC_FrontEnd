@@ -5,6 +5,7 @@ import { appClient } from './../../../AppConfigs';
 import { ROLES } from '~/GlobalConstant';
 import { useNavigate } from 'react-router-dom';
 import toast from '@/helper/Toast';
+import MenuContextPage from '../MenuContextComponent/MenuContextPage';
 
 
 function AdminPage() {
@@ -51,6 +52,8 @@ function AdminPage() {
                     <SideBarPage />
                     <AdminMainPage />
                 </div>}
+
+            <MenuContextPage />
         </>
     )
 }

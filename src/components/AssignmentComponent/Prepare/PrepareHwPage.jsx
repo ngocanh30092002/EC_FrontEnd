@@ -91,7 +91,7 @@ function PrepareHwPage() {
     }, [submissionInfo])
 
     return (
-        <div>PrepareHwPage</div>
+        <div></div>
     )
 }
 

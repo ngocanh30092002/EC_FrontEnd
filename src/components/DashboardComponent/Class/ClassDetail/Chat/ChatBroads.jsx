@@ -61,10 +61,6 @@ function ChatItem({ chat }) {
 
 
         getMessages();
-
-
-
-
     }, [])
 
     useEffect(() => {
@@ -132,7 +128,7 @@ function ChatItem({ chat }) {
     }
 
     return (
-        <div className='w-[320px] h-[400px] bg-white ml-[5px] flex flex-col chat-item__wrapper'>
+        <div className='w-[320px] h-[400px] bg-white ml-[5px] flex flex-col chat-item__wrapper border'>
             <div className='chat-item__header'>
                 <img src={chat?.image ? APP_URL + chat.image : IMG_URL_BASE + "unknown_user.jpg"} className='chat-item__image-user' />
                 <div className='chat-item__user-name line-clamp-1 flex-1'>{chat?.userName}</div>

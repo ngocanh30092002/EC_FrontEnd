@@ -89,7 +89,15 @@ function InProcessAssignPage() {
         if (mode == 0) {
             const assignQuesPromise = async () => {
                 try {
-                    const response = await appClient.get(`api/AssignQues/assignments/${userInfo.assignment.assignmentId}`)
+                    let apiPath = "";
+                    if(params.get("mode") == "view-answer"){
+                        apiPath = `api/AssignQues/processes/${userInfo?.processId}`
+                    }
+                    else{
+                        apiPath = `api/AssignQues/assignments/${userInfo.assignment.assignmentId}`
+                    }
+
+                    const response = await appClient.get(apiPath);
                     const data = response.data;
                     if (data.success) {
                         return data.message;
@@ -170,7 +178,15 @@ function InProcessAssignPage() {
         else {
             const homeQuesPromise = async () => {
                 try {
-                    const response = await appClient.get(`api/HomeQues/homework/${userInfo.homework.homeworkId}`);
+                    let apiPath = "";
+                    if(params.get("mode") == "view-answer"){
+                        apiPath = `api/HomeQues/submissions/${userInfo?.hwSubmissionId}`;
+                    }
+                    else{
+                        apiPath = `api/HomeQues/homework/${userInfo.homework.homeworkId}`;
+                    }
+
+                    const response = await appClient.get(apiPath);
                     const data = response.data;
                     if (data.success) {
                         return data.message;
@@ -201,7 +217,6 @@ function InProcessAssignPage() {
 
                 setAssignQues(data);
 
-                console.log(answerSheet);
                 if (answerSheet.length === 0) {
                     i = 1;
                     const result = data.flatMap(ques => {
@@ -230,7 +245,6 @@ function InProcessAssignPage() {
                         };
                     })
 
-                    // Todo
                     if (params.get("mode") == "view-answer") {
                         const getResult = () => {
                             appClient.get(`api/HwSubRecords/${userInfo?.hwSubmissionId}/result`)
@@ -480,6 +494,8 @@ function InProcessAssignPage() {
     const handleSubmitAssignment = (isTimeOut = false) => {
         const handleSubmit = async () => {
             try {
+                setIsLoading(prev => true);
+                setVolume(0);
                 const formData = new FormData();
                 formData.append("AssignmentId", userInfo.assignment.assignmentId);
 
@@ -501,6 +517,7 @@ function InProcessAssignPage() {
                     setIsShowSubmitInfo(true);
                     setIsSubmitted(true);
                     setIsLoading(prev => false);
+                    setVolume(1);
                 }
             }
             catch {
@@ -548,6 +565,9 @@ function InProcessAssignPage() {
     const handleSubmitHomework = (isTimeOut = false) => {
         const handleSubmit = async () => {
             try {
+                setVolume(0);
+                setIsLoading(prev => true);
+
                 const formData = new FormData();
                 formData.append("homeworkId", userInfo.homework.homeworkId);
 
@@ -643,9 +663,9 @@ function InProcessAssignPage() {
             return [...oldAnswerSheet];
         });
 
-        console.log("here");
-        setVolume(vol => vol - 0.5);
-        console.log("here1");
+        setVolume(vol => {
+            return vol - 0.1 < 0 ? 0: vol - 0.1;
+        });
         setTimeout(() => {
             setVolume(vol => 1);
         }, (1000));

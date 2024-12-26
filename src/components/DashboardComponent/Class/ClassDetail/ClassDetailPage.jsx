@@ -80,8 +80,8 @@ function ClassDetailPage() {
                         let index = preMembers.findIndex(m => m.userId == data.senderId);
                         if (index != -1) {
                             preMembers[index].isRead = data.isRead,
-                                preMembers[index].isDelete = data.isDelete,
-                                preMembers[index].lastMessage = data?.file ? data.file.fileName : data.message
+                            preMembers[index].isDelete = data.isDelete,
+                            preMembers[index].lastMessage = data?.file ? data.file.fileName : data.message
 
                             return [...preMembers]
                         }
@@ -367,7 +367,6 @@ function ClassDetailPage() {
         }
     }
 
-
     return (
         <ClassPageContext.Provider value={classData}>
             <div className='flex w-full relative'>
@@ -391,7 +390,7 @@ function ClassDetailPage() {
     )
 }
 
-function ViewerImage({ src, onShowViewerImage }) {
+export function ViewerImage({ src, onShowViewerImage }) {
     return (
         <div className='fixed z-[1000] w-screen h-screen top-0 left-0 flex justify-center viewer-img__container'
             onClick={(e) => onShowViewerImage(false)}>

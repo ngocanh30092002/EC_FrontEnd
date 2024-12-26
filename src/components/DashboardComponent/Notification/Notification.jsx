@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { appClient } from '~/AppConfigs';
 import { APP_URL, IMG_URL_BASE } from '~/GlobalConstant';
-import { adminStudyComponents, adminUserComponents, homeComponents, settingComponents, studyComponents } from '../SideBarInfo';
+import { adminStudyComponents, adminUserComponents, homeComponents, settingComponents, studyComponents, teacherComponents } from '../SideBarInfo';
 import NotificationBoard from './NotificationBoard';
 import "./NotificationStyle.css";
 
@@ -16,7 +16,7 @@ function Notification({ className, title, mode = 0 }) {
 
     const getUserInfo = useCallback(async () => {
         try {
-            const response = await appClient.get("api/students/user-background-info")
+            const response = await appClient.get("api/users/bg-info")
             const data = response.data;
 
             if (data.success) {
@@ -47,7 +47,7 @@ function Notification({ className, title, mode = 0 }) {
 
     useEffect(() => {
         const getCurrentPage = () => {
-            
+
             if (mode == 0) {
                 const pathItem = location.pathname.slice(1).split("/");
                 let item = homeComponents.find(i => pathItem.includes(i.linkToRedirect.slice(1)));
@@ -59,15 +59,22 @@ function Notification({ className, title, mode = 0 }) {
                 item = settingComponents.find(i => pathItem.includes(i.linkToRedirect.slice(1)));
                 if (item) return item;
             }
-            else if(mode == 1){
+            else if (mode == 1) {
                 const pathItem = location.pathname.replace("/admin", "").slice(1).split("/");
-            
+
                 let item = adminUserComponents.find(i => pathItem.includes(i.linkToRedirect.replace("/admin", "").slice(1)));
                 if (item) return item;
 
                 item = adminStudyComponents.find(i => pathItem.includes(i.linkToRedirect.replace("/admin", "").slice(1)));
                 if (item) return item;
             }
+            else if (mode == 2) {
+                const pathItem = location.pathname.replace("/teacher", "").slice(1).split("/");
+
+                let item = teacherComponents.find(i => pathItem.includes(i.linkToRedirect.replace("/teacher", "").slice(1)));
+                if (item) return item;
+            }
+
 
         }
 

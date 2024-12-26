@@ -1,5 +1,5 @@
 import toast from '@/helper/Toast';
-import React, { createContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { createContext, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { appClient } from '~/AppConfigs';
 import LoaderPage from '../../LoaderComponent/LoaderPage';
@@ -21,7 +21,12 @@ function InprocessPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [isShowSubmitInfo, setIsShowSubmitInfo] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(() => {
-        if (location?.state?.isToeicMode) {
+        if (location?.state?.mode == 1) {
+            const isSubmitted = sessionStorage.getItem("is-submitted");
+            return isSubmitted === "true";
+        }
+
+        if (location?.state?.mode == 3) {
             const isSubmitted = sessionStorage.getItem("is-submitted");
             return isSubmitted === "true";
         }
@@ -43,7 +48,7 @@ function InprocessPage() {
         return JSON.parse(directionObj);
     })
     const [userInfo, setUserInfo] = useState(location?.state?.userInfo);
-    const [isToeicMode, setIsToeicMode] = useState(location?.state?.isToeicMode)
+    const [mode, setMode] = useState(location?.state?.mode);
     const [isShowAnswerSheet, setShowAnswerSheet] = useState(true);
     const [isPaused, setIsPaused] = useState(false);
     const [isHideCountDown, setIsHideCountDown] = useState(() => {
@@ -66,12 +71,23 @@ function InprocessPage() {
                     answered: false,
                     marked: false,
                     userSelected: null,
-                    replay: 0
+                    replay: 0,
+                    part: ques.part
                 })
             });
         })
     })
 
+    const [countDownTime, setCountDownTime] = useState(() => {
+        if (location?.state?.userInfo?.homework) {
+            return location.state.userInfo.homework.time
+        }
+        if (location?.state?.userInfo?.roadMapInfo?.time) {
+            return location.state.userInfo.roadMapInfo.time;
+        }
+
+        return "02:00:00"
+    })
     const [currentIndexQues, setCurrentIndexQues] = useState(() => {
         let quesIndex = sessionStorage.getItem("quesIndex");
         if (!quesIndex) {
@@ -84,7 +100,7 @@ function InprocessPage() {
     const [volume, setVolume] = useState(location.state?.volume ?? 1);
 
     const [attemptId, setAttemptId] = useState(() => {
-        if(location.state?.attemptId){
+        if (location.state?.attemptId) {
             return location.state.attemptId;
         }
 
@@ -107,6 +123,30 @@ function InprocessPage() {
     }, [])
 
     useEffect(() => {
+        const getIsSubmittedHw = () => {
+            if (userInfo?.submissionId) {
+                appClient.get(`api/HwSubmission/${userInfo.submissionId}/is-submitted`)
+                    .then(res => res.data)
+                    .then((data) => {
+                        if (data.success) {
+                            setIsSubmitted(data.message);
+                        }
+                    })
+                    .catch(() => {
+                        setIsSubmitted(false);
+                    })
+            }
+            else {
+                navigate(-1);
+                toast({
+                    type: "error",
+                    title: "Error",
+                    message: "You can't do it anymore",
+                    duration: 4000
+                })
+            }
+        };
+
         const getIsSubmitted = () => {
             if (userInfo?.processId) {
                 appClient.get(`api/LearningProcesses/${userInfo.processId}/is-submitted`)
@@ -129,10 +169,13 @@ function InprocessPage() {
                     duration: 4000
                 })
             }
-        };
+        }
 
-        if (!isToeicMode) {
+        if (mode == 0) {
             getIsSubmitted();
+        }
+        else if (mode == 2) {
+            getIsSubmittedHw();
         }
         else {
             if (params.get("mode") == "view-answer") {
@@ -167,13 +210,25 @@ function InprocessPage() {
                     })
             }
 
-            if (isToeicMode) {
-                getResultToeic();
-            }
-            else {
-                getResultExam();
+            const getResultHomework = () => {
+                appClient.get(`api/HwSubRecords/${userInfo.submissionId}/result`)
+                    .then(res => res.data)
+                    .then(data => {
+                        if (data.success) {
+                            handleAddResult(data.message)
+                        }
+                    })
             }
 
+            if (mode == 1 || mode == 3) {
+                getResultToeic();
+            }
+            if (mode == 0) {
+                getResultExam();
+            }
+            if (mode == 2) {
+                getResultHomework();
+            }
 
             setIsShowSubmitInfo(true);
         }
@@ -209,10 +264,6 @@ function InprocessPage() {
     }, [])
 
     useEffect(() => {
-        sessionStorage.setItem("answer-sheet-toeic", JSON.stringify(answerSheet));
-    }, [answerSheet])
-
-    useEffect(() => {
         sessionStorage.setItem("quesIndex", currentIndexQues);
 
         if (lastType.current != questions[currentIndexQues].part) {
@@ -241,7 +292,7 @@ function InprocessPage() {
 
         isSubmittedRef.current = isSubmitted;
 
-        if (isToeicMode) {
+        if (mode == 1 || mode == 3) {
             sessionStorage.setItem("is-submitted", isSubmitted);
         }
 
@@ -263,53 +314,84 @@ function InprocessPage() {
         setShowAnswerSheet(!isShowAnswerSheet);
     }
 
-    const handleGetAnswer = (id) => {
-        let item = answerSheet.find(a => a.id === id);
-        return item;
+    const handleGetAnswer = useCallback((id) => {
+        var sessionAnswerSheet = sessionStorage.getItem("answer-sheet-toeic");
+        if (sessionAnswerSheet) {
+            const answerSheetSession = JSON.parse(sessionAnswerSheet);
+            let item = answerSheetSession.find(a => a.id === id);
+            return item;
+        }
+        else {
+            let item = answerSheet.find(a => a.id === id);
+            return item;
+        }
+    }, [answerSheet])
+
+    const handleGetQuesAnswer = (quesId) => {
+        var sessionAnswerSheet = sessionStorage.getItem("answer-sheet-toeic");
+        if (sessionAnswerSheet) {
+            const answerSheetSession = JSON.parse(sessionAnswerSheet);
+            let item = answerSheetSession.find(a => a.quesId == quesId);
+            return item;
+        }
+        else {
+            let item = answerSheet.find(a => a.quesId == quesId);
+            return item;
+        }
     }
 
     const handleMarkedAnswer = (id) => {
-        const newAnswerSheet = answerSheet.map((item) => {
-            if (item.id === id) {
-                item.marked = !item.marked;
-            }
+        setAnswerSheet(preAnswerSheet => {
+            const newAnswerSheet = preAnswerSheet.map((item) => {
+                if (item.id === id) {
+                    item.marked = !item.marked;
+                }
 
-            return item;
-        })
+                return item;
+            })
 
-        setAnswerSheet([...newAnswerSheet]);
+            sessionStorage.setItem("answer-sheet-toeic", JSON.stringify(newAnswerSheet));
+
+            return [...newAnswerSheet]
+        });
     }
 
     const handleChangeAnswer = (id, value) => {
-        const newAnswerSheet = answerSheet.map((item) => {
-            if (item.id === id) {
-                item.answered = value == null ? false : true;
-                item.userSelected = value;
-            }
+        setAnswerSheet(preAnswerSheet => {
+            const newAnswerSheet = preAnswerSheet.map((item) => {
+                if (item.id === id) {
+                    item.answered = value == null ? false : true;
+                    item.userSelected = value;
+                }
 
-            return item;
-        })
+                return item;
+            })
 
-        setAnswerSheet([...newAnswerSheet]);
-    }
+            sessionStorage.setItem("answer-sheet-toeic", JSON.stringify(newAnswerSheet));
 
-    const handleGetQuesAnswer = (quesId) => {
-        let item = answerSheet.find(a => a.quesId == quesId);
-        return item;
+            return [...newAnswerSheet];
+        });
     }
 
     const handleAddResult = (data) => {
-        const newAnswerSheet = answerSheet.map((item, index) => {
-            let dataItem = data.find(a => a.subQueId == item.subQueId);
-            item.isCorrect = dataItem.isCorrect;
-            item.userSelected = dataItem.selectedAnswer;
-            item.answerInfo = dataItem.answerInfo;
+        setAnswerSheet(preAnswerSheet => {
+            const newAnswerSheet = preAnswerSheet.map((item, index) => {
+                let dataItem = data.find(a => a.subQueId == item.subQueId);
+                item.isCorrect = dataItem.isCorrect;
+                item.userSelected = dataItem.selectedAnswer;
+                item.answerInfo = dataItem.answerInfo;
+                
+                return item;
+            })
 
-            return item;
-        })
+            sessionStorage.setItem("answer-sheet-toeic", JSON.stringify(newAnswerSheet));
 
-        setAnswerSheet([...newAnswerSheet]);
-        setVolume(vol => vol - 0.1);
+
+            return [...newAnswerSheet];
+        });
+        setVolume(vol => {
+            return vol - 0.1 < 0 ? 0: vol - 0.1;
+        });
 
         setTimeout(() => {
             setVolume(vol => vol + 0.1);
@@ -317,35 +399,43 @@ function InprocessPage() {
     }
 
     const handleSetPlayVideo = (quesId) => {
-        const answers = answerSheet.filter(a => a.quesId == quesId);
+        setAnswerSheet(preAnswerSheet => {
+            const answers = preAnswerSheet.filter(a => a.quesId == quesId);
 
-        const newAnswerSheet = answerSheet.map((item) => {
-            const isExist = answers.some(a => a.id == item.id);
-            if (isExist) {
-                return {
-                    ...item,
-                    isPlayed: true
+            const newAnswerSheet = preAnswerSheet.map((item) => {
+                const isExist = answers.some(a => a.id == item.id);
+                if (isExist) {
+                    return {
+                        ...item,
+                        isPlayed: true
+                    }
                 }
-            }
 
-            return item;
-        })
+                return item;
+            })
 
-        setAnswerSheet([...newAnswerSheet]);
+            sessionStorage.setItem("answer-sheet-toeic", JSON.stringify(newAnswerSheet));
+
+            return [...newAnswerSheet]
+        });
     }
 
     const handleIncreaseReplay = (quesId) => {
-        const answers = answerSheet.filter(a => a.quesId == quesId);
-        const newAnswerSheet = answerSheet.map((item) => {
-            const isExist = answers.some(a => a.id == item.id);
-            if (isExist) {
-                item.replay = item.replay + 1;
-            }
+        setAnswerSheet(preAnswerSheet => {
+            const answers = preAnswerSheet.filter(a => a.quesId == quesId);
+            const newAnswerSheet = preAnswerSheet.map((item) => {
+                const isExist = answers.some(a => a.id == item.id);
+                if (isExist) {
+                    item.replay = item.replay + 1;
+                }
 
-            return item;
-        })
+                return item;
+            })
 
-        setAnswerSheet([...newAnswerSheet]);
+            sessionStorage.setItem("answer-sheet-toeic", JSON.stringify(newAnswerSheet));
+
+            return [...newAnswerSheet];
+        });
     }
 
     const handleNextQuestion = () => {
@@ -408,16 +498,25 @@ function InprocessPage() {
         setIsShowSubmitInfo(data);
     }
 
-
-
-
     const handleSubmitExamination = (isTimeOut = false) => {
+        var sessionAnswerSheet = sessionStorage.getItem("answer-sheet-toeic");
+        let answerSheetSession = undefined;
+        if (sessionAnswerSheet) {
+            answerSheetSession = JSON.parse(sessionAnswerSheet);
+           
+        }
+        else {
+            answerSheetSession = [...answerSheet];
+        }
+
         const handleSubmitWithProcess = async () => {
             try {
+                setIsLoading(prev => true);
+                setVolume(prev => 0);
                 const formData = new FormData();
                 formData.append("ExamId", userInfo.examination.examId);
 
-                answerSheet.forEach((item, index) => {
+                answerSheetSession.forEach((item, index) => {
                     formData.append(`ToeicRecords[${index}][processId]`, userInfo.processId);
                     formData.append(`ToeicRecords[${index}][subId]`, item.subQueId);
                     if (item.userSelected) {
@@ -432,6 +531,7 @@ function InprocessPage() {
                     setIsShowSubmitInfo(true);
                     setIsSubmitted(true);
                     setIsLoading(prev => false);
+                    setVolume(prev => 1);
                 }
             }
             catch {
@@ -442,6 +542,7 @@ function InprocessPage() {
         const handleSubmitWithToeic = async () => {
             try {
                 setIsLoading(prev => true);
+                setVolume(prev => 0);
                 const formDataCreate = new FormData();
                 formDataCreate.append("ToeicId", userInfo.toeicInfo.toeicId)
 
@@ -450,7 +551,7 @@ function InprocessPage() {
                 setAttemptId(attemptId);
 
                 const formData = new FormData();
-                answerSheet.forEach((item, index) => {
+                answerSheetSession.forEach((item, index) => {
                     formData.append(`PracticeRecords[${index}][SubId]`, item.subQueId);
                     formData.append(`PracticeRecords[${index}][AttemptId]`, attemptId);
                     if (item.userSelected) {
@@ -464,6 +565,72 @@ function InprocessPage() {
                     setIsShowSubmitInfo(true);
                     setIsSubmitted(true);
                     setIsLoading(prev => false);
+                    setVolume(prev => 1);
+                }
+            }
+            catch {
+
+            }
+        }
+
+        const handleSubmitWithHomework = async () => {
+            try {
+                setIsLoading(prev => true);
+                setVolume(prev => 0);
+                const submissionId = userInfo.submissionId;
+
+                const formData = new FormData();
+                formData.append("homeworkId", userInfo.homework.homeworkId);
+
+                answerSheetSession.forEach((item, index) => {
+                    formData.append(`Answers[${index}][submissionId]`, submissionId);
+                    formData.append(`Answers[${index}][subToeicId]`, item.subQueId);
+                    if (item.userSelected) {
+                        formData.append(`Answers[${index}][selectedAnswer]`, item.userSelected);
+                    }
+                });
+
+                const response = await appClient.put(`api/HwSubmission/${submissionId}/submit`, formData)
+                const data = response.data;
+                if (data.success) {
+                    setIsShowSubmitInfo(true);
+                    setIsSubmitted(true);
+                    setIsLoading(prev => false);
+                    setVolume(prev => 1);
+                }
+            }
+            catch {
+
+            }
+        }
+
+        const handleSubmitWithRoadMap = async () => {
+            try {
+                setIsLoading(prev => true);
+                setVolume(prev => 0);
+                const formDataCreate = new FormData();
+                formDataCreate.append("RoadMapExamId", userInfo.roadMapInfo.id)
+
+                const resposne = await appClient.post(`api/ToeicAttempts`, formDataCreate);
+                const attemptId = resposne.data.message;
+                setAttemptId(attemptId);
+
+                const formData = new FormData();
+                answerSheetSession.forEach((item, index) => {
+                    formData.append(`PracticeRecords[${index}][SubId]`, item.subQueId);
+                    formData.append(`PracticeRecords[${index}][AttemptId]`, attemptId);
+                    if (item.userSelected) {
+                        formData.append(`PracticeRecords[${index}][SelectedAnswer]`, item.userSelected);
+                    }
+                });
+
+                const response = await appClient.put(`api/ToeicAttempts/${attemptId}/submit`, formData)
+                const data = response.data;
+                if (data.success) {
+                    setIsShowSubmitInfo(true);
+                    setIsSubmitted(true);
+                    setIsLoading(prev => false);
+                    setVolume(prev => 1);
                 }
             }
             catch {
@@ -472,8 +639,8 @@ function InprocessPage() {
         }
 
         if (!isTimeOut) {
-            let isExistNotAnswer = answerSheet.some(a => a.answered === false);
-            let isMarkedAnswer = answerSheet.some(a => a.marked === true);
+            let isExistNotAnswer = answerSheetSession.some(a => a.answered === false);
+            let isMarkedAnswer = answerSheetSession.some(a => a.marked === true);
             if (isExistNotAnswer) {
                 let confirmAnswer = confirm("You still have unanswered questions, are you sure you want to submit?");
                 if (confirmAnswer === false) return;
@@ -485,11 +652,18 @@ function InprocessPage() {
         }
 
         if (params.get("mode") !== "view-answer") {
-            if (!isToeicMode) {
+            console.log(mode);
+            if (mode == 0) {
                 handleSubmitWithProcess();
             }
-            else {
+            if (mode == 1) {
                 handleSubmitWithToeic();
+            }
+            if (mode == 2) {
+                handleSubmitWithHomework();
+            }
+            if (mode == 3) {
+                handleSubmitWithRoadMap();
             }
         }
     }
@@ -525,7 +699,7 @@ function InprocessPage() {
             <div className='h-screen bg-gray-400'>
                 <ExamHeader
                     isProcess={true}
-                    countDownTime={"02:00:00"}
+                    countDownTime={countDownTime}
                     onShowAnswerSheet={handleShowAnswerSheet}
                     isPaused={isPaused}
                     isHideCountDown={isHideCountDown}
@@ -564,7 +738,7 @@ function InprocessPage() {
                     <InprocessSubmitInfo
                         onShowSubmitInfo={handleSetShowSubmitInfo}
                         userInfo={userInfo}
-                        isToeicMode={isToeicMode}
+                        mode={mode}
                         attemptId={attemptId}
                     />}
 

@@ -93,9 +93,11 @@ function QuesGroup({ question, isSubmitted, volume }) {
         };
 
         const handleDisconnect = (event) => {
+            console.log("here");
             setHasError(true)
         }
         const handleReconnect = (event) => {
+            console.log("here1");
             setHasError(false)
         }
 
@@ -369,7 +371,12 @@ function AnswerOptions({ part, quesInfo, num, isSubmitted }) {
     const handleMarkedQuestion = () => {
         answer.marked(answerItem.id)
 
-        setAnswerItem(prevAnswerItem => prevAnswerItem);
+        setAnswerItem(prevAnswerItem => {
+            let newMarked =  !prevAnswerItem.marked;
+            console.log(newMarked);
+            var item = {...prevAnswerItem, marked: newMarked};
+            return item;
+        });
     }
 
     const handleChangeAnswer = (e) => {
@@ -441,7 +448,6 @@ function ResultInfo({ quesInfo, answerItem, part }) {
 
     return (
         <div>
-
             {isRenderQues &&
                 <div className='mb-[10px]'>
                     <div className='qi__question inline-block'>

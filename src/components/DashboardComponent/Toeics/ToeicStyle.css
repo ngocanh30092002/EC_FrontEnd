@@ -44,8 +44,7 @@
 
 
 .ttr__toeic-name {
-    margin-left: 30px;
-    font-size: 18px;
+    font-size: 14px;
     text-transform: uppercase;
     font-weight: bold;
     font-family: 'Nunito', sans-serif;
@@ -73,7 +72,7 @@
     background-color: var(--primary-color);
     position: absolute;
     left: 0;
-    bottom: -20%;
+    bottom: -100%;
     overflow: visible;
     z-index: 1;
 }
@@ -246,4 +245,11 @@
 .th__item-close-btn:hover{
     background-color: var(--primary-color);
     color: vaR(--white-color);
+}
+
+.tni__road-map{
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    margin-right: 10px;
 }

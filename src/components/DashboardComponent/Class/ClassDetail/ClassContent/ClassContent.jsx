@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import SchedulePage from './SchedulePage';
 import HomeworkPage from './HomeworkPage';
 import ClassMaterialPage from './ClassMaterialPage';
+import HomeworkHistoryPage from './HomeworkHistoryPage';
 
 function ClassContent({ enrollId }) {
     const location = useLocation();
@@ -27,6 +28,7 @@ function ClassContent({ enrollId }) {
                 {pageNum == 0 && <SchedulePage enrollId={enrollId} />}
                 {pageNum == 1 && <HomeworkPage enrollId={enrollId} />}
                 {pageNum == 2 && <ClassMaterialPage enrollId={enrollId} />}
+                {pageNum == 3 && <HomeworkHistoryPage enrollId={enrollId} />}
             </div>
         </div>
     )

@@ -7,6 +7,7 @@ import { CourseDetailItemContext } from './CourseDetailItem';
 function CourseDetailLecture() {
     const [contents, setContents] = useState([]);
     const {dataContext} = useContext(CourseDetailItemContext);
+    console.log(dataContext);
     const course = dataContext.course;
 
     const getCourseContents = useCallback( async (enrollId) =>{

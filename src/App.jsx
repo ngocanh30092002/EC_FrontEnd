@@ -14,11 +14,11 @@ const LazyLoading = (importFunc, delay = 750) => {
 
 const AccountPage = LazyLoading(() => import('./components/AccountComponent/AccountPage'));
 const AdminPage = LazyLoading(() => import('./components/AdminComponent/AdminPage'));
+const TeacherPage = LazyLoading(() => import('./components/TeacherComponent/TeacherPage'));
 const AssignmentPage = LazyLoading(() => import('./components/AssignmentComponent/AssignmentPage'));
-const DashboardPage = LazyLoading(() => import('./components/DashboardComponent/DashboardPage'));
-const ManagerPage = LazyLoading(() => import('./components/ManagerComponent/ManagePage'));
 const StatusPage = LazyLoading(() => import('./components/StatusComponent/StatusPage'));
 const ExamPage = LazyLoading(() => import('./components/ExamComponent/ExamPage'));
+const DashboardPage = LazyLoading(() => import('./components/DashboardComponent/DashboardPage'));
 
 function App() {
     return (
@@ -27,12 +27,12 @@ function App() {
                 <Routes>
                     <Route path='account/*' element={<AccountPage />} />
                     <Route path='admin/*' element={<AdminPage />} />
-                    <Route path='/manage' element={<ManagerPage />} />
-                    <Route path='/*' element={<DashboardPage />} />
+                    <Route path='teacher/*' element={<TeacherPage />} />
                     <Route path='assignment/*' element={<AssignmentPage />} />
                     <Route path='examination/*' element={<ExamPage />} />
                     <Route path='not-found' element={<StatusPage status={404} />} />
                     <Route path='access-denied' element={<StatusPage status={403} />} />
+                    <Route path='/*' element={<DashboardPage />} />
                     <Route path='*' element={<StatusPage status={404} />} />
                 </Routes>
             </Suspense>

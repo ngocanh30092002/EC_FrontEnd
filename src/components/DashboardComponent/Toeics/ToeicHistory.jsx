@@ -4,7 +4,7 @@ import { appClient } from '~/AppConfigs';
 import { useNavigate } from 'react-router-dom';
 import { CreateRandom } from '@/helper/RandomHelper';
 
-function ToeicHistory({ onShowHistory }) {
+function ToeicHistory({ onShowHistory, selectedRoadMap }) {
     const navigate = useNavigate();
     const [history, setHistory] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -16,7 +16,7 @@ function ToeicHistory({ onShowHistory }) {
 
     useEffect(() => {
         const getHistoryRecords = () => {
-            appClient.get("api/ToeicAttempts")
+            appClient.get("api/ToeicAttempts/toeic")
                 .then(res => res.data)
                 .then(data => {
                     if (data.success) {
@@ -25,7 +25,22 @@ function ToeicHistory({ onShowHistory }) {
                 })
         }
 
-        getHistoryRecords();
+        const getHistoryRoadMapRecords = () => {
+            appClient.get(`api/ToeicAttempts/road-map-exams/${selectedRoadMap}`)
+                .then(res => res.data)
+                .then(data => {
+                    if (data.success) {
+                        setHistory(data.message);
+                    }
+                })
+        }
+
+        if (selectedRoadMap == "Toeic") {
+            getHistoryRecords();
+        }
+        else {
+            getHistoryRoadMapRecords();
+        }
 
     }, [])
 
@@ -59,10 +74,18 @@ function ToeicHistory({ onShowHistory }) {
 
     const handleViewResult = (item) => {
         const sessionId = CreateRandom();
-        sessionStorage.setItem(sessionId, item.toeicId);
-
-        navigate(`/examination?id=${sessionId}&attemptId=${item.attemptId}&type=2`)
+ 
+        if(selectedRoadMap == "Toeic"){
+            sessionStorage.setItem(sessionId, item.toeicId);
+            navigate(`/examination?id=${sessionId}&attemptId=${item.attemptId}&type=2`)
+        }
+        else{
+            sessionStorage.setItem(sessionId, item.roadMapExamId);
+            navigate(`/examination/prepare-road-map?id=${sessionId}&attemptId=${item.attemptId}`)
+        }
     }
+
+
     return (
         <div className='fixed toeic-history__wrapper w-full h-full z-[1000] top-0 left-0' onClick={handleCloseHis}>
             <div
@@ -76,7 +99,7 @@ function ToeicHistory({ onShowHistory }) {
                 <div>
                     <div className='flex w-full th__header--wrapper bg-blue-500'>
                         <div className='w-[30px] th__header-item'>#</div>
-                        <div className='w-1/4 th__header-item'>Toeic</div>
+                        <div className='w-1/4 th__header-item'>Name Exam</div>
                         <div className='w-1/4 th__header-item'>Listening</div>
                         <div className='w-1/4 th__header-item'>Reading</div>
                         <div className='w-1/4 th__header-item'>Date</div>
@@ -87,10 +110,10 @@ function ToeicHistory({ onShowHistory }) {
                             return (
                                 <div className='th__body-row w-full flex' key={index} onClick={(e) => handleViewResult(item)}>
                                     <div className='w-[30px] th__item'>{index + 1 + itemsPerPage * (currentPage - 1)}</div>
-                                    <div className='w-1/4 th__item'>{item.toeicExam.name}</div>
-                                    <div className='w-1/4 th__item'>{item.listening_Score}</div>
-                                    <div className='w-1/4 th__item'>{item.reading_Score}</div>
-                                    <div className='w-1/4 th__item'>{formatDate(item.date)}</div>
+                                    <div className='w-1/4 th__item'>{item?.toeicExam?.name || item?.roadMapExam?.name}</div>
+                                    <div className='w-1/4 th__item'>{item?.listening_Score}</div>
+                                    <div className='w-1/4 th__item'>{item?.reading_Score}</div>
+                                    <div className='w-1/4 th__item'>{formatDate(item?.date)}</div>
                                 </div>
                             )
                         })}

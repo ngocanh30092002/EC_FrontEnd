@@ -8,6 +8,8 @@ export const CourseDetailItemContext = createContext();
 function CourseDetailItem({ course }) {
     const [dataContext, setDataContext] = useState({course});
 
+    console.log(dataContext);
+
     const getNumberAssignments = useCallback(async () => {
         try {
             const response = await appClient.get(`api/coursecontent/course/${course.courseId}/total-num`)
