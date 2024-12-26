@@ -210,7 +210,7 @@ function InprocessSubmitInfo({ onShowSubmitInfo, userInfo, mode, attemptId }) {
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="psi__user-info--wrapper flex">
-                    <img src={userInfoObj?.image == null || userInfoObj?.image == ""  ? IMG_URL_BASE + "unknown_user.jpg" : APP_URL + userInfoObj.image} className='w-[100px] h-[100px] rounded-[10px]' />
+                    <img src={userInfoObj?.image == null || userInfoObj?.image == ""  ? IMG_URL_BASE + "unknown_user.jpg" : APP_URL + userInfoObj.image} className='w-[100px] h-[100px] rounded-[10px] object-cover' />
 
                     <div className='ml-[20px] psi__user-info flex flex-col justify-between'>
                         <div className='psi__user-name'>{userInfoObj.firstName} {userInfoObj.lastName}</div>

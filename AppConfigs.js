@@ -1,6 +1,6 @@
 import toast from '@/helper/Toast';
 import axios from 'axios';
-import { CLIENT_URL } from './GlobalConstant';
+import { APP_URL, CLIENT_URL } from './GlobalConstant';
 import TokenHelpers from './src/helper/TokenHelper';
 
 let isRefreshing = false;
@@ -20,7 +20,7 @@ const processQueue = (error) => {
 
 
 export const appClient = axios.create({
-    baseURL: "https://localhost:44314/",
+    baseURL: APP_URL,
     withCredentials: true
 });
 

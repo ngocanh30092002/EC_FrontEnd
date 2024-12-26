@@ -6,7 +6,7 @@ function OverViewUserProfile({ className, examInfo }) {
         <div className={`${className} flex justify-center items-center `}>
             <div className="ovup__wrapper w-[95%] flex flex-col min-h-[450px]">
                 <div className='flex justify-center p-[10px]'>
-                    <img src={examInfo?.userInfo?.image ? APP_URL + examInfo.userInfo.image : IMG_URL_BASE + "unknown_user.jpg"} className='ovup__user-img' />
+                    <img src={examInfo?.userInfo?.image ? APP_URL + examInfo.userInfo.image : IMG_URL_BASE + "unknown_user.jpg"} className='ovup__user-img object-cover' />
                 </div>
                 <div className='flex items-center flex-col'>
                     <div className='aob__full-name'>{examInfo?.userInfo?.firstName} {examInfo?.userInfo?.lastName}</div>

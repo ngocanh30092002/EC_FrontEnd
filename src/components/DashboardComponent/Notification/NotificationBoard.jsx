@@ -49,12 +49,12 @@ function NotificationBoard() {
                                 startConnection(connectNum++);
                             }
                             else {
-                                toast({
-                                    type: "error",
-                                    duration: 5000,
-                                    title: "SignalR Connection Error",
-                                    message: errorMessage
-                                });
+                                // toast({
+                                //     type: "error",
+                                //     duration: 5000,
+                                //     title: "SignalR Connection Error",
+                                //     message: errorMessage
+                                // });
                             }
                         }
 

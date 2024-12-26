@@ -131,7 +131,7 @@ function InProcessSubmitInfo({ processId, hwSubmissionId, ...props }) {
         <div className='fixed z-100 top-0 left-0 w-full h-full bg-gray-400 bg-opacity-40'>
             <div className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-[700px] bg-white p-[30px] rounded-[10px] psi__wrapper'>
                 <div className="psi__user-info--wrapper flex">
-                    <img src={userInfo?.user?.image ? APP_URL + userInfo.user.image : IMG_URL_BASE + "unknown_user.jpg"} className='w-[100px] h-[100px] rounded-[10px]' />
+                    <img src={userInfo?.user?.image ? APP_URL + userInfo.user.image : IMG_URL_BASE + "unknown_user.jpg"} className='w-[100px] h-[100px] rounded-[10px] object-cover' />
 
                     <div className='ml-[20px] psi__user-info flex flex-col justify-between'>
                         <div className='psi__user-name'>{userInfo?.user?.firstName} {userInfo?.user?.lastName}</div>
