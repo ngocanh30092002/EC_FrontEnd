@@ -1,0 +1,113 @@
+.ir__title--text{
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-family: 'Nunito', sans-serif;
+    padding: 10px 0;
+}
+
+.ir__des--text{
+    font-size: 14px;
+    font-family: 'Nunito', sans-serif; 
+    text-wrap: wrap;
+    padding: 10px;
+    border:solid 1px var(--border-color);
+}
+
+.ir__input-res{
+    padding: 10px 20px;
+    flex: 1;
+    border-radius: 15px;
+    font-size: 14px;
+    font-family: 'Nunito', sans-serif; 
+}
+
+.ir__btn-close{
+    font-weight: bold;
+    color: white;
+    background-color: rgb(133, 0, 0);
+    padding: 10px 15px;
+    margin-left: 10px;
+    min-width: 90px;
+    font-family: 'Nunito', sans-serif; 
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.ir__btn-close:hover{
+    opacity: 0.8;
+    background-color: rgb(221, 0, 0);
+}
+
+.ir__btn-func{
+    font-weight: bold;
+    color: white;
+    background-color: var(--primary-color);
+    padding: 10px 15px;
+    margin-left: 10px;
+    min-width: 90px;
+    font-family: 'Nunito', sans-serif; 
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.ir__btn-func:hover{
+    opacity: 0.8;
+}
+
+.irp__error{
+    border-color: red;
+}
+
+.idr__response-msg{
+    font-size: 14px;
+    font-family: 'Nunito', sans-serif; 
+    padding: 10px 20px;
+    border-radius: 15px;
+    border:solid 1px var(--border-color);
+    width: fit-content;
+}
+
+.idr__response-time{
+    font-size: 10px;
+    font-family: 'Nunito', sans-serif; 
+    padding: 10px 20px;
+}
+
+.open{
+    color: white;
+    font-weight: bold;
+    background-color: #aaaaaa;
+    padding: 8px;
+    text-align: center;
+    border-radius: 8px;
+}
+
+.inprogress{
+    color: white;
+    font-weight: bold;
+    background-color: #ff8400;
+    padding: 8px;
+    text-align: center;
+    border-radius: 8px;
+}
+
+.resolved{
+    color: white;
+    font-weight: bold;
+    background-color: #018708;
+    padding: 8px;
+    text-align: center;
+    border-radius: 8px;
+}
+
+.closed{
+    color: white;
+    font-weight: bold;
+    background-color: #d30000;
+    padding: 8px;
+    text-align: center;
+    border-radius: 8px;
+}
+
+

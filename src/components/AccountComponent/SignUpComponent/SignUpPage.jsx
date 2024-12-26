@@ -4,9 +4,10 @@ import { APP_API, CLIENT_URL } from "~/GlobalConstant"
 import { useState } from "react";
 import toast from "@/helper/Toast";
 import { IMG_URL_BASE } from "~/GlobalConstant";
+import LoaderPage from "../../LoaderComponent/LoaderPage";
 
 function SignUpPage() {
-    const [isSuccess , setSuccess] = useState(false); 
+    const [isSuccess, setSuccess] = useState(false);
 
     const handleBackToLogin = () => {
         window.location.href = CLIENT_URL + "account/login";
@@ -25,7 +26,7 @@ function SignUpPage() {
                 </div>
                 <div className="w-full lg:w-1/2 px-7 py-4 relative z-10">
                     <span className="sign-up-slogan text-5xl h-[60px]">Join us now</span>
-                    <SignUpForm  onSetSuccess = {setSuccess} />
+                    <SignUpForm onSetSuccess={setSuccess} />
 
                     <button className="sign-up-back" onClick={handleBackToLogin} >
                         <div className='flex items-center px-4 relative'>
@@ -36,7 +37,7 @@ function SignUpPage() {
                 </div>
             </div>
 
-            {isSuccess && <SignUpDialog/>}
+            {isSuccess && <SignUpDialog />}
         </>
     )
 }
@@ -56,13 +57,13 @@ function SignUpDialog() {
 
                 <div className="successBox__message">
                     You have successfully signed up.
-                    <br/>
+                    <br />
                     Now you can go to the login page.
                 </div>
 
                 <button className="successBox__btn flex" onClick={handleClickRedirect}>
                     <span>Log in</span>
-                    <img src={IMG_URL_BASE + "rightArrow.svg"} alt="right-arrow" className="w-2" /> 
+                    <img src={IMG_URL_BASE + "rightArrow.svg"} alt="right-arrow" className="w-2" />
                 </button>
             </div>
         </div>
@@ -70,9 +71,12 @@ function SignUpDialog() {
     )
 }
 
-function SignUpForm({ onSetSuccess}) {
+function SignUpForm({ onSetSuccess }) {
     const [errors, setErrors] = useState({})
+    const [isLoading, setIsLoading] = useState(false);
+
     const handleSignUpSubmit = (e) => {
+        setIsLoading(true);
         e.preventDefault();
         const formData = new FormData(e.target);
 
@@ -89,7 +93,8 @@ function SignUpForm({ onSetSuccess}) {
                 message: e.message,
                 duration: 5000,
                 type: "error"
-            }));
+            }))
+            .finally(() => setIsLoading(false));
     }
 
     const handleResponseData = (data) => {
@@ -103,11 +108,11 @@ function SignUpForm({ onSetSuccess}) {
         }
 
         if (data.success) {
-            setTimeout(() =>{
+            setTimeout(() => {
                 onSetSuccess(true);
             }, 1000);
         }
-        else{
+        else {
             toast({
                 title: "Error",
                 duration: 5000,
@@ -115,7 +120,7 @@ function SignUpForm({ onSetSuccess}) {
                 type: "error"
             });
         }
-        
+
     }
 
     const handleClearError = (field) => {
@@ -126,99 +131,101 @@ function SignUpForm({ onSetSuccess}) {
     }
 
     return (
-        <form method="POST" onSubmit={(e) => { handleSignUpSubmit(e) }}>
-            <CustomButton
-                type="text"
-                name="UserName"
-                require={true}
-                placeholder="User Name"
-                minLength={5}
-                maxLength={50}
-                errors={errors}
-                isFocus = {true}
-                onClearError={handleClearError}
-            />
-            <div className="flex">
+        <>
+            <form method="POST" onSubmit={(e) => { handleSignUpSubmit(e) }}>
                 <CustomButton
                     type="text"
-                    name="FirstName"
+                    name="UserName"
                     require={true}
-                    placeholder="First Name"
-                    minLength={0}
+                    placeholder="User Name"
+                    minLength={5}
                     maxLength={50}
-                    className="flex-1"
                     errors={errors}
-                    onClearError={handleClearError} />
-                <div className="w-[20px]" />
+                    isFocus={true}
+                    onClearError={handleClearError}
+                />
+                <div className="flex">
+                    <CustomButton
+                        type="text"
+                        name="FirstName"
+                        require={true}
+                        placeholder="First Name"
+                        minLength={0}
+                        maxLength={50}
+                        className="flex-1"
+                        errors={errors}
+                        onClearError={handleClearError} />
+                    <div className="w-[20px]" />
+                    <CustomButton
+                        type="text"
+                        name="LastName"
+                        require={true}
+                        placeholder="Last Name"
+                        minLength={0}
+                        maxLength={50}
+                        className="flex-1"
+                        errors={errors}
+                        onClearError={handleClearError} />
+                </div>
+
+                <div className="flex">
+                    <CustomButton
+                        type="password"
+                        name="Password"
+                        require={true}
+                        placeholder="Password"
+                        className='flex-1'
+                        errors={errors}
+                        onClearError={handleClearError} />
+
+                    <div className="w-[20px]" />
+
+                    <CustomButton
+                        type="password"
+                        name="ConfirmPassword"
+                        require={true}
+                        placeholder="Confirm Password"
+                        className='flex-1'
+                        errors={errors}
+                        onClearError={handleClearError} />
+                </div>
                 <CustomButton
-                    type="text"
-                    name="LastName"
+                    type="phone"
+                    name="Email"
                     require={true}
-                    placeholder="Last Name"
-                    minLength={0}
-                    maxLength={50}
-                    className="flex-1"
-                    errors={errors}
-                    onClearError={handleClearError} />
-            </div>
-
-            <div className="flex">
-                <CustomButton
-                    type="password"
-                    name="Password"
-                    require={true}
-                    placeholder="Password"
-                    className='flex-1'
+                    placeholder="Email"
+                    isEmail={true}
                     errors={errors}
                     onClearError={handleClearError} />
 
-                <div className="w-[20px]" />
-
-                <CustomButton
-                    type="password"
-                    name="ConfirmPassword"
-                    require={true}
-                    placeholder="Confirm Password"
-                    className='flex-1'
-                    errors={errors}
-                    onClearError={handleClearError} />
-            </div>
-            <CustomButton
-                type="phone"
-                name="Email"
-                require={true}
-                placeholder="Email"
-                isEmail={true}
-                errors={errors}
-                onClearError={handleClearError} />
-
-            <div className="flex my-3 gender-wrapper">
-                <span className="text-md gender-title">Gender </span>
-                <div className="flex flex-1 justify-around items-center">
-                    <div className="flex items-center">
-                        <input type="radio" id="male" name="Gender" value="0" defaultChecked />
-                        <label className="ml-2" htmlFor="male">Male</label>
-                    </div>
-                    <div className="flex items-center">
-                        <input type="radio" id="female" name="Gender" value="1" />
-                        <label className="ml-2" htmlFor="female">Female</label>
-                    </div>
-                    <div className="flex items-center">
-                        <input type="radio" id="other" name="Gender" value="2" />
-                        <label className="ml-2" htmlFor="other">Other</label>
+                <div className="flex my-3 gender-wrapper">
+                    <span className="text-md gender-title">Gender </span>
+                    <div className="flex flex-1 justify-around items-center">
+                        <div className="flex items-center">
+                            <input type="radio" id="male" name="Gender" value="0" defaultChecked />
+                            <label className="ml-2" htmlFor="male">Male</label>
+                        </div>
+                        <div className="flex items-center">
+                            <input type="radio" id="female" name="Gender" value="1" />
+                            <label className="ml-2" htmlFor="female">Female</label>
+                        </div>
+                        <div className="flex items-center">
+                            <input type="radio" id="other" name="Gender" value="2" />
+                            <label className="ml-2" htmlFor="other">Other</label>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <button type="submit" className="sign-up-btn">
-                <div className='flex items-center px-4 relative'>
-                    <span className='flex-1'>Sign up</span>
-                    <img src={IMG_URL_BASE + "rightArrow.svg"} className='w-[20px] absolute top-0 right-[10px]' alt='arrow' />
-                </div>
-            </button>
-        </form>
+                <button type="submit" className="sign-up-btn">
+                    <div className='flex items-center px-4 relative'>
+                        <span className='flex-1'>Sign up</span>
+                        <img src={IMG_URL_BASE + "rightArrow.svg"} className='w-[20px] absolute top-0 right-[10px]' alt='arrow' />
+                    </div>
+                </button>
+            </form>
 
-
+            {isLoading && <LoaderPage/>}
+        </>
     )
 
 }

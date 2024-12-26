@@ -13,7 +13,7 @@ function ToeicTimeItem({data, year, index}) {
     return (
         <div className='grid grid-cols-12 w-full flex-1 toeic-time__wrapper items-center overflow-visible mt-[10px]'>
             <div className='tt__left-container col-span-3 flex items-center justify-center'>
-                <div className='ttr__toeic-name cursor-pointer' onClick={handleShowList}>
+                <div className='ttr__toeic-name cursor-pointer text-center line-clamp-1' onClick={handleShowList}>
                     Toeic {year}
                 </div>
             </div>
@@ -48,7 +48,7 @@ function ToeicExamItem({examInfo}) {
     return (
         <div className={`col-span-4 ttr__toeic-exam flex justify-between items-center `} onClick={handleClickExam}>
             <div>
-                <div className='te__title'>
+                <div className='te__title te__title'>
                     {examInfo?.name}
                 </div>
 

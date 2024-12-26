@@ -4,59 +4,67 @@ import { appClient } from '~/AppConfigs';
 import { APP_URL, IMG_URL_BASE } from '~/GlobalConstant.js';
 import { CourseDetailContext } from './CourseDetail';
 
-function CourseClasses({course}) {
-    const {classes, setClasses} = useContext(CourseDetailContext);
+function CourseClasses({ course }) {
+    const { classes, setClasses } = useContext(CourseDetailContext);
     const [enroll, setEnroll] = useState(null);
-    
-    const getEnroll = useCallback(async () =>{
-        try{
+
+    const getEnroll = useCallback(async () => {
+        try {
             var response = await appClient.get(`api/enrolls/courses/${course.courseId}`)
             var data = response.data;
-            if(data.success){
+            if (data.success) {
                 setEnroll(data.message);
             }
         }
-        catch{
+        catch {
 
         }
     })
 
-    useEffect(() =>{
+    useEffect(() => {
         getEnroll();
-    }, [])
+    }, [classes, course])
     return (
         <div className='grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-[10px] ml-[15px]'>
-            {classes.map((item,index) => 
-                <CourseClassItem 
+            {classes.map((item, index) =>
+                <CourseClassItem
                     key={index}
-                    itemInfo = {item}
-                    isRegistering = {item.classId == enroll?.class?.classId}/>
+                    itemInfo={item}
+                    enrollInfo={enroll}
+                />
             )}
         </div>
     )
 }
 
 
-function CourseClassItem({itemInfo , isRegistering}){
-    const defaultImage = IMG_URL_BASE + "unknown_user.jpg";
-    const {teacher} = itemInfo;
+function CourseClassItem({ itemInfo, enrollInfo }) {
+    const [isRegistering, setIsRegistering] = useState(() => {
+        return itemInfo.classId == enrollInfo?.class?.classId;
+    });
 
-    const changeFormatDate = (dateStr) =>{
+    useEffect(() => {
+        setIsRegistering(itemInfo.classId == enrollInfo?.class?.classId);
+    }, [enrollInfo])
+    const defaultImage = IMG_URL_BASE + "unknown_user.jpg";
+    const { teacher } = itemInfo;
+
+    const changeFormatDate = (dateStr) => {
         const date = new Date(dateStr);
         const options = { year: 'numeric', month: 'short', day: '2-digit' };
-        return date.toLocaleDateString('en-US', options).replace(",","");
+        return date.toLocaleDateString('en-US', options).replace(",", "");
     }
 
-    const handleRegisterClass = () =>{
+    const handleRegisterClass = () => {
         const formData = new FormData();
         formData.append("ClassId", itemInfo.classId);
 
-        const handleSendData = async()=>{
-            try{
+        const handleSendData = async () => {
+            try {
                 const response = await appClient.post("api/enrolls", formData);
                 const data = response.data;
 
-                if(data.success){
+                if (data.success) {
                     toast({
                         type: "success",
                         title: "Success",
@@ -65,7 +73,7 @@ function CourseClassItem({itemInfo , isRegistering}){
                     })
                 }
             }
-            catch{
+            catch {
 
             }
         }
@@ -76,8 +84,8 @@ function CourseClassItem({itemInfo , isRegistering}){
     return (
         <div className="cci__wrapper flex flex-col mb-[15px]">
             <div className='cci__teacher-info flex items-center p-[15px]'>
-                <img src={teacher?.imageUrl ? APP_URL + teacher.imageUrl: defaultImage} alt="" className="cci__teacher-img" />
-                
+                <img src={teacher?.imageUrl ? APP_URL + teacher.imageUrl : defaultImage} alt="" className="cci__teacher-img" />
+
                 <div className='flex-1 ml-[15px]'>
                     <span className='cci__teacher-name'>{teacher?.fullName}</span>
                     <div>
@@ -87,7 +95,7 @@ function CourseClassItem({itemInfo , isRegistering}){
                     </div>
                 </div>
 
-                <img src={IMG_URL_BASE + "dot-icon.svg"} className='w-[20px] cursor-pointer'/>
+                <img src={IMG_URL_BASE + "dot-icon.svg"} className='w-[20px] cursor-pointer' />
             </div>
 
             <div>
@@ -117,7 +125,7 @@ function CourseClassItem({itemInfo , isRegistering}){
                 </div>
             </div>
 
-            {isRegistering ? 
+            {isRegistering ?
                 <button className='cci__btn registering'>
                     Registering
                 </button>

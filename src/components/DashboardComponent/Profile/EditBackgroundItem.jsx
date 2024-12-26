@@ -13,7 +13,7 @@ function EditBackgroundItem() {
     useEffect(() => {
         const getUserInfo = async () =>{
             try{
-                var response = await appClient.get("api/students/user-background-info");
+                var response = await appClient.get("api/users/bg-info");
                 var data = response.data;
                 if(!data.success){
                     toast({
@@ -67,7 +67,7 @@ function EditBackgroundItem() {
 
         const submitForm = async () =>{
             try{
-                const response = await appClient.post("api/students/user-background", formData)
+                const response = await appClient.post("api/users/user-background", formData)
 
                 var data = response.data;
 

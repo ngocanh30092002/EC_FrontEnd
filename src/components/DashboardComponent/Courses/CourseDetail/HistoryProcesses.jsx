@@ -97,7 +97,7 @@ function HistoryProcesses({ onSetShow, type, assignmentId, examId, enrollId }) {
                                 <div className='w-1/6'>Result</div>
                             </div>
 
-                            <div className='his-process__rows min-h-[210px]'>
+                            <div className='his-process__rows min-h-[280px]'>
                                 {currentHisProcesses.map((item, index) =>
                                     <a className='his-process__row flex w-full items-center' key={index} onClick={(e) => handleRedirectHref(e, item)}>
                                         <div className='w-1/12'>#{indexOfFirstItem + index + 1}</div>
@@ -114,7 +114,7 @@ function HistoryProcesses({ onSetShow, type, assignmentId, examId, enrollId }) {
                                 )}
                             </div>
 
-                            <div className="flex justify-between items-center">
+                            <div className="flex justify-between items-center mt-[10px]">
                                 <div>
                                     <button
                                         className='p-[10px] hover:bg-gray-300 rounded-[8px]'

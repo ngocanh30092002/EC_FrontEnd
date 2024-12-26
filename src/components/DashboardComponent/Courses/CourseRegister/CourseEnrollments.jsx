@@ -115,7 +115,7 @@ function CourseEnrollItem({itemInfo, index, onRemoveEnroll, onUpdate}) {
 
         const executeRemoveEnroll = async() =>{
             try{
-                var response = await appClient.put(`api/enrolls/${itemInfo.enrollId}/reject`);
+                var response = await appClient.delete(`api/enrolls/${itemInfo.enrollId}/remove`);
                 var data = response.data;
                 if(data.success){
                     onRemoveEnroll(itemInfo.enrollId);

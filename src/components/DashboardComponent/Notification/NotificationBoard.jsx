@@ -7,27 +7,28 @@ import NoNotification from './NoNotification';
 import NotificationItem from './NotificationItem';
 import TokenHelpers from '../../../helper/TokenHelper';
 
-function NotificationBoard(){
+function NotificationBoard() {
     const [isShowBoard, setShowBoard] = useState(false);
     const [isReadAll, setReadAll] = useState(false);
-    const [notiData , setNotiData] = useState([])
+    const [notiData, setNotiData] = useState([])
     const [notiConnection, setNotiConnection] = useState(null);
-    // SignalR listening notification
-    useLayoutEffect(() => {
-        const getNotifications = async () =>{
-            try{
-                var response = await appClient.get("api/notifications");
-                var data = response.data;
-                setNotiData(data);
-            }
-            catch(error){
-                
-            }
+
+    const getNotifications = async () => {
+        try {
+            var response = await appClient.get("api/notifications");
+            var data = response.data;
+            setNotiData(data);
         }
+        catch (error) {
+
+        }
+    }
+
+    useLayoutEffect(() => {
         getNotifications();
     }, [])
 
-    useEffect(() =>{
+    useEffect(() => {
         const notiConnection = new signalR.HubConnectionBuilder()
             .withUrl("https://localhost:44314/api/hub/notification", {
                 withCredentials: true
@@ -38,33 +39,33 @@ function NotificationBoard(){
         setNotiConnection();
 
         if (notiConnection) {
-            const startConnection = (connectNum = 0) =>{
+            const startConnection = (connectNum = 0) => {
                 notiConnection.start()
-                .catch(e => {
-                    const handleError = async () =>{
-                        var errorMessage = e.message;
-                        if(errorMessage.includes("401") && connectNum < 3){
-                            await TokenHelpers.Renew(false);
-                            startConnection(connectNum++);
+                    .catch(e => {
+                        const handleError = async () => {
+                            var errorMessage = e.message;
+                            if (errorMessage.includes("401") && connectNum < 3) {
+                                await TokenHelpers.Renew(false);
+                                startConnection(connectNum++);
+                            }
+                            else {
+                                toast({
+                                    type: "error",
+                                    duration: 5000,
+                                    title: "SignalR Connection Error",
+                                    message: errorMessage
+                                });
+                            }
                         }
-                        else{
-                            toast({
-                                type: "error",
-                                duration: 5000, 
-                                title: "SignalR Connection Error",
-                                message: errorMessage
-                            });
-                        }
-                    }
 
-                    setTimeout(handleError,5000);
-                });
+                        setTimeout(handleError, 5000);
+                    });
             }
 
             startConnection();
         }
 
-        notiConnection.on("ReceiveError", (errorMessage) =>{
+        notiConnection.on("ReceiveError", (errorMessage) => {
             toast({
                 type: "error",
                 duration: 5000,
@@ -73,22 +74,23 @@ function NotificationBoard(){
             })
         });
 
-        notiConnection.on("ReceiveNotification", () =>{
-            const getNotifications = async () =>{
-                try{
+        notiConnection.on("ReceiveNotification", () => {
+            const getNotifications = async () => {
+                try {
                     var response = await appClient.get("api/notifications");
                     var data = response.data;
+                    console.log(data);
                     setNotiData(data);
                 }
-                catch(error){
-                   
+                catch (error) {
+
                 }
             }
             getNotifications();
         });
 
-        return()=>{
-            if(notiConnection){
+        return () => {
+            if (notiConnection) {
                 notiConnection.stop().catch(e => {
                     toast({
                         type: "error",
@@ -101,30 +103,30 @@ function NotificationBoard(){
         }
     }, [])
 
-   
 
-    useEffect(() =>{
+
+    useEffect(() => {
         setReadAll(notiData.every(e => e.IsRead))
     }, [notiData])
 
-    const handleShowNotify = (e) =>{
+    const handleShowNotify = (e) => {
         setShowBoard(!isShowBoard);
     }
 
-    const handleMarkReadAll = () =>{
+    const handleMarkReadAll = () => {
         setNotiData(preData => preData.map(item => {
             item.IsRead = true
             return item;
         }));
 
         setReadAll(true);
-        
 
-        const sendRequestMarkReadAll = async () =>{
-            try{
+
+        const sendRequestMarkReadAll = async () => {
+            try {
                 var response = appClient.patch("api/notifications/read-all")
             }
-            catch(error){
+            catch (error) {
 
             }
         }
@@ -132,10 +134,10 @@ function NotificationBoard(){
         sendRequestMarkReadAll();
     }
 
-    const handleMarkRead = (notiId) =>{
-        setNotiData(preNotiData =>{
-            var newNotiData = preNotiData.map((item,index) =>{
-                if(item.NotiStuId == notiId){
+    const handleMarkRead = (notiId) => {
+        setNotiData(preNotiData => {
+            var newNotiData = preNotiData.map((item, index) => {
+                if (item.NotiStuId == notiId) {
                     item.IsRead = true
                 }
 
@@ -148,25 +150,38 @@ function NotificationBoard(){
         setShowBoard(false);
     }
 
+    const handleDeleteAll = async () =>{
+        try {
+            var response = await appClient.delete("api/notifications");
+            setNotiData([]);
+        }
+        catch (error) {
+
+        }
+    }
+
 
     return (
         <>
             <div className={`noti__item last 
                 ${isShowBoard ? "active" : ""} 
-                ${isReadAll ? "" : "hasNoti" }`} 
+                ${isReadAll ? "" : "hasNoti"}`}
                 onClick={(e) => handleShowNotify(e)}>
 
-                <img src={IMG_URL_BASE + "alert_bell1.svg"} alt="" className="w-[24px] noti__item--img"/>
+                <img src={IMG_URL_BASE + "alert_bell1.svg"} alt="" className="w-[24px] noti__item--img" />
 
                 <div className='noti__list-info flex flex-col w-[455px] md:w-[500px]' onClick={(e) => e.stopPropagation()}>
                     <div className='nli__header flex justify-between items-center overflow-hidden'>
                         <span className='nli__header--title'>Notifications</span>
-                        <button className='nli__header--mark' onClick={handleMarkReadAll}>Mark all</button>
+                        <div className="flex items-center">
+                            <button className='nli__header--mark' onClick={handleDeleteAll}>Delete</button>
+                            <button className='nli__header--mark' onClick={handleMarkReadAll}>Mark all</button>
+                        </div>
                     </div>
 
                     <div className='h-full'>
-                        {notiData.map((item, index) =>{
-                            return <NotificationItem key={index} itemInfo ={item} onMarkNoti = {handleMarkRead}/>
+                        {notiData.map((item, index) => {
+                            return <NotificationItem key={index} itemInfo={item} onMarkNoti={handleMarkRead} />
                         })}
 
                         {notiData.length == 0 && <NoNotification />}

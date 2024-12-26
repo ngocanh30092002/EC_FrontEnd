@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { appClient } from '~/AppConfigs';
 import { IMG_URL_BASE } from '~/GlobalConstant';
 
-function OverviewExamInfo({ className, examInfo, direction, isToeic }) {
+function OverviewExamInfo({ className, examInfo, direction, mode }) {
     const [numQues, setNumQues] = useState(null);
+    const [examTime, setExamTime] = useState("");
     const [volume, setVolume] = useState(1);
     const [isShowVolume, setIsShowVolume] = useState(false);
     const audioRef = useRef(null);
@@ -22,13 +23,44 @@ function OverviewExamInfo({ className, examInfo, direction, isToeic }) {
                 });
         }
 
-        if(isToeic){
-            getNumQuesExamination(examInfo.toeicInfo.toeicId);
-        }
-        else{
-            getNumQuesExamination(examInfo.examination.toeicId);
+        const getNumQuesHomework =(id) =>{
+            appClient.get(`api/randomques/homework/${id}/num-ques`)
+            .then(res => res.data)
+                .then(data => {
+                    if (data.success) {
+                        setNumQues(data.message);
+                    }
+                });
         }
 
+        const getNumQuesRoadMap =(id) =>{
+            appClient.get(`api/randomques/road-map-exams/${id}/num-ques`)
+            .then(res => res.data)
+                .then(data => {
+                    if (data.success) {
+                        setNumQues(data.message);
+                        console.log(data.message);
+                    }
+                });
+        }
+
+        if(mode == 1){
+            getNumQuesExamination(examInfo.toeicInfo.toeicId);
+            setExamTime(examInfo.toeicInfo.time);
+        }
+        if (mode == 0) {
+            getNumQuesExamination(examInfo.examination.toeicId);
+            setExamTime(examInfo.examination.time);
+        }
+
+        if(mode == 2){
+            getNumQuesHomework(examInfo.homework.homeworkId);
+            setExamTime(examInfo.homework.time);
+        }
+        if(mode == 3){
+            setExamTime(examInfo.roadMapInfo.time);
+            getNumQuesRoadMap(examInfo.roadMapInfo.id);
+        }
         return () =>{
             if(audioRef.current){
                 audioRef.current.pause();
@@ -43,24 +75,91 @@ function OverviewExamInfo({ className, examInfo, direction, isToeic }) {
                 .then(res => res.data)
                 .then(data => {
                     if (data.success) {
+                        let dataRes =  data.message;
+
                         navigate("/examination/in-process", {
                             state: {
-                                ques: data.message,
+                                ques: dataRes,
                                 userInfo: examInfo,
                                 direction: direction,
                                 volume: volume,
-                                isToeicMode: isToeic
+                                mode: mode
                             }
                         })
                     }
                 })
         }
 
-        if(isToeic){
+        const getHomeworkQuesInfo = (id) =>{
+            appClient.get(`api/RandomQues/homework/${id}`)
+                .then(res => res.data)
+                .then(data => {
+                    if (data.success) {
+                        let dataRes =  data.message;
+
+                        let i = 0;
+                        dataRes.forEach(item => {
+                            item.subQues.forEach((subQues, index) => {
+                                subQues.quesNo = i + 1;
+                                i++;
+                            });
+                        });
+
+                        navigate("/examination/in-process", {
+                            state: {
+                                ques: dataRes,
+                                userInfo: examInfo,
+                                direction: direction,
+                                volume: volume,
+                                mode: mode
+                            }
+                        })
+                        console.log(dataRes); 
+                    }
+                })
+        }
+
+        const getRoadMapQuesInfo = (id) =>{
+            appClient.get(`api/RandomQues/road-map-exams/${id}`)
+                .then(res => res.data)
+                .then(data => {
+                    if (data.success) {
+                        let dataRes =  data.message;
+
+                        let i = 0;
+                        dataRes.forEach(item => {
+                            item.subQues.forEach((subQues, index) => {
+                                subQues.quesNo = i + 1;
+                                i++;
+                            });
+                        });
+
+                        navigate("/examination/in-process", {
+                            state: {
+                                ques: dataRes,
+                                userInfo: examInfo,
+                                direction: direction,
+                                volume: volume,
+                                mode: mode
+                            }
+                        })
+                    }
+                })
+        }
+
+        if(mode == 1){
             getQuesInfo(examInfo.toeicInfo.toeicId)
         }
-        else{
+        if(mode == 0) {
             getQuesInfo(examInfo.examination.toeicId)
+        }
+
+        if(mode == 2){
+            getHomeworkQuesInfo(examInfo.homework.homeworkId);
+        }
+
+        if(mode == 3 ){
+            getRoadMapQuesInfo(examInfo.roadMapInfo.id);
         }
     }
 
@@ -92,7 +191,7 @@ function OverviewExamInfo({ className, examInfo, direction, isToeic }) {
                     <div className='flex justify-between'>
                         <div className='flex items-center'>
                             <span className='ovei__info--title'>Exam Time: </span>
-                            <span className='ovei__info--time'>{isToeic ? examInfo.toeicInfo.time : examInfo.examination.time}</span>
+                            <span className='ovei__info--time'>{examTime}</span>
                         </div>
 
                         <div className='flex '>

@@ -6,10 +6,10 @@ import { CreateRandom } from '@/helper/RandomHelper';
 import { InProcessContext } from './InProcessAssignPage';
 import { APP_URL } from '~/GlobalConstant.js';
 
-function InProcessSubmitInfo({ processId, ...props }) {
+function InProcessSubmitInfo({ processId, hwSubmissionId, ...props }) {
     const navigate = useNavigate();
     const userInfo = props.userInfo;
-    const {answer} = useContext(InProcessContext);
+    const { answer } = useContext(InProcessContext);
     const [time, setTime] = useState("00:00:00");
     const [scoreInfo, setScoreInfo] = useState();
 
@@ -32,32 +32,52 @@ function InProcessSubmitInfo({ processId, ...props }) {
 
     useEffect(() => {
         const countDownElement = document.getElementById("countdown-time");
-        const remainTime = timeToSeconds(userInfo?.assignment?.time) - timeToSeconds(countDownElement.innerHTML);
+        let remainTime = undefined;
+        if (props.mode == 0) {
+            remainTime = timeToSeconds(userInfo?.assignment?.time) - timeToSeconds(countDownElement.innerHTML)
+        }
+        else {
+            remainTime = timeToSeconds(userInfo?.homework?.time) - timeToSeconds(countDownElement.innerHTML)
+        }
 
         setTime(secondToTime(remainTime < 0 ? 0 : remainTime));
 
-        const scorePromise = async () => {
-            try {
+        if (props.mode == 0) {
+            const scorePromise = async () => {
+                try {
+                    const response = await appClient.get(`api/LearningProcesses/${processId}/score`);
+                    const data = response.data;
 
-                const response = await appClient.get(`api/LearningProcesses/${processId}/score`);
-                const data = response.data;
-
-                if (data.success) {
-                    return data.message;
+                    if (data.success) {
+                        setScoreInfo(data.message);
+                    }
                 }
+                catch {
 
-                return null;
+                }
             }
-            catch {
-                return null;
+
+            scorePromise();
+        }
+        else {
+            const getScoreHw = async () => {
+                try {
+                    const response = await appClient.get(`api/HwSubmission/${hwSubmissionId}/score`);
+                    const data = response.data;
+
+                    if (data.success) {
+                        setScoreInfo(data.message);
+                    }
+                }
+                catch {
+
+                }
             }
+
+            getScoreHw();
         }
 
-        scorePromise().then(data => {
-            setScoreInfo(data);
-        })
-
-    }, [processId])
+    }, [processId, hwSubmissionId])
 
     const handleBackToCourse = () => {
         navigate(`/courses/detail/${props.userInfo?.course}`)
@@ -65,28 +85,44 @@ function InProcessSubmitInfo({ processId, ...props }) {
         sessionStorage.clear();
     }
 
-    const handleReAttempted = () =>{
+    const handleReAttempted = () => {
         localStorage.clear();
         sessionStorage.clear();
 
         const sessionId = CreateRandom();
         sessionStorage.setItem(sessionId, userInfo?.enrollId);
 
-        navigate(`/assignment?id=${sessionId}&assignmentId=${userInfo?.assignment?.assignmentId}`);
+        if(props.mode == 0){
+            navigate(`/assignment?id=${sessionId}&assignmentId=${userInfo?.assignment?.assignmentId}`);
+        }
+        else{
+            navigate(`/assignment?id=${sessionId}&homeworkId=${userInfo?.homework?.homeworkId}&mode=1`);
+        }
     }
 
     const handleCloseClick = () => {
         props.onShowSubmitInfo(false);
     }
 
-    const handleViewResult = () =>{
-        const getResult = () =>{
+    const handleViewResult = () => {
+        const getResult = () => {
             appClient.get(`api/AssignmentRecords/processes/${processId}/result`)
-            .then(res => res.data)
-            .then(data => answer.addResult(data.message))
+                .then(res => res.data)
+                .then(data => answer.addResult(data.message))
         }
 
-        getResult();
+        const getResultHomework = () => {
+            appClient.get(`api/HwSubRecords/${hwSubmissionId}/result`)
+                .then(res => res.data)
+                .then(data => answer.addResult(data.message))
+        }
+
+        if (props.mode == 0) {
+            getResult();
+        }
+        else {
+            getResultHomework();
+        }
 
         props.onShowSubmitInfo(false);
     }
@@ -95,7 +131,7 @@ function InProcessSubmitInfo({ processId, ...props }) {
         <div className='fixed z-100 top-0 left-0 w-full h-full bg-gray-400 bg-opacity-40'>
             <div className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-[700px] bg-white p-[30px] rounded-[10px] psi__wrapper'>
                 <div className="psi__user-info--wrapper flex">
-                    <img src={userInfo?.user?.image ? APP_URL + userInfo.user.image : IMG_URL_BASE + "user_image.jpg"} className='w-[100px] h-[100px] rounded-[10px]' />
+                    <img src={userInfo?.user?.image ? APP_URL + userInfo.user.image : IMG_URL_BASE + "unknown_user.jpg"} className='w-[100px] h-[100px] rounded-[10px]' />
 
                     <div className='ml-[20px] psi__user-info flex flex-col justify-between'>
                         <div className='psi__user-name'>{userInfo?.user?.firstName} {userInfo?.user?.lastName}</div>

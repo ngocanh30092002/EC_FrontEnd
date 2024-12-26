@@ -11,18 +11,20 @@ function AddEvent({ onAddEvent, currentDate }) {
 
     const parseTime = (timeStr) => {
         const [time, period] = timeStr.split(" ");
-        const [hours, minutes] = time.split(':');
-
+        const [hoursStr, minutesStr] = time.split(':');
+    
+        const hours = parseInt(hoursStr, 10); // Chuyển hours sang số
+        const minutes = parseInt(minutesStr, 10); // Chuyển minutes sang số
+    
         let formatHours;
         if (period === 'AM') {
-            formatHours = (hours === 12) ? 0 : hours;
+            formatHours = (hours === 12) ? 0 : hours; // 12 AM -> 0 giờ
+        } else { // PM
+            formatHours = (hours === 12) ? 12 : hours + 12; // 12 PM giữ nguyên, các giờ khác +12
         }
-        else {
-            formatHours = (hours === 12) ? 12 : hours + 12;
-        }
-
+    
         return new Date(1970, 0, 1, formatHours, minutes);
-    }
+    };
 
     const validateTime = timeStr => {
         const [time, period] = timeStr.split(" ");
@@ -91,6 +93,9 @@ function AddEvent({ onAddEvent, currentDate }) {
 
         const startDate = parseTime(startTime);
         const endDate = parseTime(endTime);
+
+        console.log(startDate);
+        console.log(endDate);
 
         if (startDate > endDate) {
             toast({

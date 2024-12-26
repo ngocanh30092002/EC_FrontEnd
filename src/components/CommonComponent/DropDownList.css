@@ -1,0 +1,33 @@
+.ddl--input{
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: 'Nunito', sans-serif;
+}
+
+.ddl--item{
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: var(--white-color);
+    width: 100%;
+    transition: all 0.2s ease;
+    font-size: 14px;
+    font-family: 'Nunito', sans-serif;
+
+}
+
+.ddl--item:hover{
+    background-color: #edecec;
+}
+
+.ddl-list{
+    scrollbar-width: none;
+}
+
+.ddl--item.selected{
+    background-color: #edecec;
+}
+
+.drop-down-list__wrapper{
+    width: 100%;
+}

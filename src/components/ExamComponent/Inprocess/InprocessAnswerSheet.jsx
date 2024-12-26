@@ -2,19 +2,19 @@ import React, { memo, useContext, useEffect, useState } from 'react'
 import { ExaminationContext } from './InprocessPage';
 import { useNavigate } from 'react-router-dom';
 
-function InprocessAnswerSheet({ className, answerSheet, isSubmitted , courseId, onShowSubmitInfo}) {
+function InprocessAnswerSheet({ className, answerSheet, isSubmitted, courseId, onShowSubmitInfo }) {
     const navigate = useNavigate();
     const [isShowAnswerList, setIsShowAnswerList] = useState(false);
-    const {question, exam} = useContext(ExaminationContext);
+    const { question, exam } = useContext(ExaminationContext);
     const [answeredNum, setAnsweredNum] = useState(0);
     const parts = [
-        { start: 1, end: 6, title: "Part 1" },
-        { start: 7, end: 31, title: "Part 2" },
-        { start: 32, end: 70, title: "Part 3" },
-        { start: 71, end: 100, title: "Part 4" },
-        { start: 101, end: 130, title: "Part 5" },
-        { start: 131, end: 146, title: "Part 6" },
-        { start: 147, end: 200, title: "Part 7" },
+        { start: 1, end: 6, title: "Part 1", partNum : 1 },
+        { start: 7, end: 31, title: "Part 2", partNum : 2  },
+        { start: 32, end: 70, title: "Part 3", partNum : 3  },
+        { start: 71, end: 100, title: "Part 4", partNum : 4 },
+        { start: 101, end: 130, title: "Part 5", partNum : 5  },
+        { start: 131, end: 146, title: "Part 6", partNum : 6 },
+        { start: 147, end: 200, title: "Part 7", partNum : 7 },
     ]
 
     useEffect(() => {
@@ -29,12 +29,13 @@ function InprocessAnswerSheet({ className, answerSheet, isSubmitted , courseId, 
     }
 
     const handleBackToCourse = () => {
-        if(courseId){
+        if (courseId) {
             navigate(`/courses/detail/${courseId}`)
         }
-        else{
+        else {
             navigate("/");
         }
+        
         localStorage.clear();
         sessionStorage.clear();
     }
@@ -43,15 +44,17 @@ function InprocessAnswerSheet({ className, answerSheet, isSubmitted , courseId, 
         setIsShowAnswerList(true);
     }
 
-    const handleForwardQues = (item) =>{
+    const handleForwardQues = (item) => {
         question.forward(item.id);
         setIsShowAnswerList(false);
     }
 
-    const handleViewScore = () =>{
+    const handleViewScore = () => {
         onShowSubmitInfo(true);
     }
 
+
+    console.log(answerSheet);
     return (
         <div className={`${className} bg-white process-info__wrapper h-full flex flex-col`}>
             <div>
@@ -92,22 +95,28 @@ function InprocessAnswerSheet({ className, answerSheet, isSubmitted , courseId, 
                 <div className='pi__answer-sheet p-[10px] flex-1'>
                     {
                         parts.map((part, index) => {
-                            const section = answerSheet.filter(item => item.id >= part.start && item.id <= part.end);
+                            // const section = answerSheet.filter(item => item.id >= part.start && item.id <= part.end);
+                            const section = answerSheet.filter(item => item.part == part.partNum);
+
                             return (
                                 <div key={index}>
-                                    <div className='pi__answer-part-title' >{part.title}</div>
-                                    <div className='pi__answer-sheet p-[10px]'>
-                                        {section.map((item, indexSec) => {
-                                            return indexSec % 5 === 0 ?
-                                                <div key={indexSec} className='flex justify-start items-center mb-[10px] overflow-visible pi__answer-row'>
-                                                    {section.slice(indexSec, indexSec + 5).map((answer, index) =>
-                                                        <AnswerItem key={index} answer={answer} />
-                                                    )}
-                                                </div>
-                                                :
-                                                null
-                                        })}
-                                    </div>
+                                    {section.length != 0 &&
+                                        <>
+                                            <div className='pi__answer-part-title' >{part.title}</div>
+                                            <div className='pi__answer-sheet p-[10px]'>
+                                                {section.map((item, indexSec) => {
+                                                    return indexSec % 5 === 0 ?
+                                                        <div key={indexSec} className='flex justify-start items-center mb-[10px] overflow-visible pi__answer-row'>
+                                                            {section.slice(indexSec, indexSec + 5).map((answer, index) =>
+                                                                <AnswerItem key={index} answer={answer} />
+                                                            )}
+                                                        </div>
+                                                        :
+                                                        null
+                                                })}
+                                            </div>
+                                        </>
+                                    }
                                 </div>
                             )
                         })

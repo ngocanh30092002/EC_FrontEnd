@@ -1,0 +1,51 @@
+.mcp__item{
+    background-color: var(--white-color);
+    border-radius: 3px;
+    z-index: 2000;
+    cursor: pointer;
+    width: 100px;
+    transition: all 0.3s ease;
+    overflow: visible;
+}
+
+.mcp__item:hover{
+    background-color: #f3f3f3;
+}
+
+.mcp__item > p{
+    font-size: 12px;
+    font-family: 'Nunito', sans-serif;
+    padding: 10px;
+    font-weight: 600;
+}
+
+.mcp__title{
+    font-size: 14px;
+    font-family: 'Nunito', sans-serif;
+    padding: 10px;
+    font-weight: bold;
+    min-width: 90px;
+}
+
+.mcp__input{
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    border-radius: 5px;
+    padding: 10px 20px;
+    width: 100%;
+    border:solid 1px var(--border-color);
+}
+
+.mcp__btn-func{
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--white-color);
+    background-color: var(--primary-color);
+    flex:1;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.mcp__error{
+    border-color: red !important;
+}

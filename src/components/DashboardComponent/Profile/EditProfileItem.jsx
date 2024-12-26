@@ -8,7 +8,7 @@ function EditProfileItem() {
 
     const getUserInfo = useCallback(async () =>{
         try{
-            var response = await appClient.get("api/students/user-info");
+            var response = await appClient.get("api/users/info");
             
             var data = response.data;
             if(!data.success){
@@ -49,7 +49,7 @@ function EditProfileItem() {
 
         const submitFormData = async() =>{
             try{
-                const resposne = await appClient.post("api/students/user-info", formData);
+                const resposne = await appClient.post("api/users/user-info", formData);
                 const data = resposne.data;
 
                 if(data.success){

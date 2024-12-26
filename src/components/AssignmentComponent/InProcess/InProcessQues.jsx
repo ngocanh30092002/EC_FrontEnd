@@ -35,10 +35,10 @@ function InProcessQues({ className, currentQues, ...props }) {
                 {currentQues?.type === "Image" && <QuesImage data={currentQues} isSubmitted={props.isSubmitted} volume={props.volume} />}
                 {currentQues?.type === "Audio" && <QuesAudio data={currentQues} isSubmitted={props.isSubmitted} volume={props.volume} />}
                 {currentQues?.type === "Conversation" && <QuesConversation data={currentQues} isSubmitted={props.isSubmitted} volume={props.volume} />}
-                {currentQues?.type === "Sentence" && <QuesSentence data={currentQues} isSubmitted={props.isSubmitted} />}
-                {currentQues?.type === "Single" && <QuesSingle data={currentQues} isSubmitted={props.isSubmitted} />}
-                {currentQues?.type === "Double" && <QuesDouble data={currentQues} isSubmitted={props.isSubmitted} />}
-                {currentQues?.type === "Triple" && <QuesTriple data={currentQues} isSubmitted={props.isSubmitted} />}
+                {currentQues?.type === "Sentence" && <QuesSentence data={currentQues} isSubmitted={props.isSubmitted} volume={props.volume} />}
+                {currentQues?.type === "Single" && <QuesSingle data={currentQues} isSubmitted={props.isSubmitted} volume={props.volume} />}
+                {currentQues?.type === "Double" && <QuesDouble data={currentQues} isSubmitted={props.isSubmitted} volume={props.volume} />}
+                {currentQues?.type === "Triple" && <QuesTriple data={currentQues} isSubmitted={props.isSubmitted} volume={props.volume} />}
             </div>
         </div>
     )
@@ -162,7 +162,7 @@ function QuesImage({ data, isSubmitted, volume }) {
             </div>
 
             <div className='bg-white p-[20px]'>
-                <AnswerOptions type={"no-ques"} num={4} answerInfo={data} isSubmitted={isSubmitted} />
+                <AnswerOptions type={"no-ques"} num={4} answerInfo={data} isSubmitted={isSubmitted} volume={volume} />
             </div>
 
             {hasError &&
@@ -294,7 +294,7 @@ function QuesAudio({ data, isSubmitted, volume }) {
 
     return (
         <div className='h-full pl-[0px]'>
-            <AnswerOptions type={"audio"} num={3} answerInfo={data} isSubmitted={isSubmitted} />
+            <AnswerOptions type={"audio"} num={3} answerInfo={data} isSubmitted={isSubmitted} volume={volume} />
 
             {hasError &&
                 <div className='fixed bottom-[54px] left-[50%] translate-x-[-50%]'>
@@ -435,7 +435,7 @@ function QuesConversation({ data, isSubmitted, volume }) {
             <div className='bg-white p-[10px]'>
                 {questions.map((item, index) => {
                     return (
-                        <AnswerOptions key={index} type={"ques"} num={4} answerInfo={item} isSubmitted={isSubmitted} />
+                        <AnswerOptions key={index} type={"ques"} num={4} answerInfo={item} isSubmitted={isSubmitted} volume={volume} />
                     )
                 })}
             </div>
@@ -455,15 +455,15 @@ function QuesConversation({ data, isSubmitted, volume }) {
     )
 }
 
-function QuesSentence({ data, isSubmitted }) {
+function QuesSentence({ data, isSubmitted, volume }) {
     return (
         <div className='h-full pl-[0px]'>
-            <AnswerOptions type={"sentence"} num={4} answerInfo={data} isSubmitted={isSubmitted} />
+            <AnswerOptions type={"sentence"} num={4} answerInfo={data} isSubmitted={isSubmitted} volume={volume}/>
         </div>
     )
 }
 
-function QuesSingle({ data, isSubmitted }) {
+function QuesSingle({ data, isSubmitted, volume }) {
     const [questions, setQuestions] = useState(data.quesInfo.questions);
 
     return (
@@ -474,7 +474,7 @@ function QuesSingle({ data, isSubmitted }) {
             <div className='bg-white p-[10px]'>
                 {questions.map((item, index) => {
                     return (
-                        <AnswerOptions key={index} type={"ques"} num={4} answerInfo={item} isSubmitted={isSubmitted} />
+                        <AnswerOptions key={index} type={"ques"} num={4} answerInfo={item} isSubmitted={isSubmitted} volume={volume}/>
                     )
                 })}
             </div>
@@ -482,7 +482,7 @@ function QuesSingle({ data, isSubmitted }) {
     )
 }
 
-function QuesDouble({ data, isSubmitted }) {
+function QuesDouble({ data, isSubmitted , volume}) {
     const [questions, setQuestions] = useState(data.quesInfo.questions);
 
 
@@ -495,7 +495,7 @@ function QuesDouble({ data, isSubmitted }) {
             <div className='bg-white p-[10px]'>
                 {questions.map((item, index) => {
                     return (
-                        <AnswerOptions key={index} type={"ques"} num={4} answerInfo={item} isSubmitted={isSubmitted} />
+                        <AnswerOptions key={index} type={"ques"} num={4} answerInfo={item} isSubmitted={isSubmitted} volume={volume}/>
                     )
                 })}
             </div>
@@ -503,7 +503,7 @@ function QuesDouble({ data, isSubmitted }) {
     )
 }
 
-function QuesTriple({ data, isSubmitted }) {
+function QuesTriple({ data, isSubmitted, volume }) {
     const [questions, setQuestions] = useState(data.quesInfo.questions);
 
     return (
@@ -516,7 +516,7 @@ function QuesTriple({ data, isSubmitted }) {
             <div className='bg-white p-[10px]'>
                 {questions.map((item, index) => {
                     return (
-                        <AnswerOptions key={index} type={"ques"} num={4} answerInfo={item} isSubmitted={isSubmitted} />
+                        <AnswerOptions key={index} type={"ques"} num={4} answerInfo={item} isSubmitted={isSubmitted}  volume={volume}/>
                     )
                 })}
             </div>
@@ -524,7 +524,7 @@ function QuesTriple({ data, isSubmitted }) {
     )
 }
 
-function AnswerOptions({ answerInfo, type, num, isShowAnswer = false, isSubmitted }) {
+function AnswerOptions({ answerInfo, type, num, isShowAnswer = false, isSubmitted, volume }) {
     const [answerOptionInfo, setAnswerOptionInfo] = useState(null);
     const [resultInfo, setResultInfo] = useState([null]);
 
@@ -543,6 +543,12 @@ function AnswerOptions({ answerInfo, type, num, isShowAnswer = false, isSubmitte
         setAnswerOptionInfo(answerOptionInfo);
         setResultInfo(answerOptionInfo?.answerInfo);
     }, [answerInfo])
+
+    useEffect(() =>{
+        let newAnswerOptions = answer.get(answerInfo.quesNo);
+        setAnswerOptionInfo(newAnswerOptions);
+        setResultInfo(newAnswerOptions?.answerInfo);
+    }, [volume])
 
     const handleChangeAnswer = (e) => {
         setAnswerOptionInfo({

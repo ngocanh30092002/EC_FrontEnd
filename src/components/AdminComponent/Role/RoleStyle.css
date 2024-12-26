@@ -1,0 +1,79 @@
+.rp__role--input {
+  padding: 10px 20px;
+  border: solid 1px var(--border-color);
+  width: 60%;
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 50px;
+  height: 60px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+}
+
+.rp__role--btn {
+  padding: 10px 40px;
+  border-top-right-radius: 50px;
+  border: solid 1px var(--border-color);
+  border-bottom-right-radius: 50px;
+  border-left: 0;
+  height: 60px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.rp__role--btn:hover {
+  background-color: var(--primary-color);
+  color: var(--white-color);
+  font-weight: bold;
+}
+
+.rp__role-item {
+  background-color: var(--primary-color);
+  padding: 20px 20px;
+  margin-left: 20px;
+  cursor: pointer;
+  position: relative;
+}
+
+.rp__role-item div {
+  font-size: 14px;
+  font-family: 'Nunito', sans-serif;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--white-color);
+  text-align: center;
+}
+
+.rp__role-item--img {
+  top: 0;
+  right: 0;
+  width: 25px;
+  padding: 4px;
+  position: absolute;
+}
+
+.rpur--title {
+  font-size: 16px;
+  font-weight: bold;
+  font-family: 'Nunito', sans-serif;
+  text-transform: uppercase;
+}
+
+
+.rpur__tbl__wrapper{
+    margin-top: 20px;
+}
+
+.rpur__title{
+  font-size: 14px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: bold;
+}
+
+.rpru__select__wrapper,
+.rpur__select-item{
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  width: 100px;
+  padding: 5px;
+}

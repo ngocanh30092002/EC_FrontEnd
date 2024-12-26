@@ -1,18 +1,17 @@
 import React, { memo, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { appClient } from '~/AppConfigs';
-import { IMG_URL_BASE } from '~/GlobalConstant.js';
+import { IMG_URL_BASE, APP_URL } from '~/GlobalConstant.js';
 import { ExaminationContext } from './InprocessPage';
 
-function InprocessSubmitInfo({ onShowSubmitInfo, userInfo, isToeicMode, attemptId }) {
+function InprocessSubmitInfo({ onShowSubmitInfo, userInfo, mode, attemptId }) {
     const navigate = useNavigate();
     const [scoreInfo, setScoreInfo] = useState({});
     const [time, setTime] = useState("00:00:00");
     const [numQues, setNumQues] = useState({});
-    const { userInfo: userInfoObj, examination, toeicInfo, class: classObj } = userInfo;
+    const { userInfo: userInfoObj, examination, toeicInfo, class: classObj, homework, roadMapInfo } = userInfo;
     const { answer } = useContext(ExaminationContext);
 
-    console.log(toeicInfo);
     const timeToSeconds = (timeStr) => {
         const [hours, minutes, seconds] = timeStr.split(':').map(Number);
         return (hours * 3600) + (minutes * 60) + seconds;
@@ -33,8 +32,24 @@ function InprocessSubmitInfo({ onShowSubmitInfo, userInfo, isToeicMode, attemptI
 
     useEffect(() => {
         const countDownElement = document.getElementById("countdown-time");
-        const timeExam = isToeicMode ? toeicInfo.time : examination.time;
-        const toeicId = isToeicMode ? toeicInfo.toeicId : examination.toeicId;
+        let timeExam = undefined;
+        let toeicId = undefined;
+
+        if (mode == 1) {
+            timeExam = toeicInfo.time;
+            toeicId = toeicInfo.toeicId
+        }
+        if (mode == 0) {
+            timeExam = examination.time;
+            toeicId = examination.toeicId;
+        }
+        if (mode == 2) {
+            timeExam = homework.time;
+        }
+        if (mode == 3) {
+            timeExam = roadMapInfo.time;
+        }
+
         const remainTime = timeToSeconds(timeExam) - timeToSeconds(countDownElement.innerHTML);
 
         setTime(secondToTime(remainTime < 0 ? 0 : remainTime));
@@ -69,14 +84,64 @@ function InprocessSubmitInfo({ onShowSubmitInfo, userInfo, isToeicMode, attemptI
                 })
         }
 
-        if (isToeicMode) {
-            getScoreInfoWithToeic(toeicId);
-        }
-        else {
-            getScoreInfoWithExam();
+        const getNumQuesHomework = (homeworkId) => {
+            appClient.get(`api/randomques/homework/${homeworkId}/num-ques`)
+                .then(res => res.data)
+                .then(data => {
+                    if (data.success) {
+                        setNumQues(data.message);
+                    }
+                });
         }
 
-        getNumQues(toeicId)
+        const getNumQuesRoadMap = (roadMapId) => {
+            appClient.get(`api/randomques/road-map-exams/${roadMapId}/num-ques`)
+                .then(res => res.data)
+                .then(data => {
+                    if (data.success) {
+                        setNumQues(data.message);
+                    }
+                });
+        }
+
+        const getScoreInfoWithHomework = () => {
+            appClient.get(`api/HwSubmission/${userInfo.submissionId}/score`)
+                .then(res => res.data)
+                .then(data => {
+                    if (data.success) {
+                        setScoreInfo(data.message);
+                    }
+                })
+        }
+
+        const getScoreInfoWithRoadMap = () => {
+            appClient.get(`api/toeicpractice/attempt/${attemptId}/score`)
+                .then(res => res.data)
+                .then(data => {
+                    if (data.success) {
+                        setScoreInfo(data.message);
+                    }
+                })
+        }
+
+        if (mode == 1) {
+            getScoreInfoWithToeic();
+            getNumQues(toeicId);
+        }
+        if (mode == 0) {
+            getScoreInfoWithExam();
+            getNumQues(toeicId);
+        }
+        if (mode == 2) {
+            getScoreInfoWithHomework();
+            getNumQuesHomework(homework.homeworkId);
+        }
+        if (mode == 3) {
+            getNumQuesRoadMap(roadMapInfo.id);
+            getScoreInfoWithRoadMap();
+        }
+
+
     }, [])
 
     const handleViewResult = () => {
@@ -90,31 +155,45 @@ function InprocessSubmitInfo({ onShowSubmitInfo, userInfo, isToeicMode, attemptI
                 })
         }
 
-        const getResultToeic = () =>{
+        const getResultToeic = () => {
             appClient.get(`api/ToeicPractice/attempt/${attemptId}/result-answer`)
                 .then(res => res.data)
-                .then(data =>{
-                    if(data.success){
+                .then(data => {
+                    if (data.success) {
                         answer.addResult(data.message)
                     }
                 })
         }
-        if(isToeicMode){
+
+        const getResultHomework = () => {
+            appClient.get(`api/HwSubRecords/${userInfo.submissionId}/result`)
+                .then(res => res.data)
+                .then(data => {
+                    if (data.success) {
+                        answer.addResult(data.message)
+                    }
+                    console.log(data);
+                })
+        }
+
+        if (mode == 1) {
             getResultToeic();
         }
-        else{
+        if (mode == 0) {
             getResultExam();
         }
+        if (mode == 2) {
+            getResultHomework();
+        }
+        if(mode == 3){
+            getResultToeic();
+        }
+
         onShowSubmitInfo(false);
     }
 
     const handleBackToCourse = () => {
-        if (classObj?.courseId) {
-            navigate(`/courses/detail/${classObj.courseId}`)
-        }
-        else {
-            navigate("/");
-        }
+        navigate(-1);
 
         localStorage.clear();
         sessionStorage.clear();
@@ -131,19 +210,19 @@ function InprocessSubmitInfo({ onShowSubmitInfo, userInfo, isToeicMode, attemptI
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="psi__user-info--wrapper flex">
-                    <img src={IMG_URL_BASE + "user_image.jpg"} className='w-[100px] h-[100px] rounded-[10px]' />
+                    <img src={userInfoObj?.image == null || userInfoObj?.image == ""  ? IMG_URL_BASE + "unknown_user.jpg" : APP_URL + userInfoObj.image} className='w-[100px] h-[100px] rounded-[10px]' />
 
                     <div className='ml-[20px] psi__user-info flex flex-col justify-between'>
                         <div className='psi__user-name'>{userInfoObj.firstName} {userInfoObj.lastName}</div>
                         {
-                            isToeicMode && userInfoObj?.dateOfBirth &&
+                            (mode == 1 || mode == 3) && userInfoObj?.dateOfBirth &&
                             <div className='flex items-center'>
                                 <span className='text-[12px] font-medium  inline-block  min-w-[70px]'>Birthday:</span>
                                 <span className='text-[12px]'>{userInfoObj.dateOfBirth}</span>
                             </div>
                         }
                         {
-                            isToeicMode && userInfoObj?.email &&
+                            (mode == 1 || mode == 3) && userInfoObj?.email &&
                             <div className='flex items-center'>
                                 <span className='text-[12px] font-medium  inline-block  min-w-[70px]'>Email:</span>
                                 <span className='text-[12px]'>{userInfoObj.email}</span>

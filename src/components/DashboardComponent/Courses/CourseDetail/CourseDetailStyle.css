@@ -225,6 +225,10 @@
     background-color: rgba(0, 0, 0, 0.1);
 }
 
+.his-process__header > div{
+    font-weight: 700;
+}
+
 .his-process__header{
     padding: 15px 20px;
     border: 1px solid var(--border-color);
@@ -259,7 +263,7 @@
     background: #dcf6e4;
     padding: 5px 10px;
     color:#20802d;
-    font-weight: 600;
+    font-weight: 700;
     border-radius: 8px;
 }
 .his-process__item-failed > span{
@@ -268,12 +272,12 @@
     background: #f7e7e7;
     padding: 5px 10px;
     color:#802320;
-    font-weight: 600;
+    font-weight: 700;
     border-radius: 8px;
 }
 
 .his-process__row:hover{
-    background-color: var(--background-hover-color);
+    background-color: rgba(0, 0, 0, 0.04);
     cursor: pointer;
 }
 
@@ -296,4 +300,50 @@
 .his-process__btn.close:hover {
     background-color: rgb(255, 54, 54);
     color: var(--text-color)
+}
+
+.his-process__item--hw{
+    overflow: hidden;
+    display: flex;
+    padding: 5px 0;
+}
+
+.his-process__item--hw span{
+    font-weight: 700;
+    color:#20802d ;
+    background-color: #dcf6e4;
+    display: inline-block;
+    padding: 5px 10px;
+    align-items: center;
+    font-weight: 700;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.his-process__item--hw.late span{
+    color: #948b0a;
+    background-color: #ffff98;
+    display: inline-block;
+    padding: 5px 10px;
+    align-items: center;
+    font-weight: 700;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.his-process__item--hw.over-due  span{
+    font-weight: 700;
+    color:#802320 ;
+    background-color: #f7e7e7;
+    display: inline-block;
+    padding: 5px 10px;
+    align-items: center;
+    font-weight: 700;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.his-process__table *{
+    font-size: 14px;
+    font-family: 'Nunito', sans-serif;
 }

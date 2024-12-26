@@ -108,7 +108,8 @@ function PreparePage() {
                             state: {
                                 userInfo: userInfo,
                                 volumn: 1,
-                                ques: dataQues.message
+                                ques: dataQues.message,
+                                mode: 0
                             }
                         })
                     }
@@ -150,7 +151,7 @@ function PreparePage() {
                     return;
                 }
 
-                const responseUserInfo = await appClient.get("api/students/full-info");
+                const responseUserInfo = await appClient.get("api/users/full-info");
                 const userInfo = responseUserInfo.data.message;
                 const responseToeicInfo = await appClient.get(`api/ToeicExams/${toeicId}`);
                 const toeicInfo = responseToeicInfo.data.message;
@@ -163,7 +164,8 @@ function PreparePage() {
                             toeicInfo: {
                                 ...toeicInfo,
                                 time: convertMinutesToTime(toeicInfo.timeMinutes)
-                            }
+                            },
+                            
                         }
                     })
                 }
@@ -184,7 +186,7 @@ function PreparePage() {
                             attemptId: attemptId,
                             volumn: 1,
                             ques: dataQues.message,
-                            isToeicMode: true
+                            mode: 1
                         }
                     })
                 }
@@ -202,6 +204,7 @@ function PreparePage() {
             if (!examId || !enrollId) {
                 navigate(-1);
                 sessionStorage.clear();
+                return;
             }
 
             handleWithProcessExam();
@@ -209,6 +212,8 @@ function PreparePage() {
         else if (type == 2) {
             if (!toeicId) {
                 navigate(-1);
+                sessionStorage.clear();
+                return;
             }
             handleWithToeicExam();
         }

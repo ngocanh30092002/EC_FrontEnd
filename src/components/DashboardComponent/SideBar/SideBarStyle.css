@@ -118,6 +118,7 @@
     font-size: 13px;
     transition:  all 0.05s ease;
     line-height: 18px;
+    user-select: none;
     white-space: nowrap;
 }
 

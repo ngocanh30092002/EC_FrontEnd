@@ -79,7 +79,7 @@ function InprocessDirection({ className, direction, lastType, onShowDirection , 
             </div>
 
             <div className='flex justify-center'>
-                {(lastType == null || lastType == 1) && <img src={APP_URL + direction.image} className='w-[450px] my-[20px]' />}
+                {(lastType == null || lastType == 1) && <img src={APP_URL + direction.image} className='w-[400px] my-[20px]' />}
             </div>
 
             <div className='absolute bottom-0 left-[50%] translate-x-[-50%]'>

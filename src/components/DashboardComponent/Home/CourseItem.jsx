@@ -11,7 +11,7 @@ function CourseItem({itemInfo, urlBaseLink}){
     useEffect(() =>{
         const getTotalTime = async () =>{
             try{
-                const response = await appClient.get(`api/assignments/course/${itemInfo.courseId}/total-time`)
+                const response = await appClient.get(`api/coursecontent/course/${itemInfo.courseId}/total-time`)
                 const data = response.data;
 
                 if(data.success){
@@ -26,7 +26,7 @@ function CourseItem({itemInfo, urlBaseLink}){
         
         const getLessons = async() =>{
             try{
-                const response = await appClient.get(`api/assignments/course/${itemInfo.courseId}/number`)
+                const response = await appClient.get(`api/coursecontent/course/${itemInfo.courseId}/total-num`)
                 const data = response.data;
 
                 if(data.success){

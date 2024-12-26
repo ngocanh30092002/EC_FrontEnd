@@ -1,0 +1,396 @@
+.mpt__row-item-course{
+    font-size: 14px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+}
+
+.cab__title--text{
+    font-weight: bold;
+    font-size: 14px;
+    font-family: 'Nunito', sans-serif;
+    min-width: 130px;
+    padding: 10px ;
+    margin-right: 10px;
+    text-align: right;
+}
+
+.cab__input-text{
+    padding: 10px 20px;
+    flex:1;
+    border: solid 1px var(--border-color);
+    border-radius: 20px;
+    font-size: 14px;
+    font-family: 'Nunito', sans-serif;
+}
+
+.cab__title--lbl{
+    font-size: 14px;
+    font-family: 'Nunito', sans-serif;
+    margin-left: 10px;
+}
+
+.cabf__btn--func{
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 20px;
+    color: var(--white-color);
+    background-color: var(--primary-color);
+    margin-left: 20px;
+    width: 150px;
+    transition: all 0.2s ease;
+}
+
+.cabf__btn--func:hover{
+    opacity: 0.8;
+    font-weight: bold;
+}
+
+
+.input-error{
+    border-color: red !important;
+}
+
+
+.cip__course-name{
+    font-weight: bold;
+    font-size: 30px;
+    text-transform: uppercase;
+    font-family: 'Nunito', sans-serif;
+}
+
+.cip__course-id{
+    font-size: 14px;
+    text-transform: uppercase;
+    font-family: 'Nunito', sans-serif;
+}
+
+.cip__bg-wrapper{
+    position: absolute;
+    bottom: 0%;
+    padding-left: 100px;
+}
+
+.ccp__title{
+    font-size: 14px;
+    text-transform: uppercase;
+    font-family: 'Nunito', sans-serif;
+    font-weight: bold;
+}
+
+.cci__row-item{
+    font-weight: 600;
+}
+
+.aab__title-lbl{
+    font-size: 14px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    margin-left: 10px;
+}
+
+.ad__info--title{
+    font-size: 25px;
+    font-weight: bolder;
+    text-transform: uppercase;
+    font-family: 'Nunito', sans-serif;
+    padding: 4px 20px;
+    border-radius: 20px;
+    width: 600px;
+}
+
+.ad__info--text{
+    min-width: 120px;
+    margin-right: 10px;
+    text-align: right;
+    padding: 10px 10px;
+    font-weight: bold;
+    font-family: 'Nunito', sans-serif;
+}
+
+.ad__info--input{
+    font-weight: 500;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    padding: 10px 20px;
+    border-radius: 20px;
+}
+
+.ad__info--input:focus{
+    border-color: rgb(121, 188, 255);
+}
+
+.ad__info-btn{
+    font-family: 'Nunito', sans-serif;
+    font-weight: bold;
+    color: var(--primary-color);;
+    padding: 8px 20px;
+    width: 80px;
+    border-radius: 10px;
+    transition: all 0.4s ease;
+}
+
+.ad__info-btn:hover{
+    color:white;
+    background-color: var(--primary-color);
+}
+
+.adlq__btn-func{
+    font-size: 14px;
+    background-color: var(--primary-color);
+    font-family: 'Nunito', sans-serif;
+    font-weight: bold;
+    padding: 6px 0;
+    color: white;
+    border-radius: 15px;
+    font-size: 12px;
+    transition: all 0.4s ease;
+}
+
+.adlq__btn-func.delete{
+    background-color: rgb(163, 3, 3);
+}
+
+.adlq__btn-func:hover{
+    background-color: rgb(1, 1, 190);
+}
+
+.adlq__btn-func.delete:hover{
+    background-color: rgb(218, 0, 0);
+}
+
+.qi__wrapper-bg{
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.qit__title{
+    font-size: 20px;
+    font-weight: bolder;
+    font-family: 'Nunito', sans-serif;
+    text-transform: uppercase;
+}
+
+.qi__audio{
+    width: 400px;
+
+}
+
+.qit__btn-func{
+    font-weight: bold;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    padding:0 20px;
+    height: 40px;
+    width: 100px;
+    color: white;
+    background-color: var(--primary-color);
+    border-radius: 10px;
+    transition: all 0.4s ease;
+}
+
+.qit__btn-func:hover{
+    opacity: 0.7;
+}
+
+.ceq__wrapper{
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.qi__question {
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Nunito', sans-serif;
+}
+
+
+.qi__result-rdo-item,
+.qi__rdo-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 2px;
+    padding: 0 10px;
+    border-radius: 4px;
+}
+
+.qi__rdo-item.answer-false{
+    background-color: red;
+}
+
+.qi__result-rdo-item.answer-true,
+.qi__rdo-item.answer-true{
+    background-color: rgb(12, 191, 12);
+}
+
+.qi__result-rdo-item.answer-true,
+.qi__rdo-item.answer-false label,
+.qi__rdo-item.answer-true label {
+    color: white;
+    font-weight: 600;
+}
+
+.qi__result-rdo-item label{
+    font-size: 14px;
+    font-family: 'Inter Tight', sans-serif;
+    margin-left: 10px;
+    flex: 1;
+    padding: 8px 5px;
+}
+
+.qi__rdo-item label {
+    font-size: 14px;
+    font-family: 'Inter Tight', sans-serif;
+    margin-left: 10px;
+    flex: 1;
+    padding: 8px 5px;
+    cursor: pointer;
+}
+
+.qi__result-rdo-item label span{
+    font-size: 14px;
+    font-family: 'Nunito', sans-serif;
+    margin-left: 10px;
+    flex: 1;
+    padding: 5px;
+}
+
+.qi__rdo-item label span {
+    font-size: 14px;
+    font-family: 'Nunito', sans-serif;
+    margin-left: 10px;
+    flex: 1;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.qi__rdo-item.answer-true:hover,
+.qi__rdo-item.answer-false:hover{
+    opacity: 1;
+}
+
+.qi__rdo-item.submitted > *{
+    cursor: default;
+}
+
+.qi__rdo-item.submitted{
+    cursor: default;
+}
+
+.qi__rdo-item.submitted:hover{
+    opacity: 1;
+}
+
+.qi__rdo-item input {
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
+.qi__rdo-item:hover {
+    opacity: 0.6;
+}
+
+.ceab__title-text{
+    min-width: 100px;
+    font-size: 14px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: bold;
+}
+.ceab__input{
+    padding: 10px 20px;
+    border-radius: 20px;
+    border:solid 1px var(--border-color);
+    flex: 1;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+}
+
+.rdi__title,
+.rmp__title{
+    font-weight: bold;
+    font-size: 14px;
+    text-transform: uppercase;
+    font-family: 'Nunito', sans-serif;
+}
+
+.ceab__item-part{
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.ceab__item-part-num{
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+}
+
+.rm__part--title{
+    padding: 10px 20px;
+}
+.rm__part--title > div{
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+}
+
+
+.qi__question-explaination{
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    color: red;
+    font-weight: bold;
+}
+
+.qi__explaination--title{
+    font-size: 16px;
+    text-transform: uppercase;
+    font-family: 'Nunito', sans-serif;
+    font-weight: bold;
+    color: red;
+}
+
+.rmei__input{
+    padding: 10px 10px;
+    width: 100%;
+    cursor: pointer;
+}
+
+.ridv__wrapper{
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.ridv__title{
+    font-size: 18px;
+    font-family: 'Nunito', sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.cci__input-value{
+    padding: 10px;
+    font-family: 'Nunito', sans-serif;
+    border-radius: 8px;
+}
+
+.ridv__btn-add{
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 10px;
+    color: var(--white-color);
+    background-color: var(--primary-color);
+    margin-left: 20px;
+    transition: all 0.2s ease;
+    width: 100px;
+}
+
+.ridv__btn-add:hover{
+    opacity: 0.8;
+}
+
+.ramb__wrapper{
+    scrollbar-width: none;
+}

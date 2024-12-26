@@ -43,7 +43,7 @@ function NotificationItem({itemInfo, onMarkNoti}){
     return (
         <a className='nli__item flex items-center' href="/courses" onClick={(e) => {handleNotiClick(e)}}>
             <div className='noti-item__header'>
-                <img src={APP_URL + itemInfo.Image}/>
+                <img src={APP_URL + itemInfo.Image} className='w-[50px] h-[50px] object-cover'/>
             </div>
 
             <div className='noti-item__body flex flex-col'>

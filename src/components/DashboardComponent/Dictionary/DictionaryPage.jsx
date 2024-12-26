@@ -1,37 +1,32 @@
-import React, { useEffect, useState } from 'react'
-import { appClient } from '~/AppConfigs';
+import React, { useState } from 'react';
+import DictionaryHeader from './DictionaryHeader';
+import DictionaryBody from './DictionaryBody';
+import "./DictionaryStyle.css"
+import DictionarySlider from './DictionarySlider';
 
 function DictionaryPage() {
-    const [classes, setClasses] = useState([]);
+    const [inputSearch, setInputSearch] = useState("");
+    const [reloadTrigger, setReloadTrigger] = useState(false);
+    const [isShowTraining, setIsShowTraining] = useState(false);
 
-    useEffect(() =>{
-        const getClasses = async () =>{
-            try{
-                var response = await appClient.get("api/classes");
-                var data = response.data;
-                if(data.success){
-                    setClasses(data.message);
-                }
-            }
-            catch(error){
-
-            }
-        }
-
-        getClasses();
-    }, [])
-
-    const handleEnrollClass = (item)=>{
-        
+    const handleSearchWords = (item) =>{
+        setInputSearch(item);
     }
 
+    const handleReloadTrigger = () =>{
+        setReloadTrigger(prev => !prev)
+    }
+
+    const handleShowTraining = (value) =>{
+        setIsShowTraining(value);
+    }
+
+
     return (
-        <div>
-            {classes.map((item, index)=>
-                <button className='p-[20px] border mr-5' onClick={(e) => handleEnrollClass(item)} key={index}>
-                    {item.classId}
-                </button>
-            )}
+        <div className='dp__wrapper overflow-visible'>
+            <DictionaryHeader onSearchWords={handleSearchWords} onReloadTrigger = {handleReloadTrigger} onShowTraining ={handleShowTraining}/>
+            <DictionaryBody inputSearch={inputSearch} reloadTrigger={reloadTrigger} />
+            {isShowTraining && <DictionarySlider onShowTraining ={handleShowTraining} />}
         </div>
     )
 }

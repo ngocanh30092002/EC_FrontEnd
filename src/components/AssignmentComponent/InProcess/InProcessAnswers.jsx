@@ -2,11 +2,11 @@ import React, { memo, useContext, useEffect, useState } from 'react';
 import { InProcessContext } from './InProcessAssignPage';
 import { useNavigate } from 'react-router-dom';
 
-function InProcessAnswers({ className, answerSheet , isSubmitted, courseId}) {
+function InProcessAnswers({ className, answerSheet , isSubmitted, courseId, mode, onShowSubmitInfo}) {
     const navigate = useNavigate();
     const [answeredNum, setAnsweredNum] = useState(0);
     const [isShowAnswerList, setIsShowAnswerList] = useState(false);
-    const { question, assignment } = useContext(InProcessContext);
+    const { question, assignment, homework } = useContext(InProcessContext);
 
     useEffect(() => {
         setAnsweredNum(answerSheet.reduce((acc, item) => {
@@ -31,7 +31,16 @@ function InProcessAnswers({ className, answerSheet , isSubmitted, courseId}) {
 
     const handleSubmit = () => {
         setIsShowAnswerList(false);
-        assignment.submit();
+        if(mode == 0){
+            assignment.submit();
+        }
+        else{
+            homework.submit();
+        }
+    }
+
+    const handleViewScore = () =>{
+        onShowSubmitInfo(true);
     }
 
     return (
@@ -87,7 +96,8 @@ function InProcessAnswers({ className, answerSheet , isSubmitted, courseId}) {
 
             <div>
                 {!isSubmitted && <button className='pi__answer-submit-btn' onClick={handleFinishAssignment}>Finish</button>}
-                {isSubmitted && <button className='pi__answer-submit-btn' onClick={handleBackToCourse}>Back to course</button>}
+                {isSubmitted && <button className='pi__answer-submit-btn view-score' onClick={handleViewScore}>View Score</button>}
+                {isSubmitted && <button className='pi__answer-submit-btn mt-[10px]' onClick={handleBackToCourse}>Back to course</button>}
             </div>
 
             {

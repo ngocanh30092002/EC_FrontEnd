@@ -3,39 +3,43 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { appClient } from '~/AppConfigs';
 import { APP_URL, IMG_URL_BASE } from '~/GlobalConstant';
-import { homeComponents, settingComponents, studyComponents } from '../SideBarInfo';
+import { adminStudyComponents, adminUserComponents, homeComponents, settingComponents, studyComponents, teacherComponents } from '../SideBarInfo';
 import NotificationBoard from './NotificationBoard';
 import "./NotificationStyle.css";
 
-function Notification({ className }) {
-    const [isShowSearchInput, setShowInput] = useState(false);
-    const [pageTitle, setPageTitle] = useState();
+function Notification({ className, title, mode = 0 }) {
+    const [pageTitle, setPageTitle] = useState(title);
     const unknownUserImage = IMG_URL_BASE + "unknown_user.jpg";
     const location = useLocation();
     const [userInfo, setUserInfo] = useState();
     const [state] = useStore();
 
-    const getUserInfo = useCallback(async () =>{
-        try{
-            const response = await appClient.get("api/students/user-background-info")
+    const getUserInfo = useCallback(async () => {
+        try {
+            const response = await appClient.get("api/users/bg-info")
             const data = response.data;
 
-            if(data.success){
+            if (data.success) {
                 setUserInfo(data.message);
+                if (title != "") {
+                    setPageTitle(title);
+                }
+                if (!title) {
+                    setPageTitle(`Welcome back ${data.message.userName}`)
+                }
             }
         }
-        catch(error){
-           
+        catch (error) {
+
         }
     }, [])
 
     useEffect(() => {
-        setPageTitle("Welcome back, Ngoc Anh");
         getUserInfo();
     }, [])
 
-    useEffect(( ) =>{
-        if(state.isReloadUserBackground){
+    useEffect(() => {
+        if (state.isReloadUserBackground) {
             getUserInfo();
         }
 
@@ -43,15 +47,35 @@ function Notification({ className }) {
 
     useEffect(() => {
         const getCurrentPage = () => {
-            const pathItem = location.pathname.slice(1).split("/");
-            let item = homeComponents.find(i => pathItem.includes(i.linkToRedirect.slice(1)));
-            if (item) return item;
 
-            item = studyComponents.find(i => pathItem.includes(i.linkToRedirect.slice(1)));
-            if (item) return item;
+            if (mode == 0) {
+                const pathItem = location.pathname.slice(1).split("/");
+                let item = homeComponents.find(i => pathItem.includes(i.linkToRedirect.slice(1)));
+                if (item) return item;
 
-            item = settingComponents.find(i => pathItem.includes(i.linkToRedirect.slice(1)) );
-            return item;
+                item = studyComponents.find(i => pathItem.includes(i.linkToRedirect.slice(1)));
+                if (item) return item;
+
+                item = settingComponents.find(i => pathItem.includes(i.linkToRedirect.slice(1)));
+                if (item) return item;
+            }
+            else if (mode == 1) {
+                const pathItem = location.pathname.replace("/admin", "").slice(1).split("/");
+
+                let item = adminUserComponents.find(i => pathItem.includes(i.linkToRedirect.replace("/admin", "").slice(1)));
+                if (item) return item;
+
+                item = adminStudyComponents.find(i => pathItem.includes(i.linkToRedirect.replace("/admin", "").slice(1)));
+                if (item) return item;
+            }
+            else if (mode == 2) {
+                const pathItem = location.pathname.replace("/teacher", "").slice(1).split("/");
+
+                let item = teacherComponents.find(i => pathItem.includes(i.linkToRedirect.replace("/teacher", "").slice(1)));
+                if (item) return item;
+            }
+
+
         }
 
         const currentPageInfo = getCurrentPage();
@@ -66,11 +90,6 @@ function Notification({ className }) {
         <div className={`flex justify-end items-center pr-[10px] md:justify-between md:px-[20px] md:overflow-visible overflow-hidden ${className}`}>
             <div className='noti__welcome hidden md:block'>{pageTitle}</div>
             <div className='h-[70px] flex justify-end items-center overflow-visible flex-1 bg-white'>
-                {isShowSearchInput && <input type='text' className='noti__search-input w-[150px] md:w-[200px]' />}
-                <div className='noti__item' onClick={() => setShowInput(!isShowSearchInput)}>
-                    <img src={IMG_URL_BASE + "search_icon.svg"} alt="" className="w-[24px] noti__item--img" />
-                </div>
-
                 <NotificationBoard />
                 <a className='noti__user-infor-wrapper' href='#'>
                     <img src={userInfo?.image ? APP_URL + userInfo.image : unknownUserImage} alt="user image" className="user-infor__img" />
