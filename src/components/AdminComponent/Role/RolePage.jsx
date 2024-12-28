@@ -385,14 +385,14 @@ function UserRoleItem({ userInfo, index, roles }) {
     }
 
     const handleMouseOut = (event) => {
-        const wrap = event.currentTarget;
-        const toElement = event.relatedTarget;
+        // const wrap = event.currentTarget;
+        // const toElement = event.relatedTarget;
 
-        if (wrap.contains(toElement)) {
-            return;
-        }
+        // if (wrap.contains(toElement)) {
+        //     return;
+        // }
 
-        setIsEditing(false);
+        // setIsEditing(false);
     }
 
     useEffect(() =>{

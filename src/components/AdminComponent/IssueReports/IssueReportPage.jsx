@@ -244,7 +244,7 @@ function IssueReportItem({ index, reportInfo, onDeleteReport, onReloadIssue }) {
                 <div className="mpt__row-item w-1/12 !text-[12px]"># {index}</div>
                 <div className="mpt__row-item w-1/4 !text-[12px] flex items-center">
                     <div>
-                        <img src={reportInfo?.image == null ? IMG_URL_BASE + "unknown_user.jpg" : APP_URL + reportInfo.image} className='w-[45px] h-[45px] object-cover rounded-lg' />
+                        <img src={reportInfo?.image == null || reportInfo?.image == "" ? IMG_URL_BASE + "unknown_user.jpg" : APP_URL + reportInfo.image} className='w-[45px] h-[45px] object-cover rounded-lg' />
                     </div>
                     <div className='flex flex-col justify-start'>
                         <div className='line-clamp-1 cabf__ti--text !text-[12px] !font-normal'>{reportInfo.userName}</div>
@@ -417,7 +417,7 @@ function IssueResponse({ reportInfo, onReloadIssue, onShow }) {
                 <div className='flex flex-col mt-[20px] flex-1'>
                     <div className='flex items-start'>
                         <div className='mr-[10px]'>
-                            <img src={reportInfo?.image == null ? IMG_URL_BASE + "unknown_user.jpg" : APP_URL + reportInfo.image} className='w-[45px] h-[45px] object-cover rounded-[50%] border-[2px] border-[#000000]' />
+                            <img src={reportInfo?.image == null || reportInfo?.image == "" ? IMG_URL_BASE + "unknown_user.jpg" : APP_URL + reportInfo.image} className='w-[45px] h-[45px] object-cover rounded-[50%] border-[2px] border-[#000000]' />
                         </div>
                         <div className='ir__des--text rounded-[15px]'>{reportInfo.description}</div>
                     </div>

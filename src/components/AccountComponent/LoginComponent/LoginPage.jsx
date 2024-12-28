@@ -3,10 +3,10 @@ import React, { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { appClient } from '~/AppConfigs'
 import { APP_API, CLIENT_URL, IMG_URL_BASE, ROLES } from '~/GlobalConstant'
-import LoginGoogleButton from './LoginGoogle'
-import './LoginStyle.css'
 import LoaderPage from '../../LoaderComponent/LoaderPage'
 import LoginFacebook from './LoginFacebook'
+import LoginGoogleButton from './LoginGoogle'
+import './LoginStyle.css'
 
 const LoginPage = () => {
     const [isShow, setShow] = useState(false);

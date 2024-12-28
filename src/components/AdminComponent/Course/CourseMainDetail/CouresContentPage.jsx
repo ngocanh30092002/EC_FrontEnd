@@ -533,14 +533,14 @@ export function CouresContentItem({ index, courseContentInfo, onReloadContents, 
                     e.stopPropagation();
                 }
             }}>
-                <input className={`${!isEditing && "bg-transparent cursor-pointer"} cci__input-value`} ref={inputTitleRef} readOnly={!isEditing} />
+                <input className={`${!isEditing && "bg-transparent cursor-pointer"} cci__input-value w-full`} ref={inputTitleRef} readOnly={!isEditing} />
             </div>
             <div className="mpt__row-item w-1/3 cci__row-item line-clamp-2" onClick={(e) => {
                 if (isEditing) {
                     e.stopPropagation();
                 }
             }}>
-                <input className={`${!isEditing && "bg-transparent cursor-pointer"} cci__input-value`} ref={inputContentRef} readOnly={!isEditing} />
+                <input className={`${!isEditing && "bg-transparent cursor-pointer"} cci__input-value w-full`} ref={inputContentRef} readOnly={!isEditing} />
             </div>
             <div className="mpt__row-item w-1/6 cci__row-item">{courseType}</div    >
             <div className="mpt__row-item w-1/12 cci__row-item" onClick={(e) => e.stopPropagation()}>

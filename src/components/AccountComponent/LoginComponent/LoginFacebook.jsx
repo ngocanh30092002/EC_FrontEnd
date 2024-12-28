@@ -1,49 +1,81 @@
-import React, { useState } from "react";
-import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
+import React, { useEffect, useState } from 'react'
+import { FACEBOOK_APP_ID } from '../../../../GlobalConstant';
+import { appClient } from '~/AppConfigs';
+import { useNavigate } from 'react-router-dom';
+import LoaderPage from '../../LoaderComponent/LoaderPage';
 
-const LoginFacebook = ({imageUrl, description}) => {
-    const [imageLink, setImageLink] = useState('');
-    const responseFacebook = (response) => {
-        // if (response.accessToken) {
-        //     // Gửi token lên backend để xử lý
-        //     fetch("https://your-backend-api.com/api/auth/facebook-login", {
-        //       method: "POST",
-        //       headers: {
-        //         "Content-Type": "application/json",
-        //       },
-        //       body: JSON.stringify({ accessToken: response.accessToken }),
-        //     })
-        //       .then((res) => res.json())
-        //       .then((data) => {
-        //         console.log("Server Response:", data);
-        //         localStorage.setItem("jwtToken", data.token);
-        //       })
-        //       .catch((error) => console.error("Error:", error));
-        //   } else {
-        //     console.error("Facebook login failed");
-        //   }
+const LoginFacebook = ({ imageUrl, description }) => {
+    const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
 
-        console.log(response);
+    useEffect(() => {
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: FACEBOOK_APP_ID,
+                cookie: true,
+                xfbml: true,
+                version: 'v21.0'
+            });
+
+            FB.AppEvents.logPageView();
+
+        };
+
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) { return; }
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    }, []);
+
+    const handleLoginFacebook = async (accessToken) => {
+        try {
+            setIsLoading(true);
+            const responsePost = await appClient.post("sign-in-facebook", accessToken, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            let data = responsePost.data;
+            if (data.success) {
+                navigate("/");
+                FB.logout();
+            }
+            setIsLoading(false);
+        }
+        catch {
+            setIsLoading(false);
+        }
+        
+    }
+
+    const handleLogin = () => {
+        FB.getLoginStatus((response) => {
+            if (response.status === 'connected') {
+                const accessToken = response.authResponse.accessToken;
+                handleLoginFacebook(accessToken);
+            } else {
+                window.FB.login((response) => {
+                    if (response.status === 'connected') {
+                        const accessToken = response.authResponse.accessToken;
+                        handleLoginFacebook(accessToken);
+                    }
+                }, { scope: 'public_profile,email' });
+            }
+        });
     };
 
     return (
-        <div>
-            <FacebookLogin
-                appId="1268312627753338"
-                autoLoad={false}
-                fields="name,email,picture.width(300).height(300)"
-                callback={responseFacebook}
-                textButton="Login with Facebook"
-                icon="fa-facebook"
-                render={(renderProps) => (
-                    <button className='login-provider w-full' onClick={renderProps.onClick}>
-                        <img src={imageUrl} className='login-provider__image' />
-                        <span className='login-provider__title flex-1'>{description}</span>
-                    </button>
-                )}
-            />
-
-        </div>
+        <>
+            {isLoading == true && <LoaderPage />}
+            <button className='login-provider w-full' onClick={handleLogin}>
+                <img src={imageUrl} className='login-provider__image' />
+                <span className='login-provider__title flex-1'>{description}</span>
+            </button>
+        </>
     );
 };
 
