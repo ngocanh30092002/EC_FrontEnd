@@ -7,19 +7,26 @@ function ClassMaterialPage() {
     const [filterMode, setFilterMode] = useState(0);
     const [searchValue, setSearchValue] = useState("");
     const [materials, setMaterials] = useState([]);
+    const [sortConfig, setSortConfig] = useState([]);
+    const [sortedData, setSortedData] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const rowPerPage = 6;
+    const indexLastItem = currentPage * rowPerPage;
+    const indexFirstItem = indexLastItem - rowPerPage;
+    const totalPage = Math.ceil(materials.length / rowPerPage);
     const [renderMaterials, setRenderMaterials] = useState([]);
     const { classId } = useParams();
 
     const removeVietnameseTones = (str) => {
         return str
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "") 
-        .replace(/đ/g, "d")
-        .replace(/Đ/g, "D")
-        .toLowerCase();
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/đ/g, "d")
+            .replace(/Đ/g, "D")
+            .toLowerCase();
     }
 
-    
+
     const getFileCategory = (fileName) => {
         if (!fileName) return "File";
 
@@ -54,6 +61,87 @@ function ClassMaterialPage() {
         event.target.src = `${IMG_URL_BASE + "file-icon.svg"}`;
     }
 
+    const handleChangePage = (event) => {
+        if (event.target.value == "") {
+            setCurrentPage(1);
+        }
+        else {
+            setCurrentPage(event.target.value.replace(/[^0-9]/g, ''));
+        }
+    }
+
+    const handleInputPage = (event) => {
+        setCurrentPage(currentPage.replace(/[^0-9]/g, ''));
+    }
+
+    const handleSort = (key, event) => {
+        setSortConfig(prevConfig => {
+            const existingIndex = prevConfig.findIndex((item) => item.key === key);
+            event.target.classList.add("active");
+
+            if (existingIndex > -1) {
+                const updatedConfig = [...prevConfig];
+                const currentDirection = updatedConfig[existingIndex].direction;
+
+                if (currentDirection === 'desc') {
+                    updatedConfig[existingIndex].direction = 'asc';
+                    event.target.classList.remove("desc");
+                } else {
+                    updatedConfig.splice(existingIndex, 1);
+                    event.target.classList.toggle("active");
+                }
+
+                return updatedConfig;
+            }
+
+            event.target.classList.add("desc");
+            return [...prevConfig, { key, direction: 'desc' }];
+        });
+    }
+
+    const getValueByPath = (object, path) => {
+        return path.split('.').reduce((acc, key) => (acc ? acc[key] : undefined), object);
+    };
+
+    const sortedDataFunc = (filterMode) => {
+        let newMaterial = [...materials];
+        if(filterMode != null) {
+            if (filterMode == 1) {
+                newMaterial = materials.filter(m => m.lessonInfo != null);
+            }
+            if (filterMode == 2) {
+                newMaterial = materials.filter(m => m.classId != null);
+            }
+        }
+
+        if (sortConfig.length === 0) return newMaterial;
+
+        return newMaterial.sort((a, b) => {
+            for (const { key, direction } of sortConfig) {
+                const valueA = getValueByPath(a, key);
+                const valueB = getValueByPath(b, key);
+
+                if (valueA == null && valueB == null) {
+                    continue;
+                }
+                if (valueA == null) {
+                    return direction === "asc" ? -1 : 1;
+                }
+                if (valueB == null) {
+                    return direction === "asc" ? 1 : -1;
+                }
+
+                if (valueA < valueB) {
+                    return direction === "asc" ? -1 : 1;
+                }
+                if (valueA > valueB) {
+                    return direction === "asc" ? 1 : -1;
+                }
+            }
+            return 0;
+        });
+    };
+
 
     useEffect(() => {
         const handleGetMaterial = async () => {
@@ -73,19 +161,6 @@ function ClassMaterialPage() {
 
         handleGetMaterial();
     }, [])
-
-    useEffect(() => {
-        let newMaterial = materials;
-        if (filterMode == 1) {
-            newMaterial = materials.filter(m => m.lessonInfo != null);
-        }
-        if (filterMode == 2) {
-            newMaterial = materials.filter(m => m.classId != null);
-        }
-
-        setRenderMaterials(newMaterial);
-
-    }, [filterMode])
 
     useEffect(() => {
         let newMaterial = materials;
@@ -111,7 +186,9 @@ function ClassMaterialPage() {
         setRenderMaterials(newRenderMaterials);
     }, [searchValue])
 
-   
+    useEffect(() => {
+        setSortedData(sortedDataFunc(filterMode));
+    }, [materials, sortConfig, filterMode])
 
     return (
         <div className='cmp__wrapper p-[20px]'>
@@ -137,29 +214,54 @@ function ClassMaterialPage() {
 
             <div className='cmp__body mt-[10px]'>
                 <div className='cmp__tbl__header flex w-full mb-[10px]'>
-                    <div className='cmp__tbl__header-item w-1/3'>File Name</div>
-                    <div className='cmp__tbl__header-item w-1/12'>Type</div>
-                    <div className='cmp__tbl__header-item w-1/12'>Size</div>
-                    <div className='cmp__tbl__header-item w-1/4'>Upload At</div>
-                    <div className='cmp__tbl__header-item w-1/4'>Upload By</div>
+                    <div className="mpt__header-item w-1/3" onClick={(event) => handleSort("title", event)}>File Name</div>
+                    <div className="mpt__header-item w-1/12" onClick={(event) => handleSort("filePath", event)}>Type</div>
+                    <div className="mpt__header-item w-1/12" onClick={(event) => handleSort("fileSize", event)}>Size</div>
+                    <div className="mpt__header-item w-1/4" onClick={(event) => handleSort("uploadAt", event)}>Upload At</div>
+                    <div className="mpt__header-item w-1/4" onClick={(event) => handleSort("uploadBy", event)}>Upload By</div>
                 </div>
 
-                {renderMaterials.map((item, index) => {
-                    return (
-                        <a className='cmp__tbl__row flex w-full items-center' key={index} href={APP_URL + item.filePath} target='_blank'>
-                            <div className='cmp__tbl__row-item w-1/3 flex items-center'>
-                                <div>
-                                    <img onError={handleErrorImage} src={ImageWithExtension(item.filePath)} className='w-[35px] object-fill' />
+                <div className='mpt__body min-h-[325px] mt-[10px]'>
+                    {sortedData.slice(indexFirstItem, indexLastItem).map((item, index) => {
+                        return (
+                            <a className='cmp__tbl__row flex w-full items-center' key={index} href={APP_URL + item.filePath} target='_blank'>
+                                <div className='cmp__tbl__row-item w-1/3 flex items-center'>
+                                    <div>
+                                        <img onError={handleErrorImage} src={ImageWithExtension(item.filePath)} className='w-[35px] object-fill' />
+                                    </div>
+                                    <div className='ml-[5px] line-clamp-1 cmp__row-item--title'>{item.title}</div>
                                 </div>
-                                <div className='ml-[5px] line-clamp-1 cmp__row-item--title'>{item.title}</div>
-                            </div>
-                            <div className='cmp__tbl__row-item w-1/12'>{getFileCategory(item.filePath)}</div>
-                            <div className='cmp__tbl__row-item w-1/12'>{item.fileSize}</div>
-                            <div className='cmp__tbl__row-item w-1/4'>{item.uploadAt}</div>
-                            <div className='cmp__tbl__row-item w-1/4'>{item.uploadBy}</div>
-                        </a>
-                    )
-                })}
+                                <div className='cmp__tbl__row-item w-1/12'>{getFileCategory(item.filePath)}</div>
+                                <div className='cmp__tbl__row-item w-1/12'>{item.fileSize}</div>
+                                <div className='cmp__tbl__row-item w-1/4'>{item.uploadAt}</div>
+                                <div className='cmp__tbl__row-item w-1/4'>{item.uploadBy}</div>
+                            </a>
+                        )
+                    })}
+                </div>
+
+                <div className='flex justify-end items-center mt-[20px]'>
+                    <button className='mpt__page-btn' onClick={(e) => setCurrentPage(prev => 1)}>
+                        <img src={IMG_URL_BASE + "previous.svg"} className="w-[25px] " />
+                    </button>
+
+                    <button className='mpt__page-btn' onClick={(e) => setCurrentPage(prev => {
+
+                        return prev == 1 ? 1 : parseInt(prev) - 1;
+                    })}>
+                        <img src={IMG_URL_BASE + "pre_page_icon.svg"} className="w-[25px]" />
+                    </button>
+
+                    <input className='mpt__page-input' value={currentPage} onChange={handleChangePage} onInput={handleInputPage} />
+
+                    <button className='mpt__page-btn' onClick={(e) => setCurrentPage(prev => parseInt(prev) + 1)}>
+                        <img src={IMG_URL_BASE + "next_page_icon.svg"} className="w-[25px]" />
+                    </button>
+
+                    <button className='mpt__page-btn' onClick={(e) => setCurrentPage(prev => totalPage)}>
+                        <img src={IMG_URL_BASE + "next.svg"} className="w-[25px]" />
+                    </button>
+                </div>
             </div>
         </div>
     )

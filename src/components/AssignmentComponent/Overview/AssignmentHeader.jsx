@@ -5,7 +5,7 @@ function OverViewHeader() {
     return (
         <div className='assignment__header--wrapper flex justify-between items-center'>
             <div className='flex'>
-                <a className='assignment__title-link'>LEARNING SYSTEM</a>
+                <a className='assignment__title-link' href='/'>LEARNING SYSTEM</a>
             </div>
 
             <a className='assignment__btn-logo' href={CLIENT_URL}>

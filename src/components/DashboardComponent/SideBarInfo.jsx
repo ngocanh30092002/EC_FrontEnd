@@ -11,11 +11,12 @@ import { CLIENT_URL } from '~/GlobalConstant.js';
 import ClassPageAdmin from './../AdminComponent/Class/ClassPage';
 import CoursePageAdmin from '../AdminComponent/Course/CoursePageAdmin';
 import QuestionPageAdmin from '../AdminComponent/Question/QuestionPageAdmin';
-import ClassPageTeacher from"./../TeacherComponent/Classes/ClassPage";
+import ClassPageTeacher from "./../TeacherComponent/Classes/ClassPage";
 import QuestionPageTeacher from '../TeacherComponent/Question/QuestionPageTeacher';
 import IssueReportPage from './IssueReport/IssueReportPage';
 import IssueReportPageAdmin from './../AdminComponent/IssueReports/IssueReportPage';
 import CoursePageTeacher from '../TeacherComponent/Courses/CoursePageTeacher';
+import ClassRoomPageAdmin from '../AdminComponent/ClassRoom/ClassRoomPageAdmin';
 
 export const shorcutToAdminComponent =
 {
@@ -24,7 +25,7 @@ export const shorcutToAdminComponent =
     img: 'sync-icon.svg',
     link: "/admin",
     linkToRedirect: "/admin",
-} 
+}
 
 
 export const homeComponents = [
@@ -120,7 +121,7 @@ export const adminUserComponents = [
     {
         id: 11,
         name: "Issue Reports",
-        component: <IssueReportPageAdmin/>,
+        component: <IssueReportPageAdmin />,
         img: 'problem-icon.svg',
         link: "/issues/*",
         linkToRedirect: "/admin/issues",
@@ -138,6 +139,14 @@ export const adminStudyComponents = [
     },
     {
         id: 13,
+        name: "ClassRooms",
+        component: <ClassRoomPageAdmin/>,
+        img: 'classroom-icon.svg',
+        link: "/classrooms/*",
+        linkToRedirect: "/admin/classrooms",
+    },
+    {
+        id: 14,
         name: "Courses",
         component: <CoursePageAdmin />,
         img: 'hat_icon.svg',
@@ -145,7 +154,7 @@ export const adminStudyComponents = [
         linkToRedirect: "/admin/courses",
     },
     {
-        id: 14,
+        id: 15,
         name: "Questions",
         component: <QuestionPageAdmin />,
         img: 'question-icon.svg',
@@ -156,7 +165,7 @@ export const adminStudyComponents = [
 
 export const redirectComponents = [
     {
-        id: 15,
+        id: 16,
         name: "Dash Broad",
         component: <HomePage />,
         img: 'sync-icon.svg',
@@ -164,7 +173,7 @@ export const redirectComponents = [
         linkToRedirect: CLIENT_URL,
     },
     {
-        id: 16,
+        id: 17,
         name: "Log Out",
         component: <LogoutPage />,
         img: 'close_sidebar.svg',
@@ -175,7 +184,7 @@ export const redirectComponents = [
 
 export const teacherComponents = [
     {
-        id: 17,
+        id: 18,
         name: "Classes",
         component: <ClassPageTeacher />,
         img: 'class-icon.svg',
@@ -183,26 +192,26 @@ export const teacherComponents = [
         linkToRedirect: "/teacher",
     },
     {
-        id: 18,
+        id: 19,
         name: "Courses",
-        component: <CoursePageTeacher/>,
+        component: <CoursePageTeacher />,
         img: 'hat_icon.svg',
         link: "/courses/*",
         linkToRedirect: "/teacher/courses",
     },
     {
-        id: 19,
+        id: 20,
         name: "Questions",
-        component: <QuestionPageTeacher/>,
+        component: <QuestionPageTeacher />,
         img: 'question-icon.svg',
         link: "/questions/*",
         linkToRedirect: "/teacher/questions",
     }
-    
+
 ]
 
 
-export const teacherMiddleComponents =[
+export const teacherMiddleComponents = [
     {
         id: 21,
         name: "Profile",
@@ -213,7 +222,7 @@ export const teacherMiddleComponents =[
     },
     ,
     {
-        id: 20,
+        id: 22,
         name: "RoadMaps",
         component: <RoadMapPage />,
         img: 'road-map-icon.svg',
@@ -221,7 +230,7 @@ export const teacherMiddleComponents =[
         linkToRedirect: "/teacher/roadmaps",
     },
     {
-        id: 22,
+        id: 23,
         name: "Dictionary",
         component: <DictionaryPage />,
         img: 'dictionary_icon.svg',
@@ -232,7 +241,7 @@ export const teacherMiddleComponents =[
 
 export const teacherLastComponents = [
     {
-        id: 23,
+        id: 24,
         name: "Issue Report",
         component: <IssueReportPage />,
         img: 'problem-icon.svg',
@@ -240,7 +249,7 @@ export const teacherLastComponents = [
         linkToRedirect: "/teacher/issues",
     },
     {
-        id: 24,
+        id: 25,
         name: "Log Out",
         component: <LogoutPage />,
         img: 'close_sidebar.svg',

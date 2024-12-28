@@ -15,6 +15,9 @@ function HomeworkPage({ enrollId }) {
     const [submissonTasks, setSubmissionTasks] = useState([]);
     const [defaultIndex, setDefaultIndex] = useState(0);
     const [selectedFilter, setSelectedFilter] = useState(null);
+    const [lessonData, setLessonData] = useState([]);
+    const [defaultLessonIndex, setDefaultLessonIndex] = useState(0);
+    const [selectedLesson, setSelectedLesson] = useState(null);
 
     const filterData = [
         {
@@ -39,9 +42,14 @@ function HomeworkPage({ enrollId }) {
         },
     ]
 
-    const handleSelectedFilter = (item,index)=>{
+    const handleSelectedFilter = (item, index) => {
         setSelectedFilter(item);
         setDefaultIndex(index);
+    }
+
+    const handleSelectedLesson = (item, index) => {
+        setSelectedLesson(item?.value);
+        setDefaultLessonIndex(index);
     }
 
     useEffect(() => {
@@ -80,45 +88,82 @@ function HomeworkPage({ enrollId }) {
             }
         }
 
+        const getLessonData = async () => {
+            try {
+                const response = await appClient.get(`api/lessons/classes/${classId}/date`);
+                const dataRes = response.data;
+                if (dataRes) {
+                    const lessonData = dataRes.message.map((item, index) => ({ key: item.date, value: item.lessonId }));
+                    lessonData.unshift({ key: "All", value: 0 });
+                    setLessonData(lessonData);
+                }
+            }
+            catch {
+
+            }
+        }
+
         getCurrentHomework();
         getSubmissionTask();
+        getLessonData();
     }, [])
 
-    useEffect(() =>{
-        let newListHomework = homework;
-
-        if(selectedFilter?.value == 2){
-            newListHomework = newListHomework.filter(i => i.status == 0);
+    useEffect(() => {
+        if (selectedFilter?.value == 1 && selectedLesson == 0) {
+            setRenderHomework(homework);
         }
-        
-        if(selectedFilter?.value == 3){
-            newListHomework = newListHomework.filter(i => i.status == 1);
+        else{
+            if (selectedFilter?.value != null && selectedLesson != null) {
+                let newListHomework = homework.filter(i => i.lessonId == selectedLesson);
+    
+                console.log(selectedFilter.value, selectedLesson);
+    
+                if (selectedFilter.value == 2) {
+                    newListHomework = newListHomework.filter(i => i.status == 0 && i.lessonId == selectedLesson);
+                }
+    
+                if (selectedFilter.value == 3) {
+                    newListHomework = newListHomework.filter(i => i.status == 1 && i.lessonId == selectedLesson);
+                }
+    
+                if (selectedFilter.value == 4) {
+                    newListHomework = newListHomework.filter(i => i.status == 2 && i.lessonId == selectedLesson);
+                }
+    
+                if (selectedFilter.value == 5) {
+                    newListHomework = newListHomework.filter(i => i.status == 3 && i.lessonId == selectedLesson);
+                }
+    
+                setRenderHomework(newListHomework);
+            }
         }
 
-        if(selectedFilter?.value == 4){
-            newListHomework = newListHomework.filter(i => i.status == 2);
-        }
-
-        if(selectedFilter?.value == 5){
-            newListHomework = newListHomework.filter(i => i.status == 3);
-        }
-
-        setRenderHomework(newListHomework);
-    }, [selectedFilter])
+    }, [selectedFilter, selectedLesson])
 
     return (
         <div>
             <div className='hp__current--wrapper p-[20px] overflow-visible'>
                 <div className='flex justify-between items-center overflow-visible mb-[15px]'>
                     <div className='hp__current-title'>Current Available</div>
-                    <div className='flex items-center overflow-visible'>
-                        <div className='hp__filter--title'>Filter</div>
-                        <DropDownList 
-                            data={filterData} 
-                            className={"border !w-[120px] !py-[8px]"} tblClassName={"!w-[120px]"}
-                            defaultIndex={defaultIndex}
-                            onSelectedItem={handleSelectedFilter}
+                    <div className="flex items-center overflow-visible">
+                        <div className='flex items-center overflow-visible mr-[20px]'>
+                            <div className='hp__filter--title mr-[10px]'>Lesson</div>
+                            <DropDownList
+                                data={lessonData}
+                                className={"border !w-[150px] !py-[8px]"} tblClassName={"!w-[150px]"}
+                                defaultIndex={defaultLessonIndex}
+                                onSelectedItem={handleSelectedLesson}
                             />
+                        </div>
+                        <div className='flex items-center overflow-visible'>
+                            <div className='hp__filter--title'>Filter</div>
+                            <DropDownList
+                                data={filterData}
+                                className={"border !w-[120px] !py-[8px]"} tblClassName={"!w-[120px]"}
+                                defaultIndex={defaultIndex}
+                                onSelectedItem={handleSelectedFilter}
+                            />
+                        </div>
                     </div>
                 </div>
                 <div className='hp__homework--wrapper grid grid-cols-3 gap-[10px] min-h-[465px]'>
@@ -127,6 +172,10 @@ function HomeworkPage({ enrollId }) {
                             <HomeworkItem data={item} key={index} enrollId={enrollId} />
                         )
                     })}
+
+                    {renderHomework.length == 0 &&
+                        <div className='w-full col-span-3 hp__no-homework'>There is no homework yet.</div>
+                    }
                 </div>
 
 

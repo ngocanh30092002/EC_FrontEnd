@@ -1,6 +1,7 @@
 import React from 'react'
 import { GoogleLogin, GoogleOAuthProvider, useGoogleLogin } from '@react-oauth/google';
 import { CLIENT_GOOGLE_ID, SCOPE_GOOGLE } from '~/GlobalConstant'
+import { APP_URL } from '~/GlobalConstant.js';
 
 const LoginGoogleButton = ({ imageUrl, description, redirectUri }) => {
 
@@ -9,7 +10,7 @@ const LoginGoogleButton = ({ imageUrl, description, redirectUri }) => {
             flow: 'auth-code',
             scope: SCOPE_GOOGLE,
             ux_mode: 'redirect',
-            redirect_uri: "https://localhost:44314/sign-in-google",
+            redirect_uri: `${APP_URL}sign-in-google`,
             select_account: true
         });
 

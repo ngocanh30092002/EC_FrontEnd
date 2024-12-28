@@ -395,7 +395,7 @@ function ClassAddBroad({ isShow, onShow, onReloadClass }) {
                                         {teachers.map((item, index) => {
                                             return (
                                                 <div className='cabf__teacher-item flex items-center' key={index} onClick={(e) => handleSelectedTeacher(item)}>
-                                                    <img src={APP_URL + item.imageUrl} className='cabf__ti--img' />
+                                                    <img src={item.imageUrl == null || item.imageUrl == '' ? IMG_URL_BASE + "unknown_user.jpg" : APP_URL + item.imageUrl} className='cabf__ti--img' />
                                                     <div className='flex flex-col justify-between items-start'>
                                                         <div className='cabf__ti--text line-clamp-1'>{item.fullName}</div>
                                                         <div className='cabf__ti--text line-clamp-1'>{item.email}</div>

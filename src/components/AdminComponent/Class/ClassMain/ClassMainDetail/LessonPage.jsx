@@ -74,7 +74,7 @@ function LessonSchedule() {
     useEffect(() => {
         const getClassSchedules = async () => {
             try {
-                const response = await appClient.get(`api/Lessons/classes/${classId}`); // Todo
+                const response = await appClient.get(`api/Lessons/classes/${classId}`); 
                 const dataRes = response.data;
                 if (dataRes.success) {
                     setSchedules(dataRes.message);
@@ -114,13 +114,14 @@ function LessonSchedule() {
                     null;
             }
         }
+
         return (
             <div className={`sp__row-item ${index % 2 === 0 ? "odd" : "even"}`} key={index}></div>
         )
     }
 
     return (
-        <div className='flex w-full p-[30px] flex-col'>
+        <div className='flex w-full p-[30px] flex-col h-full'>
             <div className='flex justify-between items-center mb-[20px]'>
                 <div className='flex items-center '>
                     <div className='sp__title-time'>{startOfWeek}</div>
@@ -133,7 +134,7 @@ function LessonSchedule() {
                     <button className='sp__btn-calender ml-[10px]' onClick={(e) => setWeekOffset(prev => prev + 1)}>Next</button>
                 </div>
             </div>
-            <div className='sp__tbl--warpper flex w-full h-[600px]'>
+            <div className='sp__tbl--warpper flex w-full flex-1 min-h-[700px]'>
                 {
                     groupSchedules && Object.keys(groupSchedules).map((dayOfWeek, index) => {
                         return (
@@ -163,8 +164,8 @@ function LessonItem({ rowSpan, data }) {
     }
     return (
         <div style={{ height: heightStr }} className='sp__row-item lesson cursor-pointer' onClick={handleClickLesson}>
-            <div className='h-full w-full flex flex-col p-[10px] sp__row-item-lesson'>
-                <div className='flex-1 w-full flex flex-col justify-center items-center'>
+            <div className='h-full  w-full flex flex-col p-[10px] sp__row-item-lesson'>
+                <div className='flex-1 w-full flex flex-col justify-center items-center overflow-y-hidden'>
                     <div className='sp__row-item__topic line-clamp-3 text-center mb-[10px] !text-[12px]'>{data.topic}</div>
                     <div className='sp__row-item__class-room overflow-hidden'>{data.classRoom.classRoomName}</div>
                 </div>
