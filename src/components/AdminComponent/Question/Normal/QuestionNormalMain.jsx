@@ -7,10 +7,10 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import QuestionAddBoard from './QuestionAddBoard';
 
 function QuestionNormalMain() {
-    return(
+    return (
         <Routes>
-            <Route path='/' element={<QuestionNormal/>}/>
-            <Route path='/:type/add-ques' element={<QuestionAddBoard/>}/>
+            <Route path='/' element={<QuestionNormal />} />
+            <Route path='/:type/add-ques' element={<QuestionAddBoard />} />
         </Routes>
     )
 }
@@ -178,7 +178,7 @@ function QuestionTypeItem({ quesInfo, index }) {
         setIsShowDetail(true);
     }
 
-    const handleAddQuestion = (event) =>{
+    const handleAddQuestion = (event) => {
         event.preventDefault();
         navigate(`${quesInfo.name}/add-ques`)
     }
@@ -407,6 +407,7 @@ function QuestionTypeDetail({ type, onShow }) {
 }
 
 function QuestionTypeDetailItem({ index, dataInfo, apiPath, onDeleteQues, type }) {
+    const [isLoading, setIsLoading] = useState(false);
     const [isShowDetail, setIsShowDetail] = useState(false);
 
     let level = dataInfo.level;
@@ -428,7 +429,9 @@ function QuestionTypeDetailItem({ index, dataInfo, apiPath, onDeleteQues, type }
         event.preventDefault();
         try {
             const confirmAnswer = confirm("Do you want to delete ?");
+
             if (confirmAnswer) {
+                setIsLoading(true);
                 var response = await appClient.delete(`${apiPath}/${dataInfo.id}`);
                 if (response.data.success) {
                     toast({
@@ -440,10 +443,12 @@ function QuestionTypeDetailItem({ index, dataInfo, apiPath, onDeleteQues, type }
 
                     onDeleteQues(dataInfo.id);
                 }
+
+                setIsLoading(false);
             }
         }
         catch {
-
+            setIsLoading(false);
         }
     }
 
@@ -452,6 +457,7 @@ function QuestionTypeDetailItem({ index, dataInfo, apiPath, onDeleteQues, type }
     }
     return (
         <>
+            {isLoading && <LoaderPage/> }
             <div className={`mpt__row flex items-center mb-[10px]`} onClick={handleViewQuestions}>
                 <div className="mpt__row-item w-1/4 ">Question {index}</div>
                 <div className="mpt__row-item w-1/4 ">{dataInfo.time}</div>

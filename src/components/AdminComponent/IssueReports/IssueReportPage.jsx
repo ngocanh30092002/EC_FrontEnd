@@ -252,7 +252,7 @@ function IssueReportItem({ index, reportInfo, onDeleteReport, onReloadIssue }) {
                     </div>
                 </div>
                 <div className="mpt__row-item w-1/4 !text-[12px]">{reportInfo.title}</div>
-                <div className="mpt__row-item w-1/12 !text-[12px]">{reportInfo.typeName}</div>
+                <div className="mpt__row-item w-1/12 !text-[12px]"># {reportInfo.typeName}</div>
                 <div className={`mpt__row-item w-1/12 !text-[12px] ${reportInfo.statusName.toLowerCase()}`}>{reportInfo.statusName}</div>
                 <div className="mpt__row-item w-1/6 !text-[12px] ">{reportInfo.createdAt}</div>
                 <div className="mpt__row-item w-1/12 flex justify-end" onClick={(e) => e.stopPropagation()}>
@@ -404,13 +404,16 @@ function IssueResponse({ reportInfo, onReloadIssue, onShow }) {
                 <div className='flex justify-between overflow-visible'>
                     <div className='ir__title--text'>{reportInfo.title}</div>
 
-                    <div className='overflow-visible '>
-                        <DropDownList
-                            data={status}
-                            defaultIndex={indexStatus}
-                            onSelectedItem={handleSelectedStatus}
-                            className={"w-[150px] border border-[#cccccc]"}
-                        />
+                    <div className="flex items-center overflow-visible">
+                        <div className='ir__title-status'>Status</div>
+                        <div className='overflow-visible '>
+                            <DropDownList
+                                data={status}
+                                defaultIndex={indexStatus}
+                                onSelectedItem={handleSelectedStatus}
+                                className={"!w-[120px] border border-[#cccccc]"}
+                            />
+                        </div>
                     </div>
 
                 </div>
@@ -441,7 +444,7 @@ function IssueResponse({ reportInfo, onReloadIssue, onShow }) {
                 <div className='ml-[55px] flex'>
                     <input className='border ir__input-res' ref={inputResponseRef} placeholder='Enter response message...' />
                     <button className='ir__btn-func' onClick={handleSendResponse}>Send</button>
-                    <button className='ir__btn-close'>Close</button>
+                    <button className='ir__btn-close' onClick={(e) => onShow(false)}>Close</button>
                 </div>
             </div>
         </div>

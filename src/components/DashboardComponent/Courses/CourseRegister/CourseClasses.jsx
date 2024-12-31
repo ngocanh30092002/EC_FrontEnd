@@ -71,6 +71,8 @@ function CourseClassItem({ itemInfo, enrollInfo }) {
                         duration: 5000,
                         message: "Register successfully"
                     })
+
+                    setIsRegistering(true);
                 }
             }
             catch {

@@ -72,7 +72,7 @@ function RolePage() {
 
     const handleAddRole = async () => {
         try {
-            if(inputValue == "" || inputValue == null){
+            if (inputValue == "" || inputValue == null) {
                 toast({
                     type: "error",
                     title: "Error",
@@ -245,7 +245,7 @@ function ListUsersRoles({ roles }) {
 
     useEffect(() => {
         if (selectedFilter != "") {
-            setSortedData(prev =>{
+            setSortedData(prev => {
                 const sortData = sortedDataFunc();
                 const prevArr = sortData.filter(i => i.roles.includes(selectedFilter));
                 console.log(prevArr);
@@ -263,7 +263,7 @@ function ListUsersRoles({ roles }) {
                 <div className='rpur--title'>List of users</div>
                 <div className='flex items-center'>
                     <div className='mr-[10px] rpur__title'>Filter</div>
-                    <select className='rpru__select__wrapper' value={selectedFilter} onChange={(e) => setSelectedFilter(e.target.value)}>
+                    <select className='rpru__select__wrapper border' value={selectedFilter} onChange={(e) => setSelectedFilter(e.target.value)}>
                         <option value={""}>All</option>
                         {roles.map((item, index) => (
                             <option key={index} className='rpur__select-item' value={item}>
@@ -357,6 +357,20 @@ function UserRoleItem({ userInfo, index, roles }) {
         if (isEditing) {
             if (selectedRole != null) {
                 try {
+                    const isExistRoles = userInfo.roles.some(r => r == selectedRole);
+                    if (isExistRoles) {
+                        toast({
+                            type: "warning",
+                            title: "Warning Role",
+                            message: "This role already existed",
+                            duration: 4000
+                        });
+                        setIsEditing(!isEditing);
+                        setSelectedRole(null);
+
+                        return;
+                    }
+
                     const response = await appClient.post(`api/roles/users/${userInfo.userId}`, selectedRole, {
                         headers: {
                             'Content-Type': 'application/json'
@@ -371,7 +385,8 @@ function UserRoleItem({ userInfo, index, roles }) {
                             message: "Add role successfully",
                             duration: 4000
                         });
-                        userInfo.roles = [...userInfo.roles, selectedRole]
+
+                        userInfo.roles = [...userInfo.roles, selectedRole];
                         setUserRoles([...userInfo.roles])
                     }
                 }
@@ -395,7 +410,7 @@ function UserRoleItem({ userInfo, index, roles }) {
         // setIsEditing(false);
     }
 
-    useEffect(() =>{
+    useEffect(() => {
         setUserRoles(userInfo.roles);
     }, [userInfo]);
     return (

@@ -4,9 +4,11 @@ import { useParams } from 'react-router-dom';
 import DropDownList from '../../../CommonComponent/DropDownList';
 import { appClient } from '~/AppConfigs';
 import toast from '@/helper/Toast';
+import LoaderPage from './../../../LoaderComponent/LoaderPage';
 
 
 function QuestionAudio() {
+    const [isLoading, setIsLoading] = useState(false);
     const [audioFile, setAudioFile] = useState(null);
     const [selectedCorrect, setSelectedCorrect] = useState(null);
     const [indexCorrect, setIndexCorrect] = useState(-1);
@@ -136,8 +138,8 @@ function QuestionAudio() {
         }
 
         for (let key in answerInfo) {
-            if (!answerInfo[key] && key !== "correct") {
-                inputAnswerRefs[key].current.focus();
+            console.log(key);
+            if (!answerInfo[key] && key !== "correctAnswer") {
                 inputAnswerRefs[key].current.classList.toggle("input-error");
 
                 toast({
@@ -192,6 +194,7 @@ function QuestionAudio() {
     const handleSubmit = async () => {
         if (validateForm() == false) return;
 
+        setIsLoading(true);
         try {
             const formData = new FormData();
             formData.append("Audio", audioFile);
@@ -217,9 +220,11 @@ function QuestionAudio() {
 
                 handleClearInputs();
             }
+
+            setIsLoading(false);
         }
         catch {
-
+            setIsLoading(false);
         }
     }
 
@@ -230,93 +235,97 @@ function QuestionAudio() {
     }, []);
 
     return (
-        <div className='h-full flex flex-col mt-[20px] p-[20px]'>
-            <div className='flex overflow-visible'>
-                <div className='flex-1 flex flex-col p-[10px] overflow-visible'>
-                    <div className='qam__question--title'>Question Information</div>
-                    {["question", "answerA", "answerB", "answerC"].map((item) => {
-                        const isAnswer = item.includes("answer");
-                        let nameTitle = isAnswer ? `Answer ${item.at(-1)}` : `${item.charAt(0).toUpperCase() + item.slice(1)}`;
+        <>
+            <div className='h-full flex flex-col mt-[20px] p-[20px]'>
+                <div className='flex overflow-visible'>
+                    <div className='flex-1 flex flex-col p-[10px] overflow-visible'>
+                        <div className='qam__question--title'>Question Information</div>
+                        {["question", "answerA", "answerB", "answerC"].map((item) => {
+                            const isAnswer = item.includes("answer");
+                            let nameTitle = isAnswer ? `Answer ${item.at(-1)}` : `${item.charAt(0).toUpperCase() + item.slice(1)}`;
 
-                        return (
-                            <div className="flex items-center mt-[20px]" key={item}>
-                                <div className="qam__answer--title">{nameTitle}</div>
-                                <input
-                                    className="qam__answer--input"
-                                    name={item}
-                                    value={questionInfo[item]}
-                                    ref={inputQuestionRefs[item]}
-                                    onChange={handleQuestionChange}
-                                />
-                            </div>
-                        )
-                    })}
-                    <div className='flex items-center mt-[20px] overflow-visible'>
-                        <div className='qam__answer--title'>Level</div>
-                        <DropDownList
-                            data={level.map((item, index) => ({ key: item, value: index + 1 }))}
-                            className={"qam__answer--input"}
-                            onSelectedItem={handleSelectedLevel}
-                            defaultIndex={indexLevel}
-                        />
+                            return (
+                                <div className="flex items-center mt-[20px]" key={item}>
+                                    <div className="qam__answer--title">{nameTitle}</div>
+                                    <input
+                                        className="qam__answer--input"
+                                        name={item}
+                                        value={questionInfo[item]}
+                                        ref={inputQuestionRefs[item]}
+                                        onChange={handleQuestionChange}
+                                    />
+                                </div>
+                            )
+                        })}
+                        <div className='flex items-center mt-[20px] overflow-visible'>
+                            <div className='qam__answer--title'>Level</div>
+                            <DropDownList
+                                data={level.map((item, index) => ({ key: item, value: index + 1 }))}
+                                className={"qam__answer--input"}
+                                onSelectedItem={handleSelectedLevel}
+                                defaultIndex={indexLevel}
+                            />
+                        </div>
+                    </div>
+                    <div className='flex-1 flex flex-col p-[10px] overflow-visible'>
+                        <div className='qam__question--title'>Answer Information</div>
+                        {["question", "answerA", "answerB", "answerC"].map((item) => {
+                            const isAnswer = item.includes("answer");
+                            let nameTitle = isAnswer ? `Answer ${item.at(-1)}` : `${item.charAt(0).toUpperCase() + item.slice(1)}`;
+
+                            return (
+                                <div className="flex items-center mt-[20px]" key={item}>
+                                    <div className="qam__answer--title">{nameTitle}</div>
+                                    <input
+                                        className="qam__answer--input"
+                                        name={item}
+                                        value={answerInfo[item]}
+                                        ref={inputAnswerRefs[item]}
+                                        onChange={handleAnswerChange}
+                                    />
+                                </div>
+                            )
+                        })}
+
+                        <div className='flex items-center mt-[20px] overflow-visible'>
+                            <div className='qam__answer--title'>Correct</div>
+                            <DropDownList
+                                data={correctAnswer.map((item) => ({ key: item, value: item }))}
+                                className={"qam__answer--input"}
+                                onSelectedItem={handleSelectedCorrectAnswer}
+                                defaultIndex={indexCorrect}
+                            />
+                        </div>
                     </div>
                 </div>
-                <div className='flex-1 flex flex-col p-[10px] overflow-visible'>
-                    <div className='qam__question--title'>Answer Information</div>
-                    {["question", "answerA", "answerB", "answerC"].map((item) => {
-                        const isAnswer = item.includes("answer");
-                        let nameTitle = isAnswer ? `Answer ${item.at(-1)}` : `${item.charAt(0).toUpperCase() + item.slice(1)}`;
+                <div className='flex items-center mt-[10px] justify-between overflow-visible px-[10px] h-[54px]'>
+                    <div className='flex items-center flex-1 mr-[20px]'>
+                        <div className='qam__answer--title'>Audio</div>
+                        <input ref={inputAudioRef} type='file' accept='audio/*' className='hidden' onChange={handleChangeFileAudio} />
+                        {
+                            audioFile == null ?
+                                <input className='qam__input cursor-pointer !w-full' readOnly placeholder='Upload file audio ...' onClick={(e) => inputAudioRef.current.click()} />
+                                :
+                                <div className='flex items-center flex-1 overflow-hidden'>
+                                    <audio controls preload='auto' ref={audioRef} className='flex-1 '>
+                                        <source src={URL.createObjectURL(audioFile)} type="audio/mpeg" />
+                                    </audio>
 
-                        return (
-                            <div className="flex items-center mt-[20px]" key={item}>
-                                <div className="qam__answer--title">{nameTitle}</div>
-                                <input
-                                    className="qam__answer--input"
-                                    name={item}
-                                    value={answerInfo[item]}
-                                    ref={inputAnswerRefs[item]}
-                                    onChange={handleAnswerChange}
-                                />
-                            </div>
-                        )
-                    })}
+                                    <button className='p-[7px] ml-[10px] qam__btn-remove rounded-[10px] transition-all duration-700' onClick={(e) => setAudioFile(null)}>
+                                        <img src={IMG_URL_BASE + "trash_icon.svg"} className='w-[25px] p-[5px]' />
+                                    </button>
+                                </div>
+                        }
+                    </div>
 
-                    <div className='flex items-center mt-[20px] overflow-visible'>
-                        <div className='qam__answer--title'>Correct</div>
-                        <DropDownList
-                            data={correctAnswer.map((item) => ({ key: item, value: item }))}
-                            className={"qam__answer--input"}
-                            onSelectedItem={handleSelectedCorrectAnswer}
-                            defaultIndex={indexCorrect}
-                        />
+                    <div className='flex justify-end  flex-1'>
+                        <button className='qam__btn-func' onClick={handleSubmit}>Create Question</button>
                     </div>
                 </div>
             </div>
-            <div className='flex items-center mt-[10px] justify-between overflow-visible px-[10px] h-[54px]'>
-                <div className='flex items-center flex-1 mr-[20px]'>
-                    <div className='qam__answer--title'>Audio</div>
-                    <input ref={inputAudioRef} type='file' accept='audio/*' className='hidden' onChange={handleChangeFileAudio} />
-                    {
-                        audioFile == null ?
-                            <input className='qam__input cursor-pointer !w-full' readOnly placeholder='Upload file audio ...' onClick={(e) => inputAudioRef.current.click()} />
-                            :
-                            <div className='flex items-center flex-1 overflow-hidden'>
-                                <audio controls preload='auto' ref={audioRef} className='flex-1 '>
-                                    <source src={URL.createObjectURL(audioFile)} type="audio/mpeg" />
-                                </audio>
 
-                                <button className='p-[7px] ml-[10px] qam__btn-remove rounded-[10px] transition-all duration-700' onClick={(e) => setAudioFile(null)}>
-                                    <img src={IMG_URL_BASE + "trash_icon.svg"} className='w-[25px] p-[5px]' />
-                                </button>
-                            </div>
-                    }
-                </div>
-
-                <div className='flex justify-end  flex-1'>
-                    <button className='qam__btn-func' onClick={handleSubmit}>Create Question</button>
-                </div>
-            </div>
-        </div>
+            {isLoading && <LoaderPage />}
+        </>
     )
 }
 

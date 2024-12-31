@@ -706,8 +706,10 @@ function ClassRoomAddBoard({ isShow, onShow, onReloadClassroom }) {
             }
 
 
-            const formData = new FormData(event.target);
-
+            const formData = new FormData();
+            formData.append("ClassRoomName", inputNameRef.current.value.toUpperCase());
+            formData.append("Capacity", parseInt(inputCapacityRef.current.value));
+            formData.append("Location", inputLocationRef.current.value);
 
             const response = await appClient.post("api/classrooms", formData);
             const dataRes = response.data;
@@ -746,7 +748,6 @@ function ClassRoomAddBoard({ isShow, onShow, onReloadClassroom }) {
                     <div className="flex items-center flex-1">
                         <div className='cab__title--text'>Name</div>
                         <input
-                            maxLength={10}
                             name='ClassRoomName'
                             className='cab__input-text uppercase'
                             ref={inputNameRef}
@@ -756,7 +757,6 @@ function ClassRoomAddBoard({ isShow, onShow, onReloadClassroom }) {
                     <div className="flex items-center flex-1">
                         <div className='cab__title--text'>Capacity</div>
                         <input
-                            maxLength={10}
                             name='Capacity'
                             className='cab__input-text'
                             onChange={(e) => handleChangeCapacity(e)}
@@ -768,7 +768,6 @@ function ClassRoomAddBoard({ isShow, onShow, onReloadClassroom }) {
                 <div className="flex items-center  mt-[20px]">
                     <div className='cab__title--text'>Location</div>
                     <input
-                        maxLength={10}
                         name='Location'
                         className='cab__input-text'
                         ref={inputLocationRef}

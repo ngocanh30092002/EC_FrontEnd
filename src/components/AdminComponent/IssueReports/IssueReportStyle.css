@@ -6,6 +6,13 @@
     padding: 10px 0;
 }
 
+.ir__title-status{
+    font-size: 14px;
+    font-family: 'Nunito', sans-serif;
+    padding: 0 15px;
+    font-weight: bold;
+}
+
 .ir__des--text{
     font-size: 14px;
     font-family: 'Nunito', sans-serif; 
