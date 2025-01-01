@@ -49,6 +49,7 @@ function NotificationBoard() {
                                 startConnection(connectNum++);
                             }
                             else {
+                                console.error(errorMessage);
                                 // toast({
                                 //     type: "error",
                                 //     duration: 5000,
@@ -92,12 +93,13 @@ function NotificationBoard() {
         return () => {
             if (notiConnection) {
                 notiConnection.stop().catch(e => {
-                    toast({
-                        type: "error",
-                        duration: 5000,
-                        title: "SignalR Connection Error",
-                        message: e.message
-                    })
+                    console.error(e.message);
+                    // toast({
+                    //     type: "error",
+                    //     duration: 5000,
+                    //     title: "SignalR Connection Error",
+                    //     message: e.message
+                    // })
                 });
             }
         }

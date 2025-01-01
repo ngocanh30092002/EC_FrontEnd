@@ -112,7 +112,7 @@ function DictionarySlider({onShowTraining}) {
                     <img src={IMG_URL_BASE + "pre_page_icon.svg"} className='w-[50px]' />
                 </button>
                 <div className="ds__carousel__wrapper h-full overflow-y-hidden" >
-                    <div className='h-full flex w-[500px] '>
+                    <div className='h-full flex w-[500px] overflow-y-hidden'>
                         <div
                             className="ds__carousel--content  p-[40px]"
                             ref={contentRef}>

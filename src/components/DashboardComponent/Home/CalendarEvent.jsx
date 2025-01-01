@@ -23,12 +23,13 @@ function CalendarEvent() {
             try {
                 await notiConnection.start();
             } catch (err) {
-                toast({
-                    type: "error",
-                    duration: 5000,
-                    title: "Error",
-                    message: err.message
-                })
+                // toast({
+                //     type: "error",
+                //     duration: 5000,
+                //     title: "Error",
+                //     message: err.message
+                // })
+                console.error(err.message);
             }
 
             setNotiConnection(notiConnection);
@@ -39,12 +40,12 @@ function CalendarEvent() {
         return()=>{
             if(notiConnection){
                 notiConnection.stop().catch(e => {
-                    toast({
-                        type: "error",
-                        duration: 5000,
-                        title: "SignalR Connection Error",
-                        message: e.message
-                    })
+                    // toast({
+                    //     type: "error",
+                    //     duration: 5000,
+                    //     title: "SignalR Connection Error",
+                    //     message: e.message
+                    // })
                 });
             }
         }

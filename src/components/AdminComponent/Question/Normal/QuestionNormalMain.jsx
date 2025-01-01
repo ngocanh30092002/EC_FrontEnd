@@ -228,7 +228,7 @@ function QuestionTypeDetail({ type, onShow }) {
             }
         }
         catch {
-
+            setIsLoading(false);
         }
     }
 

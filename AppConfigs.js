@@ -38,8 +38,6 @@ appClient.interceptors.response.use(
         return response
     },
     async function (error) {
-       
-
         var time = 1;
         if(error.response){
             var statusCode = error?.response?.status;
@@ -83,23 +81,27 @@ appClient.interceptors.response.use(
                         const propertyValue = invalidError[key];
                         if(Array.isArray(propertyValue)){
                             propertyValue.forEach((item, index) => {
-                                toast({
-                                    type: "error",
-                                    title: key.toUpperCase(),
-                                    message: item,
-                                    duration: 4000*time
-                                });
-
-                                time = time + 1;
+                                if(!key.toUpperCase().includes("SignalR Connection")){
+                                    toast({
+                                        type: "error",
+                                        title: key.toUpperCase(),
+                                        message: item,
+                                        duration: 4000*time
+                                    });
+    
+                                    time = time + 1;
+                                }
                             });
                         }
                         else{
-                            toast({
-                                type: "error",
-                                title: key.toUpperCase(),
-                                message: propertyValue,
-                                duration: 4000*time
-                            })
+                            if(!key.toUpperCase().includes("SignalR Connection")){
+                                toast({
+                                    type: "error",
+                                    title: key.toUpperCase(),
+                                    message: propertyValue,
+                                    duration: 4000*time
+                                })
+                            }
                         }
 
                         time = time + 1;
@@ -120,14 +122,17 @@ appClient.interceptors.response.use(
                     }
                 }
                 else{
-                    toast({
-                        type: "error",
-                        title: "Error",
-                        message: serverReponseError,
-                        duration: 4000*time
-                    });
+                    if(!serverReponseError.includes("complete negotiation")){
+                        toast({
+                            type: "error",
+                            title: "Error",
+                            message: serverReponseError,
+                            duration: 4000*time
+                        });
 
-                    time = time + 1;
+                        time = time + 1;
+                    }
+
                 }
             }
             else{

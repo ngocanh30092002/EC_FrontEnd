@@ -436,9 +436,9 @@ export function CouresContentItem({ index, courseContentInfo, onReloadContents, 
     const handleRemoveClick = async (event) => {
         event.preventDefault();
         try {
-            setIsLoading(true);
             const confirmAnswer = confirm("Are you want to delete this item ?");
             if (confirmAnswer) {
+                setIsLoading(true);
                 const response = await appClient.delete(`api/CourseContent/${courseContentInfo.contentId}`);
                 const dataRes = response.data;
                 if (dataRes.success) {

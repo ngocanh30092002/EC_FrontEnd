@@ -957,6 +957,7 @@ function RoadmapDetailAddBoard({ isShow, onShow, onReloadExam, roadmapId }) {
                         inputTimeRef.classList.toggle("cabf__input--error");
                     }, 2000);
 
+                    setIsLoading(false);
                     return;
                 }
                 else {
@@ -976,6 +977,7 @@ function RoadmapDetailAddBoard({ isShow, onShow, onReloadExam, roadmapId }) {
                         setTimeout(() => {
                             inputTimeRef.classList.toggle("cabf__input--error");
                         }, 2000);
+                        setIsLoading(false);
                         return;
                     }
 
@@ -993,6 +995,8 @@ function RoadmapDetailAddBoard({ isShow, onShow, onReloadExam, roadmapId }) {
                         setTimeout(() => {
                             inputTimeRef.classList.toggle("cabf__input--error");
                         }, 2000);
+
+                        setIsLoading(false);
                         return;
                     }
                 }

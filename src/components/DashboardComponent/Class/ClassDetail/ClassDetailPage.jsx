@@ -195,12 +195,13 @@ function ClassDetailPage() {
             try {
                 await chatConnection.start();
             } catch (err) {
-                toast({
-                    type: "error",
-                    duration: 5000,
-                    title: "Error",
-                    message: err.message
-                })
+                // toast({
+                //     type: "error",
+                //     duration: 5000,
+                //     title: "Error",
+                //     message: err.message
+                // })
+                console.error(err.message);
             }
 
             setChatConnection(chatConnection);
