@@ -647,6 +647,7 @@ function ClassRoomAddBoard({ isShow, onShow, onReloadClassroom }) {
                     inputNameRef.current.classList.toggle("input-error");
                 }, 2000);
 
+                setIsLoading(false);
                 return;
             }
 
@@ -664,6 +665,8 @@ function ClassRoomAddBoard({ isShow, onShow, onReloadClassroom }) {
                 setTimeout(() => {
                     inputCapacityRef.current.classList.toggle("input-error");
                 }, 2000);
+
+                setIsLoading(false);
 
                 return;
             }
@@ -683,6 +686,8 @@ function ClassRoomAddBoard({ isShow, onShow, onReloadClassroom }) {
                         inputCapacityRef.current.classList.toggle("input-error");
                     }, 2000);
 
+                    setIsLoading(false);
+
                     return;
                 }
             }
@@ -701,6 +706,8 @@ function ClassRoomAddBoard({ isShow, onShow, onReloadClassroom }) {
                 setTimeout(() => {
                     inputLocationRef.current.classList.toggle("input-error");
                 }, 2000);
+
+                setIsLoading(false);
 
                 return;
             }

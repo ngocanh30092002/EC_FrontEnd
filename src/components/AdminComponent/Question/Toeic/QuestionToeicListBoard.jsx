@@ -272,7 +272,7 @@ function ToeicExamItem({ examInfo, index, onDeleteExam, isTeacher = false }) {
             }
         }
         catch {
-
+            setIsLoading(false);
         }
     }
 
@@ -348,7 +348,7 @@ function ToeicDetailQuestion({ toeicInfo, onShow }) {
             setIsLoading(false);
         }
         catch {
-
+            setIsLoading(false);
         }
     }
 

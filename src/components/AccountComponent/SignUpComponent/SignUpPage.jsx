@@ -95,6 +95,8 @@ function SignUpForm({ onSetSuccess }) {
                 type: "error"
             }))
             .finally(() => setIsLoading(false));
+
+        setIsLoading(false);
     }
 
     const handleResponseData = (data) => {

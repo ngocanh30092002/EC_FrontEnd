@@ -245,7 +245,6 @@ function ClassItem({ classInfo, index, onDeleteClass }) {
         }
         catch {
             setIsLoading(false);
-
         }
     }
     return (

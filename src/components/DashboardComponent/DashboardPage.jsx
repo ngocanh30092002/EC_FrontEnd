@@ -33,7 +33,7 @@ const DashboardPage = () => {
                 }
             }
             catch {
-
+                setIsLoading(false);
             }
         }
         getRoleAsync();

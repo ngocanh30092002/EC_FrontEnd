@@ -932,9 +932,10 @@ function ContentAssignmentItem({ index, onDeleteAssignment, assignmentInfo, onRe
         event.stopPropagation();
         event.preventDefault();
         try {
-            setIsLoading(true);
             const confirmAnswer = confirm("Do you want to delete this assignment");
             if (confirmAnswer == false) return;
+            
+            setIsLoading(true);
 
             const response = await appClient.delete(`api/assignments/${assignmentInfo.assignmentId}`);
             const dataRes = response.data;
@@ -1509,10 +1510,12 @@ function AssignmentAddBoard({ assignmentInfo, isShow, onShow, onReloadAssignment
                     duration: 4000
                 });
             }
+            setIsLoading(false);
         }
         catch {
-
+            setIsLoading(false);
         }
+        setIsLoading(false);
     }
 
     useEffect(() => {
