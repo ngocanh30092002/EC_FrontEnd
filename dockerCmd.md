@@ -27,18 +27,29 @@ docker run ^
 
 docker run ^
   -e "ACCEPT_EULA=Y" ^
-  -e "MSSQL_SA_PASSWORD=Nna.30092002" ^
+  -e "MSSQL_SA_PASSWORD=Nna@30092002" ^
   -p 1435:1433 ^
   --name sql-server-container ^
   -v sqlserver_data:/var/opt/mssql ^
   -d mcr.microsoft.com/mssql/server
 
-docker exec -it 108e99c2b2fe /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P Nna.30092002 -C -D "Encrypt=True;TrustServerCertificate=True"
-docker exec -it 108e99c2b2fe /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P Nna.30092002
+  docker run ^
+  -e "ACCEPT_EULA=Y" ^
+  -e "MSSQL_SA_PASSWORD=Nna@30092002" ^
+  -p 1435:1433 ^
+  --name sql-server-container ^
+  -v english-data:/var/opt/mssql ^
+  -d mcr.microsoft.com/mssql/server
 
+
+docker exec -it 075fd64bc9a7 /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P Nna@30092002 -C
+
+sqlcmd: (Go - để kết thúc câu truy vấn và thực thi)
 
 Volume: là cơ chế chia sẻ dữ liệu cho phép chia sẻ với các container và host, có thể độc lập với container và khi container bị xoá sẽ không xoá Volume
 Cách hoạt động là sẽ ánh xạ với một thư mục ở trên host của mình
 
-docker cp EnglishCenterDb.bak sql-server-container:/var/opt/mssql/backup/EnglishCenterDb.bak
+docker cp "C:\Users\Ngoc Ahn\Documents\SQL Server Management Studio\Database\EnglishCenter" sql-server-container:/var/opt/mssql/backup/
 
+RESTORE FILELISTONLY FROM DISK = '/var/opt/mssql/backup/EnglishCenter';
+GO

@@ -52,7 +52,7 @@ function ClassDetailPage() {
         {
             name: "Learning Process",
             link: "process",
-            component: <ProcessPage/>
+            component: <ProcessPage isTeacher={true}/>
         },
         ,
         {

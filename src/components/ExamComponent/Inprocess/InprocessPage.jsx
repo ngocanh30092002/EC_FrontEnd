@@ -377,9 +377,9 @@ function InprocessPage() {
         setAnswerSheet(preAnswerSheet => {
             const newAnswerSheet = preAnswerSheet.map((item, index) => {
                 let dataItem = data.find(a => a.subQueId == item.subQueId);
-                item.isCorrect = dataItem.isCorrect;
-                item.userSelected = dataItem.selectedAnswer;
-                item.answerInfo = dataItem.answerInfo;
+                item.isCorrect = dataItem?.isCorrect ?? false;
+                item.userSelected = dataItem?.selectedAnswer;
+                item.answerInfo = dataItem?.answerInfo;
                 
                 return item;
             })

@@ -5,7 +5,7 @@ import { IMG_URL_BASE, APP_URL } from '~/GlobalConstant.js';
 import toast from '@/helper/Toast';
 import { CreateRandom } from '@/helper/RandomHelper';
 
-function ProcessPage() {
+function ProcessPage({ isTeacher = false }) {
     const { classId } = useParams();
     const navigate = useNavigate();
     const [processes, setProcesses] = useState([]);
@@ -168,7 +168,7 @@ function ProcessPage() {
                 <div className='mpt__body min-h-[350px] mt-[10px]'>
                     {sortedData.slice(indexFirstItem, indexLastItem).map((item, index) => {
                         return (
-                            <ProcessItem processInfo={item} index={item.index} onDelete={handleDeteteProcess} key={index}/>
+                            <ProcessItem processInfo={item} index={item.index} onDelete={handleDeteteProcess} key={index} isTeacher={isTeacher} />
                         )
                     })}
 
@@ -206,7 +206,7 @@ function ProcessPage() {
     )
 }
 
-function ProcessItem({ index, processInfo, onDelete }) {
+function ProcessItem({ index, processInfo, onDelete, isTeacher }) {
     const navigate = useNavigate();
 
     const handleViewAnswer = () => {
@@ -219,7 +219,7 @@ function ProcessItem({ index, processInfo, onDelete }) {
         else {
             const sessionId = CreateRandom();
             sessionStorage.setItem(sessionId, processInfo.processID);
-            
+
             navigate(`/exam?mode=view-result&id=${sessionId}`)
         }
     }
@@ -269,9 +269,12 @@ function ProcessItem({ index, processInfo, onDelete }) {
             <div className="mpt__row-item w-1/12">{processInfo.currentRate}%</div>
             <div className="mpt__row-item w-1/12">{processInfo.time}</div>
             <div className="mpt__row-item w-1/12 flex items-center justify-end" onClick={(e) => e.stopPropagation()}>
-                <button onClick={handleClickRemove}>
-                    <img src={IMG_URL_BASE + "close.svg"} className='w-[20px]' />
-                </button>
+                {
+                    !isTeacher &&
+                    <button onClick={handleClickRemove}>
+                        <img src={IMG_URL_BASE + "close.svg"} className='w-[20px]' />
+                    </button>
+                }
             </div>
         </div>
     )

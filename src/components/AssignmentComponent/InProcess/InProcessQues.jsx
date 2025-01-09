@@ -603,7 +603,7 @@ function AnswerOptions({ answerInfo, type, num, isShowAnswer = false, isSubmitte
 
                 {type === "sentence" &&
                     <div className='qi__question inline-block'>
-                        {`${answerInfo?.quesNo}. ${answerInfo.quesInfo.question}`}
+                        {`${answerInfo?.quesNo}. ${answerInfo.quesInfo?.question}`}
                         <button className='ml-[10px] p-[10px] qi__btn-flag inline-block ' onClick={handleMarkedQues}>
                             {answerOptionInfo?.marked ?
                                 <img src={IMG_URL_BASE + "flag-mark.svg"} className='w-[15px]' />
